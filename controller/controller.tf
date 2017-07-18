@@ -61,7 +61,7 @@ resource "aws_instance" "aviatrixcontroller" {
   ami           = "${lookup(var.images, var.region)}"
   instance_type = "t2.large"
   key_name = "${var.keypair}"
-  role = "${var.ec2role}"
+  iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile}""
   network_interface {
      network_interface_id = "${aws_network_interface.eni-controller.id}"
      device_index = 0
@@ -72,6 +72,11 @@ resource "aws_instance" "aviatrixcontroller" {
   tags {
     Name = "AviatrixController"
   }
+}
+
+resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
+  name  = "aviatrix-role-ec2_profile"
+  role = "${var.ec2role}"
 }
 
 output "private-ip" {
