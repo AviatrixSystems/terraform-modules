@@ -1,6 +1,5 @@
 variable "region" {}
-data "aws_billing_service_account" "main" {}
-
+data "aws_caller_identity" "current" {}
 
 #Define the region
 provider "aws" {
@@ -42,7 +41,7 @@ resource "aws_iam_role" "aviatrix-role-app" {
       "Effect": "Allow",
       "Principal":
       {
-          "AWS": "arn:aws:iam::${data.aws_billing_service_account.main.id}:root"
+          "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
       },
       "Action": [ "sts:AssumeRole" ]
     }
@@ -281,7 +280,7 @@ resource "aws_iam_role_policy_attachment" "aviatrix-role-app-attach" {
 }
 
 output "aws-account" {
-    value = "${data.aws_billing_service_account.main.id}"
+    value = "${data.aws_caller_identity.current.account_id}"
 }
 
 output "aviatrix-role-ec2" {
