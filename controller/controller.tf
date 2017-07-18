@@ -1,6 +1,7 @@
 variable "region" {}
 variable "subnet" {}
 variable "keypair" {}
+variable "role" {}
 variable "images" {
   type = "map"
   default = {
@@ -60,6 +61,7 @@ resource "aws_instance" "aviatrixcontroller" {
   ami           = "${lookup(var.images, var.region)}"
   instance_type = "t2.large"
   key_name = "${var.keypair}"
+  role = "${var.role}"
   network_interface {
      network_interface_id = "${aws_network_interface.eni-controller.id}"
      device_index = 0

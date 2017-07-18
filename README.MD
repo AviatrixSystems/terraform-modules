@@ -35,6 +35,7 @@ module "aviatrixcontroller" {
   region  = "<<insert aws region here, ie.: us-east-1>>"
   subnet = "<<insert public subnet id ie.: subnet-9x3237xx>>"
   keypair = "<<insert keypair name ie.: keypairname>>"
+  role = "<<insert role for aviatrix-role-ec2>>"
 }
 ```
 
