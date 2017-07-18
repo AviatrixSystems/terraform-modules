@@ -58,7 +58,7 @@ resource "aws_network_interface" "eni-controller" {
 
 resource "aws_instance" "aviatrixcontroller" {
   ami           = "${lookup(var.images, var.region)}"
-  instance_type = "t2.medium"
+  instance_type = "t2.large"
   key_name = "${var.keypair}"
   network_interface {
      network_interface_id = "${aws_network_interface.eni-controller.id}"
