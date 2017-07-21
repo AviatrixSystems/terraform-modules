@@ -1,4 +1,5 @@
 variable "region" {}
+variable "vpc" {}
 variable "subnet" {}
 variable "keypair" {}
 variable "ec2role" {}
@@ -30,6 +31,7 @@ provider "aws" {
 resource "aws_security_group" "AviatrixSecurityGroup" {
   name        = "AviatrixSecurityGroup"
   description = "Aviatrix - Controller Security Group"
+  vpc_id = "${var.vpc}"
   ingress {
     from_port   = 443
     to_port     = 443
