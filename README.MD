@@ -35,7 +35,7 @@ module "aviatrixcontroller" {
   region  = "<<insert aws region here, ie.: us-east-1>>"
   subnet = "<<insert public subnet id ie.: subnet-9x3237xx>>"
   keypair = "<<insert keypair name ie.: keypairname>>"
-  ec2role = "<<insert role for aviatrix-role-ec2>>"
+  ec2role = "<<insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: ${module.iam_roles.aviatrix-role-ec2}"
 }
 ```
 
