@@ -49,6 +49,15 @@ resource "aws_security_group" "AviatrixSecurityGroup" {
   }
 }
 
+resource "aws_eip" "controller_eip" {
+  vpc = true
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = "${aws_instance.aviatrixcontroller.id}"
+  allocation_id = "${aws_eip.controller_eip.id}"
+}
+
 resource "aws_network_interface" "eni-controller" {
   subnet_id = "${var.subnet}"
   security_groups = [
