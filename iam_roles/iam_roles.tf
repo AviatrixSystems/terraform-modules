@@ -10,6 +10,7 @@ provider "aws" {
 
 resource "aws_iam_role" "aviatrix-role-ec2" {
   name = "aviatrix-role-ec2"
+  description = "Aviatrix EC2 - Created by Terraform+Aviatrix"
   path = "/"
   assume_role_policy = <<EOF
 {
@@ -31,6 +32,7 @@ EOF
 
 resource "aws_iam_role" "aviatrix-role-app" {
   name = "aviatrix-role-app"
+  description = "Aviatrix APP - Created by Terraform+Aviatrix"
   path = "/"
   assume_role_policy = <<EOF
 {
