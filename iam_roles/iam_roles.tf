@@ -1,4 +1,8 @@
 variable "region" {}
+
+variable "master-account-id" {
+  default = "false"
+}
 data "aws_caller_identity" "current" {}
 
 #Define the region
@@ -43,7 +47,7 @@ resource "aws_iam_role" "aviatrix-role-app" {
       "Effect": "Allow",
       "Principal":
       {
-          "AWS": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+          "AWS": ${replace("[\"arn:aws:iam::${data.aws_caller_identity.current.account_id}:root\",\"arn:aws:iam::${var.master-account-id}:root\"]","/,\"arn:aws:iam::false:root\"/","")}
       },
       "Action": [ "sts:AssumeRole" ]
     }
