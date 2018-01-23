@@ -12,6 +12,19 @@ variable "ec2role" {}
 # Defaults
 #
 
+# This is the default root volume size as suggested by Aviatrix
+variable "root_volume_size" {
+  default = 16
+}
+
+variable "root_volume_type" {
+  default = "standard"
+}
+
+variable "instance_type" {
+  default = "t2.large"
+}
+
 variable "images" {
   default = {
     us-east-1      = "ami-690c467e"

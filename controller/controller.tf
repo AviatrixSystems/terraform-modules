@@ -27,7 +27,7 @@ resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
 
 resource "aws_instance" "aviatrixcontroller" {
   ami                  = "${lookup(var.images, var.region)}"
-  instance_type        = "t2.large"
+  instance_type        = "${var.instance_type}"
   key_name             = "${var.keypair}"
   iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile.id}"
 
@@ -37,7 +37,8 @@ resource "aws_instance" "aviatrixcontroller" {
   }
 
   root_block_device {
-    volume_size = 16
+    volume_size = "${var.root_volume_size}"
+    volume_type = "${var.root_volume_type}"
   }
 
   tags {
