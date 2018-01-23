@@ -21,6 +21,10 @@ variable "root_volume_type" {
   default = "standard"
 }
 
+variable "incoming_ssl_cidr" {
+  default = "0.0.0.0/0"
+}
+
 variable "instance_type" {
   default = "t2.large"
 }
