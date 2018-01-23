@@ -3,56 +3,59 @@ variable "vpc" {}
 variable "subnet" {}
 variable "keypair" {}
 variable "ec2role" {}
+
 variable "images" {
   type = "map"
+
   default = {
-    us-east-1 = "ami-690c467e"
-    us-east-2 = "ami-811248e4"
-    us-west-1 = "ami-43206823"
-    us-west-2 = "ami-03558e63"
-    ca-central-1 = "ami-2dc57749"
-    eu-central-1 = "ami-70c43a1f"
-    eu-west-1 = "ami-33d69440"
-    eu-west-2 = "ami-a1272dc5"
-    ap-south-1 = "ami-970672f8"
+    us-east-1      = "ami-690c467e"
+    us-east-2      = "ami-811248e4"
+    us-west-1      = "ami-43206823"
+    us-west-2      = "ami-03558e63"
+    ca-central-1   = "ami-2dc57749"
+    eu-central-1   = "ami-70c43a1f"
+    eu-west-1      = "ami-33d69440"
+    eu-west-2      = "ami-a1272dc5"
+    ap-south-1     = "ami-970672f8"
     ap-northeast-1 = "ami-7308d212"
     ap-northeast-2 = "ami-93d400fd"
     ap-southeast-1 = "ami-f4258297"
     ap-southeast-2 = "ami-921624f1"
-    sa-east-1 = "ami-bcf66bd0"
+    sa-east-1      = "ami-bcf66bd0"
   }
 }
 
 #Define the region
 provider "aws" {
-  region     = "${var.region}"
+  region = "${var.region}"
 }
 
 resource "aws_security_group" "AviatrixSecurityGroup" {
   name        = "AviatrixSecurityGroup"
   description = "Aviatrix - Controller Security Group"
-  vpc_id = "${var.vpc}"
+  vpc_id      = "${var.vpc}"
+
   tags {
-    Name = "AviatrixSecurityGroup"
+    Name      = "AviatrixSecurityGroup"
     Createdby = "Terraform+Aviatrix"
   }
 }
 
 resource "aws_security_group_rule" "ingress_rule" {
-  type            = "ingress"
-  from_port       = 443
-  to_port         = 443
-  protocol        = "tcp"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type              = "ingress"
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.AviatrixSecurityGroup.id}"
 }
 
 resource "aws_security_group_rule" "egress_rule" {
-  type            = "egress"
-  from_port       = 0
-  to_port         = 0
-  protocol        = "-1"
-  cidr_blocks     = ["0.0.0.0/0"]
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = "${aws_security_group.AviatrixSecurityGroup.id}"
 }
 
@@ -67,42 +70,47 @@ resource "aws_eip_association" "eip_assoc" {
 
 resource "aws_network_interface" "eni-controller" {
   subnet_id = "${var.subnet}"
+
   security_groups = [
-    "${aws_security_group.AviatrixSecurityGroup.id}"
+    "${aws_security_group.AviatrixSecurityGroup.id}",
   ]
+
   tags {
-    Name = "Aviatrix Controller interface"
+    Name      = "Aviatrix Controller interface"
     Createdby = "Terraform+Aviatrix"
   }
 }
 
 resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
-  name  = "aviatrix-role-ec2_profile"
+  name = "aviatrix-role-ec2_profile"
   role = "${var.ec2role}"
 }
 
 resource "aws_instance" "aviatrixcontroller" {
-  ami           = "${lookup(var.images, var.region)}"
-  instance_type = "t2.large"
-  key_name = "${var.keypair}"
+  ami                  = "${lookup(var.images, var.region)}"
+  instance_type        = "t2.large"
+  key_name             = "${var.keypair}"
   iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile.id}"
+
   network_interface {
-     network_interface_id = "${aws_network_interface.eni-controller.id}"
-     device_index = 0
+    network_interface_id = "${aws_network_interface.eni-controller.id}"
+    device_index         = 0
   }
+
   root_block_device {
-        volume_size = 16
+    volume_size = 16
   }
+
   tags {
-    Name = "AviatrixController"
+    Name      = "AviatrixController"
     Createdby = "Terraform+Aviatrix"
   }
 }
 
 output "private-ip" {
-    value = "${aws_instance.aviatrixcontroller.private_ip}"
+  value = "${aws_instance.aviatrixcontroller.private_ip}"
 }
 
 output "public-ip" {
-    value = "${aws_instance.aviatrixcontroller.public_ip}"
+  value = "${aws_instance.aviatrixcontroller.public_ip}"
 }
