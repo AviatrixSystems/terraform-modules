@@ -1,3 +1,7 @@
+variable "num_controllers" {
+  default = 1
+}
+
 variable "region" {}
 
 variable "vpc" {}
