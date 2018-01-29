@@ -22,7 +22,7 @@ variable "root_volume_type" {
 }
 
 variable "incoming_ssl_cidr" {
-  default = "0.0.0.0/0"
+  default = ["0.0.0.0/0"]
 }
 
 variable "instance_type" {
