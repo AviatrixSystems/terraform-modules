@@ -246,7 +246,8 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
               "sqs:ReceiveMessage",
               "sqs:RemovePermission",
               "sqs:SendMessage",
-              "sqs:SetQueueAttributes"
+              "sqs:SetQueueAttributes",
+              "sqs:TagQueue"
           ],
           "Resource": "*"
       },
