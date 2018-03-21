@@ -1,21 +1,22 @@
 resource "aws_eip" "controller_eip" {
-  vpc = true
+  count = "${var.num_controllers}"
+  vpc   = true
 }
 
 resource "aws_eip_association" "eip_assoc" {
-  instance_id   = "${aws_instance.aviatrixcontroller.id}"
-  allocation_id = "${aws_eip.controller_eip.id}"
+  count         = "${var.num_controllers}"
+  instance_id   = "${element(aws_instance.aviatrixcontroller.*.id, count.index)}"
+  allocation_id = "${element(aws_eip.controller_eip.*.id, count.index)}"
 }
 
 resource "aws_network_interface" "eni-controller" {
+  count     = "${var.num_controllers}"
   subnet_id = "${var.subnet}"
 
-  security_groups = [
-    "${aws_security_group.AviatrixSecurityGroup.id}",
-  ]
+  security_groups = ["${aws_security_group.AviatrixSecurityGroup.id}"]
 
   tags {
-    Name      = "Aviatrix Controller interface"
+    Name      = "${format("%s : %d", "Aviatrix Controller interface", count.index)}"
     Createdby = "Terraform+Aviatrix"
   }
 }
@@ -26,13 +27,14 @@ resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
 }
 
 resource "aws_instance" "aviatrixcontroller" {
+  count                = "${var.num_controllers}"
   ami                  = "${lookup(var.images, var.region)}"
   instance_type        = "${var.instance_type}"
   key_name             = "${var.keypair}"
   iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile.id}"
 
   network_interface {
-    network_interface_id = "${aws_network_interface.eni-controller.id}"
+    network_interface_id = "${element(aws_network_interface.eni-controller.*.id, count.index)}"
     device_index         = 0
   }
 
@@ -42,7 +44,7 @@ resource "aws_instance" "aviatrixcontroller" {
   }
 
   tags {
-    Name      = "AviatrixController"
+    Name      = "${format("%s : %d", "AviatrixController", count.index)}"
     Createdby = "Terraform+Aviatrix"
   }
 }
