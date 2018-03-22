@@ -1,10 +1,10 @@
 resource "aws_security_group" "AviatrixSecurityGroup" {
-  name        = "AviatrixSecurityGroup"
+  name        = "${local.name_prefix}AviatrixSecurityGroup"
   description = "Aviatrix - Controller Security Group"
   vpc_id      = "${var.vpc}"
 
   tags {
-    Name      = "AviatrixSecurityGroup"
+    Name      = "${local.name_prefix}AviatrixSecurityGroup"
     Createdby = "Terraform+Aviatrix"
   }
 }

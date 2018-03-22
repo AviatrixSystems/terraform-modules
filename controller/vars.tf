@@ -33,6 +33,10 @@ variable "instance_type" {
   default = "t2.large"
 }
 
+variable "name_prefix" {
+  default = ""
+}
+
 variable "images" {
   default = {
     us-east-1      = "ami-690c467e"
@@ -51,3 +55,8 @@ variable "images" {
     sa-east-1      = "ami-bcf66bd0"
   }
 }
+
+locals {
+  name_prefix = ${var.name_prefix != "" ? "${var.name_prefix}-" : ""}
+}
+

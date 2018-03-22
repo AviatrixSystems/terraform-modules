@@ -16,13 +16,13 @@ resource "aws_network_interface" "eni-controller" {
   security_groups = ["${aws_security_group.AviatrixSecurityGroup.id}"]
 
   tags {
-    Name      = "${format("%s : %d", "Aviatrix Controller interface", count.index)}"
+    Name      = "${format("%s%s : %d", local.name_prefix, "Aviatrix Controller interface", count.index)}"
     Createdby = "Terraform+Aviatrix"
   }
 }
 
 resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
-  name = "aviatrix-role-ec2_profile"
+  name = "${local.name_prefix}aviatrix-role-ec2_profile"
   role = "${var.ec2role}"
 }
 
@@ -44,7 +44,7 @@ resource "aws_instance" "aviatrixcontroller" {
   }
 
   tags {
-    Name      = "${format("%s : %d", "AviatrixController", count.index)}"
+    Name      = "${format("%s%s : %d", local.name_prefix, "AviatrixController", count.index)}"
     Createdby = "Terraform+Aviatrix"
   }
 }
