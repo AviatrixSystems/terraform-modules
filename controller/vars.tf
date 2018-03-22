@@ -57,6 +57,6 @@ variable "images" {
 }
 
 locals {
-  name_prefix = ${var.name_prefix != "" ? "${var.name_prefix}-" : ""}
+  name_prefix = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
 }
 

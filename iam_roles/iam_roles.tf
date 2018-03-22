@@ -14,7 +14,7 @@ provider "aws" {
 }
 
 locals {
-  name_prefix = ${var.name_prefix != "" ? "${var.name_prefix}-" : ""}
+  name_prefix = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
 }
 
 # Roles
