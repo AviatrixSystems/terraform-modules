@@ -26,6 +26,7 @@ variable "root_volume_type" {
 }
 
 variable "incoming_ssl_cidr" {
+  type = "list"
   default = ["0.0.0.0/0"]
 }
 
@@ -38,6 +39,7 @@ variable "name_prefix" {
 }
 
 variable "images" {
+  type = "map"
   default = {
     us-east-1      = "ami-690c467e"
     us-east-2      = "ami-811248e4"
