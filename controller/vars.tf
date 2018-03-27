@@ -26,6 +26,7 @@ variable "root_volume_type" {
 }
 
 variable "incoming_ssl_cidr" {
+  type = "list"
   default = ["0.0.0.0/0"]
 }
 
@@ -33,7 +34,12 @@ variable "instance_type" {
   default = "t2.large"
 }
 
+variable "name_prefix" {
+  default = ""
+}
+
 variable "images" {
+  type = "map"
   default = {
     us-east-1 = "ami-db9bb9a1"
     us-east-2 = "ami-b40228d1"
@@ -53,3 +59,8 @@ variable "images" {
     us-gov-west-1 = "ami-30890051"
   }
 }
+
+locals {
+  name_prefix = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
+}
+

@@ -1,5 +1,8 @@
 variable "region" {}
 
+variable "name_prefix" {
+  default = ""
+}
 variable "master-account-id" {
   default = "false"
 }
@@ -10,10 +13,14 @@ provider "aws" {
   region     = "${var.region}"
 }
 
+locals {
+  name_prefix = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
+}
+
 # Roles
 
 resource "aws_iam_role" "aviatrix-role-ec2" {
-  name = "aviatrix-role-ec2"
+  name = "${local.name_prefix}aviatrix-role-ec2"
   description = "Aviatrix EC2 - Created by Terraform+Aviatrix"
   path = "/"
   assume_role_policy = <<EOF
@@ -35,7 +42,7 @@ EOF
 }
 
 resource "aws_iam_role" "aviatrix-role-app" {
-  name = "aviatrix-role-app"
+  name = "${local.name_prefix}aviatrix-role-app"
   description = "Aviatrix APP - Created by Terraform+Aviatrix"
   path = "/"
   assume_role_policy = <<EOF
@@ -57,7 +64,7 @@ EOF
 }
 
 resource "aws_iam_policy" "aviatrix-assume-role-policy" {
-  name        = "aviatrix-assume-role-policy"
+  name        = "${local.name_prefix}aviatrix-assume-role-policy"
   path        = "/"
   description = "Policy for creating aviatrix-assume-role-policy"
 
@@ -78,7 +85,7 @@ EOF
 }
 
 resource "aws_iam_policy" "aviatrix-app-policy" {
-  name        = "aviatrix-app-policy"
+  name        = "${local.name_prefix}aviatrix-app-policy"
   path        = "/"
   description = "Policy for creating aviatrix-app-policy"
 
