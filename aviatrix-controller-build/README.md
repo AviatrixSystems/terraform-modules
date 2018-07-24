@@ -1,14 +1,13 @@
-## Aviatrix - Terraform Modules - BYOL Controller
+## Aviatrix - Terraform Modules - Build Aviatrix Controller
 
 ### Description
-This Terraform module creates an Aviatrix Controller and related components for a BYOL environment.  The components created include:
+This Terraform module creates an Aviatrix Controller and related components in an existing AWS environment.  The components created include:
 
 * One Aviatrix Controller EC2 Instance (named AviatrixController)
-* One Aviatrix Security Group (named AviatrixSecurityGroup)
+* One AWS Security Group (named AviatrixSecurityGroup)
 
 ### Pre-requisites:
 
-* Hashicorp Terraform installed
 * An existing VPC
 * An existing public subnet in that VPC
 * An internet gateway attached to the VPC
@@ -23,19 +22,14 @@ To create an Aviatrix BYOL Controller:
 ```
 module "aviatrixcontroller" {
   source = "github.com/AviatrixSystems/terraform-modules.git/controller"
-  region  = "<<insert aws region here, ie.: us-east-1>>"
   vpc = "<<insert VPC here> ie. vpc-xxxxxx>"
   subnet = "<<insert public subnet id ie.: subnet-9x3237xx>>"
   keypair = "<<insert keypair name ie.: keypairname>>"
-  ec2role = "<<insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: ${module.aviatrix-controller-iam-roles.aviatrix-role-ec2}"
+  ec2role = "<<insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: ${module.aviatrix-iam-roles.aviatrix-role-ec2-name}"
 }
 ```
 
 ### Variables
-
-- **region**
-
-  The AWS region where the provider should connect
 
 - **vpc**
 
@@ -51,7 +45,7 @@ module "aviatrixcontroller" {
   
 - **ec2role**
 
-  The ARN of the aviatrix-ec2-role IAM role
+  The name of the aviatrix-ec2-role IAM role
 
 ### Outputs
 - **aws-account**

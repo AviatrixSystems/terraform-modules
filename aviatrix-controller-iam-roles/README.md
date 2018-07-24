@@ -1,16 +1,13 @@
 ## Aviatrix - Terraform Modules - IAM Roles
 
 ### Description
-This Terraform module creates an Aviatrix Controller and related components for a BYOL environment.  The components created include:
-
-* One Aviatrix Role for EC2 (named aviatrix-role-ec2) with corresponding role policy (named aviatrix-assume-role-policy)
-* One Aviatrix Role for Apps (named aviatrix-role-app) with corresponding role policy (named aviatrix-app-policy)
+This Terraform module creates the Aviatrix IAM roles required to connect your Aviatrix Controller to an existing AWS account.  This should be run in the account where you are installing the Controller and any additional accounts that will be connected to the Controller.
 
 For additional details on these roles see the [documentation](https://docs.aviatrix.com/HowTos/HowTo_IAM_role.html).
 
 ### Usage
 
-To create roles necessary for aviatrix access on your AWS account:
+To create roles necessary for Aviatrix access on your AWS account:
 ```
 module "iam_roles" {
   source = "github.com/AviatrixSystems/terraform-modules.git/iam_roles"

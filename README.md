@@ -1,17 +1,17 @@
 ## Aviatrix - Terraform Modules
 
 ### Description
-These Terraform Modules allow you to build Aviatrix Controllers and prepare accounts for connecting to an existing Aviatrix Controller.
+These Terraform modules allow you to build Aviatrix Controllers and prepare accounts for connecting to an existing Aviatrix Controller.
 
 ### Available Modules
 
 | Module  | Description | Prerequisites |
 | ------- | ----------- | ------------- |
-| aviatrix-controller-iam-roles | Builds the IAM roles required for Aviatrix to connect with this AWS account | |
-| aviatrix-controller-build | Builds the controller in an AWS VPC | <ul><li>Existing VPC,</li><li>public subnet,</li><li>IAM roles created</li></ul> |
-| aviatrix-controller-init | Initializes the Controller (Upgrade, set admin e-mail, set admin password). | <ul><li>Aviatrix Controller</li></ul> |
+| [aviatrix-controller-iam-roles](./aviatrix-controller-iam-roles) | Builds the IAM roles required for Aviatrix to connect with this AWS account | None |
+| [aviatrix-controller-build](./aviatrix-controller-build) | Builds the controller in an AWS VPC | <ul><li>Existing VPC,</li><li>Public subnet,</li><li>An AWS Key Pair,</li><li>IAM roles created</li></ul> |
+| [aviatrix-controller-init](./aviatrix-controller-init) | Initializes the Controller (Upgrade, set admin e-mail, set admin password). | <ul><li>Aviatrix Controller</li></ul> |
 
-### Usage
+### Basic Usage
 
 ```
 module "<<name>>" {
@@ -20,11 +20,11 @@ module "<<name>>" {
 }
 ```
 
-#### Building a Controller and Initializing
+### Building a Controller and Initializing
 
-Because the Aviatrix provider requires the Controller to be up and running before it can operate, the initialization must be separated from the building of the Controller.  Once Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430), these steps can be combined into one.  Until then, you will need to run each step separately:
+Because the Aviatrix provider requires the Controller to be up and running before it can operate, the initialization must be separated from building the Controller.  Once Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430) for a provider, these steps can be combined into one.  Until then, you will need to run each step separately:
 
-##### 1. Create the IAM roles and Build the Controller
+#### 1. Create the IAM roles and Build the Controller
 
 **build/main.tf**
 
@@ -69,7 +69,7 @@ output "controller_public_ip" {
 > cd ..
 ```
 
-##### 2. Initialize the Controller
+#### 2. Initialize the Controller
 
 **init/main.tf**
 
