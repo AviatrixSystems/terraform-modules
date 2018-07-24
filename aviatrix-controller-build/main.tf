@@ -1,27 +1,50 @@
-/*
- * This module builds an Aviatrix controller.
- */
-
-/* AWS TF provider */
-provider "aws" {
-    alias      = "controller"
-    region     = "${var.region}"
-    access_key = "${var.aws_access_key}"
-    secret_key = "${var.aws_secret_key}"
+resource "aws_eip" "controller_eip" {
+  count = "${var.num_controllers}"
+  vpc   = true
 }
 
-/* avtx controller, roles, etc (using quick start cloud formation stack) */
-resource "aws_cloudformation_stack" "controller_quickstart" {
-    provider = "aws.controller"
-    name = "aviatrix-controller"
-    template_url = "https://s3-us-west-2.amazonaws.com/aviatrix-cloudformation-templates/aws-cloudformation-aviatrix-metering-controller.json"
-    parameters = {
-        VPCParam = "${var.vpc_id}"
-        SubnetParam = "${var.subnet_id}"
-        KeyNameParam = "${var.aws_key_pair_name}"
-        IAMRoleParam = "${var.aws_iam_role}"
-        InstanceTypeParam = "${var.aws_ec2_instance_size}"
-    }
-    capabilities = [ "CAPABILITY_NAMED_IAM" ] /* to allow roles to be created */
+resource "aws_eip_association" "eip_assoc" {
+  count         = "${var.num_controllers}"
+  instance_id   = "${element(aws_instance.aviatrixcontroller.*.id, count.index)}"
+  allocation_id = "${element(aws_eip.controller_eip.*.id, count.index)}"
 }
 
+resource "aws_network_interface" "eni-controller" {
+  count     = "${var.num_controllers}"
+  subnet_id = "${var.subnet}"
+
+  security_groups = ["${aws_security_group.AviatrixSecurityGroup.id}"]
+
+  tags {
+    Name      = "${format("%s%s : %d", local.name_prefix, "Aviatrix Controller interface", count.index)}"
+    Createdby = "Terraform+Aviatrix"
+  }
+}
+
+resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
+  name = "${local.name_prefix}aviatrix-role-ec2_profile"
+  role = "${var.ec2role}"
+}
+
+resource "aws_instance" "aviatrixcontroller" {
+  count                = "${var.num_controllers}"
+  ami                  = "${local.ami_id}"
+  instance_type        = "${var.instance_type}"
+  key_name             = "${var.keypair}"
+  iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile.id}"
+
+  network_interface {
+    network_interface_id = "${element(aws_network_interface.eni-controller.*.id, count.index)}"
+    device_index         = 0
+  }
+
+  root_block_device {
+    volume_size = "${var.root_volume_size}"
+    volume_type = "${var.root_volume_type}"
+  }
+
+  tags {
+    Name      = "${format("%s%s : %d", local.name_prefix, "AviatrixController", count.index)}"
+    Createdby = "Terraform+Aviatrix"
+  }
+}

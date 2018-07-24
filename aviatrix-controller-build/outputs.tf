@@ -1,7 +1,7 @@
 output "private_ip" {
-    value = "${aws_cloudformation_stack.controller_quickstart.outputs["AviatrixControllerPrivateIP"]}"
+  value = "${aws_instance.aviatrixcontroller.*.private_ip[0]}"
 }
 
 output "public_ip" {
-    value = "${aws_cloudformation_stack.controller_quickstart.outputs["AviatrixControllerEIP"]}"
+  value = "${aws_eip.controller_eip.*.public_ip[0]}"
 }
