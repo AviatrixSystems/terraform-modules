@@ -10,7 +10,7 @@ For additional details on these roles see the [documentation](https://docs.aviat
 To create roles necessary for Aviatrix access on your AWS account:
 ```
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/iam_roles"
+  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
   master-account-id = "<<insert aws account ID here>>"
   other-account-id = "<<insert aws account ID here>>"
 }

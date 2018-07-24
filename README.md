@@ -9,7 +9,7 @@ These Terraform modules allow you to build Aviatrix Controllers and prepare acco
 | ------- | ----------- | ------------- |
 | [aviatrix-controller-iam-roles](./aviatrix-controller-iam-roles) | Builds the IAM roles required for Aviatrix to connect with this AWS account | None |
 | [aviatrix-controller-build](./aviatrix-controller-build) | Builds the controller in an AWS VPC | <ul><li>Existing VPC,</li><li>Public subnet,</li><li>An AWS Key Pair,</li><li>IAM roles created</li></ul> |
-| [aviatrix-controller-init](./aviatrix-controller-init) | Initializes the Controller (Upgrade, set admin e-mail, set admin password). | <ul><li>Aviatrix Controller</li></ul> |
+| [aviatrix-controller-initialize](./aviatrix-controller-inititialize) | Initializes the Controller (Upgrade, set admin e-mail, set admin password). | <ul><li>Aviatrix Controller</li></ul> |
 
 ### Basic Usage
 
