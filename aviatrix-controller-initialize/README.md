@@ -13,6 +13,7 @@ module "aviatrix_controller_init" {
    admin_password = "<<< enter the new administrator password >>>"
    private_ip = "<<< enter the Aviatrix Controller's private IP address (initial admin password >>>"
    public_ip = "<<< enter the Aviatrix Controller's public IP address >>>"
+   aviatrix_account_name = "<<< enter the account name mapping to your AWS account in the Aviatrix Controller >>>"
 }
 ```
 
@@ -33,6 +34,10 @@ The Controller's private IP address.
 - **public_ip**
 
 The Controller's public IP address.
+
+- **aviatrix_account_name**
+
+A friendly name mapping to your AWS account ID
 
 ### Outputs
 

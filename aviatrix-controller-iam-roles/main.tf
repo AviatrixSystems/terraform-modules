@@ -1,7 +1,5 @@
-data "aws_caller_identity" "current" {}
-
 locals {
-  name_prefix = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
+  name_prefix = ""
 }
 
 # Roles
@@ -43,7 +41,7 @@ resource "aws_iam_role" "aviatrix-role-app" {
               "Principal": {
                 "AWS": [
                     "arn:aws:iam::${var.master-account-id}:root",
-                    "arn:aws:iam::${var.other-account-id}:root"
+                    "arn:aws:iam::${local.other-account-id}:root"
                   ]
               },
               "Action": [

@@ -88,7 +88,6 @@ variable "controller_public_ip" {
 provider "aviatrix" {
     username = "admin"
     password = "${var.controller_private_ip}"
-    #password = "P@ssw0rd!"
     controller_ip = "${var.controller_public_ip}"
 }
 
