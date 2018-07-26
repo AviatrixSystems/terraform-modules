@@ -1,20 +1,5 @@
-variable "region" {}
-
-variable "name_prefix" {
-  default = ""
-}
-variable "master-account-id" {
-  default = "false"
-}
-data "aws_caller_identity" "current" {}
-
-#Define the region
-provider "aws" {
-  region     = "${var.region}"
-}
-
 locals {
-  name_prefix = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
+  name_prefix = ""
 }
 
 # Roles
@@ -25,18 +10,20 @@ resource "aws_iam_role" "aviatrix-role-ec2" {
   path = "/"
   assume_role_policy = <<EOF
 {
-  "Version" : "2012-10-17",
-  "Statement":
-  [
-    {
-      "Effect": "Allow",
-      "Principal":
+    "Version": "2012-10-17",
+    "Statement": [
       {
-        "Service": [ "ec2.amazonaws.com" ]
-      },
-      "Action": [ "sts:AssumeRole" ]
-    }
-  ]
+         "Effect": "Allow",
+         "Principal": {
+           "Service": [
+              "ec2.amazonaws.com"
+           ]
+         },
+         "Action": [
+           "sts:AssumeRole"
+         ]
+       }
+    ]
 }
 EOF
 }
@@ -47,18 +34,21 @@ resource "aws_iam_role" "aviatrix-role-app" {
   path = "/"
   assume_role_policy = <<EOF
 {
-  "Version" : "2012-10-17",
-  "Statement":
-  [
-    {
-      "Effect": "Allow",
-      "Principal":
-      {
-          "AWS": ${replace("[\"arn:aws:iam::${data.aws_caller_identity.current.account_id}:root\",\"arn:aws:iam::${var.master-account-id}:root\"]","/,\"arn:aws:iam::false:root\"/","")}
-      },
-      "Action": [ "sts:AssumeRole" ]
-    }
-  ]
+      "Version": "2012-10-17",
+      "Statement": [
+         {
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": [
+                    "arn:aws:iam::${var.master-account-id}:root",
+                    "arn:aws:iam::${local.other-account-id}:root"
+                  ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+          }
+      ]
 }
 EOF
 }
@@ -93,9 +83,9 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
 {
     "Version": "2012-10-17",
     "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
+    {
+              "Effect": "Allow",
+              "Action": [
                 "ec2:Describe*",
                 "elasticloadbalancing:Describe*",
                 "route53:List*",
@@ -106,25 +96,31 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
                 "s3:List*",
                 "s3:Get*",
                 "iam:List*",
-                "iam:Get*"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+                "iam:Get*",
+                "directconnect:Describe*"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "ec2:RunInstances"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": "ec2:RunInstances",
-            "Resource": "arn:aws:ec2:*:*:image/ami-*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": "ec2:RunInstances",
+              "Resource": "arn:aws:ec2:*:*:image/ami-*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": "ec2:RunInstances",
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "ec2:DeleteSecurityGroup",
                 "ec2:RevokeSecurityGroupEgress",
                 "ec2:RevokeSecurityGroupIngress",
@@ -138,12 +134,12 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
                 "ec2:DisassociateRouteTable",
                 "ec2:ReplaceRoute",
                 "ec2:ReplaceRouteTableAssociation"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "ec2:AllocateAddress",
                 "ec2:AssociateAddress",
                 "ec2:DisassociateAddress",
@@ -186,12 +182,12 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
                 "ec2:CreateVpcPeeringConnection",
                 "ec2:AcceptVpcPeeringConnection",
                 "ec2:DeleteVpcPeeringConnection"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "elasticloadbalancing:ApplySecurityGroupsToLoadBalancer",
                 "elasticloadbalancing:AttachLoadBalancerToSubnets",
                 "elasticloadbalancing:ConfigureHealthCheck",
@@ -200,32 +196,40 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
                 "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
                 "elasticloadbalancing:ModifyLoadBalancerAttributes",
                 "elasticloadbalancing:SetLoadBalancerPoliciesForBackendServer",
-                "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+                "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+                "elasticloadbalancing:CreateTargetGroup",
+                "elasticloadbalancing:DescribeTargetGroups",
+                "elasticloadbalancing:DeleteTargetGroup",
+                "elasticloadbalancing:CreateListener",
+                "elasticloadbalancing:DescribeListeners",
+                "elasticloadbalancing:DeleteListener",
+                "elasticloadbalancing:ModifyLoadBalancerAttributes",
+                "elasticloadbalancing:RegisterTargets"
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "route53:ChangeResourceRecordSets",
                 "route53:CreateHostedZone",
                 "route53:DeleteHostedZone"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "s3:CreateBucket",
                 "s3:DeleteBucket",
                 "s3:PutObject",
                 "s3:DeleteObject"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "sqs:AddPermission",
                 "sqs:ChangeMessageVisibility",
                 "sqs:CreateQueue",
@@ -237,26 +241,26 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
                 "sqs:SendMessage",
                 "sqs:SetQueueAttributes",
                 "sqs:TagQueue"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "sts:AssumeRole"
-            ],
-            "Resource": "arn:aws:iam::*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
+              ],
+              "Resource": "arn:aws:iam::*"
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
                 "iam:PassRole",
                 "iam:AddRoleToInstanceProfile",
                 "iam:CreateInstanceProfile",
                 "iam:DeleteInstanceProfile",
                 "iam:RemoveRoleFromInstanceProfile"
-            ],
-            "Resource": "*"
+              ],
+              "Resource": "*"
         }
     ]
 }
@@ -271,16 +275,4 @@ resource "aws_iam_role_policy_attachment" "aviatrix-role-ec2-attach" {
 resource "aws_iam_role_policy_attachment" "aviatrix-role-app-attach" {
     role       = "${aws_iam_role.aviatrix-role-app.name}"
     policy_arn = "${aws_iam_policy.aviatrix-app-policy.arn}"
-}
-
-output "aws-account" {
-    value = "${data.aws_caller_identity.current.account_id}"
-}
-
-output "aviatrix-role-ec2" {
-    value = "${aws_iam_role.aviatrix-role-ec2.id}"
-}
-
-output "aviatrix-role-app" {
-    value = "${aws_iam_role.aviatrix-role-app.id}"
 }

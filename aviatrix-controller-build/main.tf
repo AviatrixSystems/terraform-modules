@@ -28,7 +28,7 @@ resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
 
 resource "aws_instance" "aviatrixcontroller" {
   count                = "${var.num_controllers}"
-  ami                  = "${lookup(var.images, var.region)}"
+  ami                  = "${local.ami_id}"
   instance_type        = "${var.instance_type}"
   key_name             = "${var.keypair}"
   iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile.id}"
