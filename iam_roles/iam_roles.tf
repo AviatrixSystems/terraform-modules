@@ -281,6 +281,14 @@ output "aviatrix-role-ec2" {
     value = "${aws_iam_role.aviatrix-role-ec2.id}"
 }
 
+output "aviatrix-role-ec2-arn" {
+    value = "${aws_iam_role.aviatrix-role-ec2.arn}"
+}
+
 output "aviatrix-role-app" {
     value = "${aws_iam_role.aviatrix-role-app.id}"
+}
+
+output "aviatrix-role-app-arn" {
+    value = "${aws_iam_role.aviatrix-role-app.arn}"
 }
