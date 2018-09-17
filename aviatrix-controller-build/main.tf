@@ -44,7 +44,7 @@ resource "aws_instance" "aviatrixcontroller" {
   }
 
   tags {
-    Name      = "${format("%s%s : %d", local.name_prefix, "AviatrixController", count.index)}"
+    Name      = "${format("%s%s-%d", local.name_prefix, "AviatrixController", count.index)}"
     Createdby = "Terraform+Aviatrix"
   }
 }
