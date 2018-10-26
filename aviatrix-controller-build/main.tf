@@ -21,11 +21,6 @@ resource "aws_network_interface" "eni-controller" {
   }
 }
 
-resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
-  name = "${local.name_prefix}aviatrix-role-ec2_profile"
-  role = "${var.ec2role}"
-}
-
 resource "aws_instance" "aviatrixcontroller" {
   count                = "${var.num_controllers}"
   ami                  = "${local.ami_id}"
