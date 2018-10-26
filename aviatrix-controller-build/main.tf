@@ -26,7 +26,7 @@ resource "aws_instance" "aviatrixcontroller" {
   ami                  = "${local.ami_id}"
   instance_type        = "${var.instance_type}"
   key_name             = "${var.keypair}"
-  iam_instance_profile = "${aws_iam_instance_profile.aviatrix-role-ec2_profile.id}"
+  iam_instance_profile = "${var.ec2role}_profile"
 
   network_interface {
     network_interface_id = "${element(aws_network_interface.eni-controller.*.id, count.index)}"
