@@ -92,7 +92,7 @@ resource "aws_iam_role_policy_attachment" "aviatrix-role-app-attach" {
 }
 
 resource "aws_iam_instance_profile" "aviatrix-role-ec2_profile" {
-    name = "${aws_iam_role.aviatrix-role-ec2.name}_profile"
+    name = "${aws_iam_role.aviatrix-role-ec2.name}"
     role = "${aws_iam_role.aviatrix-role-ec2.name}"
 }
 
