@@ -39,6 +39,4 @@ resource "aviatrix_account" "first_account" {
     aws_iam = "true"
     aws_role_app = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aviatrix-role-app"
     aws_role_ec2 = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/aviatrix-role-ec2"
-    account_password = "notused"
-    account_email = "notused@aviatrix.com"
 }
