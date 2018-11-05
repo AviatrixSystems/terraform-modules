@@ -21,7 +21,7 @@ To create an Aviatrix BYOL Controller:
 
 ```
 module "aviatrixcontroller" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/controller"
+  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
   vpc = "<<insert VPC here> ie. vpc-xxxxxx>"
   subnet = "<<insert public subnet id ie.: subnet-9x3237xx>>"
   keypair = "<<insert keypair name ie.: keypairname>>"
