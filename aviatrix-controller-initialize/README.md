@@ -8,12 +8,14 @@ This Terraform module initializes a newly created Aviatrix Controller.
 
 ``` terraform
 module "aviatrix_controller_init" {
-   source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
-   admin_email = "<<< enter the administrator email address >>>"
-   admin_password = "<<< enter the new administrator password >>>"
-   private_ip = "<<< enter the Aviatrix Controller's private IP address (initial admin password >>>"
-   public_ip = "<<< enter the Aviatrix Controller's public IP address >>>"
-   aviatrix_account_name = "<<< enter the account name mapping to your AWS account in the Aviatrix Controller >>>"
+   source              = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
+   admin_email         = "<<< enter the administrator email address >>>"
+   admin_password      = "<<< enter the new administrator password >>>"
+   private_ip          = "<<< enter the Aviatrix Controller's private IP address (initial admin password) >>>"
+   public_ip           = "<<< enter the Aviatrix Controller's public IP address >>>"
+   access_account_name = "<<< enter the account name mapping to your AWS account in the Aviatrix Controller >>>"
+   aws_account_id      = "<<< enter the aws account id >>>"
+   customer_license_id = "<<< optional: enter the customer license id >>>" 
 }
 ```
 
@@ -35,9 +37,17 @@ The Controller's private IP address.
 
 The Controller's public IP address.
 
-- **aviatrix_account_name**
+- **access_account_name**
 
 A friendly name mapping to your AWS account ID
+
+- **aws_account_id**
+
+The AWS account ID
+
+- **customer_license_id**
+
+The customer license ID, optional
 
 ### Outputs
 
