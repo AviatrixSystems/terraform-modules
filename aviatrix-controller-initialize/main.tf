@@ -24,7 +24,7 @@ resource "aws_iam_role_policy_attachment" "attach-policy" {
 }
 
 resource "aws_lambda_function" "lambda" {
-  s3_bucket        = "bucketjin"
+  s3_bucket        = "aviatrix-lamba-us-west-1"
   s3_key           = "run_controller_init_setup.zip"
   function_name    = "AvxLambda"
   role             = "${aws_iam_role.iam_for_lambda.arn}"
