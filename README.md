@@ -113,7 +113,7 @@ module "aviatrix-controller-init" {
 
 ### Building and Initializing a Controller in One Step
 
-The Terraform supports a concept of depends_on for a provider, so Building a Controller and Initializing it can be done in one step:
+The Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430) for a provider, so Building a Controller and Initializing it can be done in one step:
 
 #### Create the IAM roles, Build the Controller, and Initialize the Controller
 
@@ -157,7 +157,7 @@ provider "aviatrix" {
 data "aws_region" "current" {}
 
 module "aviatrixcontrollerinit" {
-   source              = "github.com/zhiqiangjin/terraform-modules.git/aviatrix-controller-initialize"
+   source              = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
    admin_email         = "<<< administrator email address >>>"
    admin_password      = "<<< new admin password >>>"
    private_ip          = "${module.aviatrixcontroller.private_ip}"
