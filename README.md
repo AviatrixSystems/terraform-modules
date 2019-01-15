@@ -111,9 +111,15 @@ module "aviatrix-controller-init" {
 > terraform apply -var-file=../aviatrix_controller.tfvars
 ```
 
-Building a Controlled and Initializing it in One Step
+### Building a Controlled and Initializing it in One Step
 
 The Terraform supports a concept of depends_on for a provider, so Building a Controller and Initializing it can be done in one step:
+
+#### Create the IAM roles, Build the Controller, and Initialize the Controller
+
+**main.tf**
+
+``` terraform
 
 provider "aws" {
   <<< your credentials and region >>>
@@ -161,10 +167,12 @@ module "aviatrixcontrollerinit" {
    customer_license_id = "<<< optional: your Customer License ID >>>"
 }
 
+```
+
 *Execute*
 
 ``` shell
 > cd init
 > terraform init
-> terraform apply -var-file=../aviatrix_controller.tfvars
+> terraform apply
 ```
