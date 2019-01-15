@@ -111,7 +111,7 @@ module "aviatrix-controller-init" {
 > terraform apply -var-file=../aviatrix_controller.tfvars
 ```
 
-### Building a Controlled and Initializing it in One Step
+### Building and Initializing a Controller in One Step
 
 The Terraform supports a concept of depends_on for a provider, so Building a Controller and Initializing it can be done in one step:
 
