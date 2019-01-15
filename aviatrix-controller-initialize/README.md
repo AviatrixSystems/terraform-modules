@@ -15,7 +15,7 @@ module "aviatrix_controller_init" {
    public_ip           = "<<< enter the Aviatrix Controller's public IP address >>>"
    access_account_name = "<<< enter the account name mapping to your AWS account in the Aviatrix Controller >>>"
    aws_account_id      = "<<< enter the aws account id >>>"
-   customer_license_id = "<<< optional: enter the customer license id >>>" 
+   customer_license_id = "<<< enter the customer license id (optional) >>>" 
 }
 ```
 

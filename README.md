@@ -36,25 +36,25 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  source            = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
   master-account-id = "${data.aws_caller_identity.current.account_id}"
-  other-account-id = "${data.aws_caller_identity.current.account_id}"
+  other-account-id  = "${data.aws_caller_identity.current.account_id}"
 }
 
 module "aviatrixcontroller" {
-    source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
-    vpc = "<<< your VPC ID >>>"
-    subnet = "<<< your public Subnet ID >>>"
+    source  = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
+    vpc     = "<<< your VPC ID >>>"
+    subnet  = "<<< your public Subnet ID >>>"
     keypair = "<<< your EC2 key pair name >>>"
     ec2role = "${module.iam_roles.aviatrix-role-ec2-name}"
 }
 
 output "controller_private_ip" {
-    value="${module.aviatrixcontroller.private_ip}"
+    value = "${module.aviatrixcontroller.private_ip}"
 }
 
 output "controller_public_ip" {
-    value="${module.aviatrixcontroller.public_ip}"
+    value = "${module.aviatrixcontroller.public_ip}"
 }
 
 ```
@@ -86,18 +86,18 @@ variable "controller_public_ip" {
 
 /* aviatrix provider */
 provider "aviatrix" {
-    username = "admin"
-    password = "${var.controller_private_ip}"
+    username      = "admin"
+    password      = "${var.controller_private_ip}"
     controller_ip = "${var.controller_public_ip}"
 }
 
 module "aviatrix-controller-init" {
     source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
 
-    admin_password = "<<< new admin password >>>"
-    admin_email = "<<< administrator email address >>>"
-    private_ip = "${var.controller_private_ip}"
-    public_ip = "${var.controller_public_ip}"
+    admin_password        = "<<< new admin password >>>"
+    admin_email           = "<<< administrator email address >>>"
+    private_ip            = "${var.controller_private_ip}"
+    public_ip             = "${var.controller_public_ip}"
     aviatrix_account_name = "<<< Name of a cloud account to be created on the new controller >>>" 
 }
 
@@ -164,7 +164,7 @@ module "aviatrixcontrollerinit" {
    public_ip           = "${module.aviatrixcontroller.public_ip}"
    access_account_name = "<<< the account name mapping to your AWS account in the Aviatrix Controller >>>"
    aws_account_id      = "<<< your AWS Account ID >>>"
-   customer_license_id = "<<< optional: your Customer License ID >>>"
+   customer_license_id = "<<< your Customer License ID (optional) >>>"
 }
 
 ```
