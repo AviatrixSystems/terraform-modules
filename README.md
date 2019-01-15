@@ -20,9 +20,9 @@ module "<<name>>" {
 }
 ```
 
-### Building a Controller and Initializing
+### Building a Controller and Initializing it in Two Seprate Steps
 
-Because the Aviatrix provider requires the Controller to be up and running before it can operate, the initialization must be separated from building the Controller.  Once Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430) for a provider, these steps can be combined into one.  Until then, you will need to run each step separately:
+The Aviatrix provider requires the Controller to be up and running before it can operate, the initialization can be separated from building the Controller:
 
 #### 1. Create the IAM roles and Build the Controller
 
@@ -102,6 +102,64 @@ module "aviatrix-controller-init" {
 }
 
 ```
+
+*Execute*
+
+``` shell
+> cd init
+> terraform init
+> terraform apply -var-file=../aviatrix_controller.tfvars
+```
+
+Building a Controlled and Initializing it in One Step
+
+The Terraform supports a concept of depends_on for a provider, so Building a Controller and Initializing it can be done in one step:
+
+provider "aws" {
+  <<< your credentials and region >>>
+}
+
+data "aws_caller_identity" "current" {}
+
+module "iam_roles" {
+  source            = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  master-account-id = "${data.aws_caller_identity.current.account_id}"
+}
+
+module "aviatrixcontroller" {
+    source  = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
+    vpc     = "<<< your VPC ID >>>"
+    subnet  = "<<< your public Subnet ID >>>"
+    keypair = "<<< your EC2 key pair name >>>"
+    ec2role = "${module.iam_roles.aviatrix-role-ec2-name}"
+}
+
+output "controller_private_ip" {
+    value = "${module.aviatrixcontroller.private_ip}"
+}
+
+output "controller_public_ip" {
+    value = "${module.aviatrixcontroller.public_ip}"
+}
+
+provider "aviatrix" {
+    username      = "admin"
+    password      = "${module.aviatrixcontroller.private_ip}"
+    controller_ip = "${module.aviatrixcontroller.public_ip}"
+}
+
+data "aws_region" "current" {}
+
+module "aviatrixcontrollerinit" {
+   source              = "github.com/zhiqiangjin/terraform-modules.git/aviatrix-controller-initialize"
+   admin_email         = "<<< administrator email address >>>"
+   admin_password      = "<<< new admin password >>>"
+   private_ip          = "${module.aviatrixcontroller.private_ip}"
+   public_ip           = "${module.aviatrixcontroller.public_ip}"
+   access_account_name = "<<< the account name mapping to your AWS account in the Aviatrix Controller >>>"
+   aws_account_id      = "<<< your AWS Account ID >>>"
+   customer_license_id = "<<< optional: your Customer License ID >>>"
+}
 
 *Execute*
 

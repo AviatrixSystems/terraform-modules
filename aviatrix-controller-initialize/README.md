@@ -23,11 +23,11 @@ module "aviatrix_controller_init" {
 
 - **admin_email**
 
-The administrator's email address.  This email address will be used for password recovery as well as for notifications from the Controller.
+The administrator's email address. This email address will be used for password recovery as well as for notifications from the Controller.
 
 - **admin_password**
 
-The administrator's password.  The default password is the Controller's private IP addresses.  It will be changed to this value as part of the initialization.
+The administrator's password. The default password is the Controller's private IP addresses. It will be changed to this value as part of the initialization.
 
 - **private_ip**
 
@@ -39,11 +39,11 @@ The Controller's public IP address.
 
 - **access_account_name**
 
-A friendly name mapping to your AWS account ID
+A friendly name mapping to your AWS account ID.
 
 - **aws_account_id**
 
-The AWS account ID
+The AWS account ID.
 
 - **customer_license_id**
 
@@ -51,4 +51,4 @@ The customer license ID, optional
 
 ### Outputs
 
-None
+None.
