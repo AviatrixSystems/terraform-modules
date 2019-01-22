@@ -42,8 +42,8 @@ data "aws_lambda_invocation" "example" {
   input = <<JSON
 { "ResourceProperties":
 {
-  "LambdaInvokerType"                : "terraform",
-  "PrefixStringParam"                : "avxxx",
+  "PrefixStringParam"                : "avx",
+  "LambdaInvokerTypeParam"           : "terraform",
   "AWS_Account_ID"                   : "${var.aws_account_id}",
   "KeywordForCloudWatchLogParam"     : "avx-log",
   "DelimiterForCloudWatchLogParam"   : "---",
