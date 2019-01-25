@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name = "${replace("iam_for_lambda_${var.public_ip}",".","-")}"
 
   assume_role_policy = <<EOF
 {
@@ -28,7 +28,7 @@ data "aws_region" "current" {}
 resource "aws_lambda_function" "lambda" {
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
   s3_key        = "run_controller_init_setup.zip"
-  function_name = "AvxLambda"
+  function_name = "${replace("AvxLambda_${var.public_ip}",".","-")}"
   role          = "${aws_iam_role.iam_for_lambda.arn}"
   handler       = "run_controller_init_setup.lambda_handler"
   runtime       = "python3.7"
