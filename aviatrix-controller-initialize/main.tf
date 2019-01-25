@@ -33,7 +33,7 @@ resource "aws_lambda_function" "lambda" {
   handler       = "run_controller_init_setup.lambda_handler"
   runtime       = "python3.7"
   description   = "MANAGED BY TERRAFORM"
-  timeout       = 300
+  timeout       = 900
 }
 
 data "aws_lambda_invocation" "example" {

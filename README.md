@@ -100,6 +100,10 @@ provider "aws" {
    <<< your credentials and region >>>
 }
 
+variable "controller_private_ip" {}
+
+variable "controller_public_ip" {}
+
 module "aviatrix-controller-init" {
     source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
     admin_email           = "<<< your administrator email address >>>"
