@@ -13,4 +13,10 @@ variable "private_ip" {}
 variable "public_ip" {}
 
 /* the controller account friendly name (mapping to the AWS account ID) */
-variable "aviatrix_account_name" {}
+variable "access_account_name" {}
+
+/* aws account id */
+variable "aws_account_id" {}
+
+/* the controller account friendly name (mapping to the AWS account ID) */
+variable "customer_license_id" {}

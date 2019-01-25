@@ -20,13 +20,13 @@ module "<<name>>" {
 }
 ```
 
-### Building a Controller and Initializing
+### Building a Controller and Initializing it
 
-Because the Aviatrix provider requires the Controller to be up and running before it can operate, the initialization must be separated from building the Controller.  Once Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430) for a provider, these steps can be combined into one.  Until then, you will need to run each step separately:
+The Aviatrix provider requires the Controller to be up and running before it can operate, the initialization can be separated from building the Controller:
 
-#### 1. Create the IAM roles and Build the Controller
+#### 1. Create the IAM roles
 
-**build/main.tf**
+**creatIAM.tf**
 
 ``` terraform
 
@@ -36,25 +36,47 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  source            = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
   master-account-id = "${data.aws_caller_identity.current.account_id}"
-  other-account-id = "${data.aws_caller_identity.current.account_id}"
+  other-account-id  = "${data.aws_caller_identity.current.account_id}"
+}
+
+```
+
+*Execute*
+
+``` shell
+> cd iam
+> terraform init
+> terraform apply
+> cd ..
+```
+
+#### 2. Build the Controller
+
+**build.tf**
+
+``` terraform
+
+provider "aws" {
+   <<< your credentials and region >>>
 }
 
 module "aviatrixcontroller" {
-    source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
-    vpc = "<<< your VPC ID >>>"
-    subnet = "<<< your public Subnet ID >>>"
-    keypair = "<<< your EC2 key pair name >>>"
-    ec2role = "${module.iam_roles.aviatrix-role-ec2-name}"
+    source      = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
+    vpc         = "<<< your VPC ID >>>"
+    subnet      = "<<< your public Subnet ID >>>"
+    keypair     = "<<< your EC2 key pair name >>>"
+    ec2role     = "aviatrix-role-ec2"
+    name_prefix = "<<< unique for specified controller >>>"
 }
 
 output "controller_private_ip" {
-    value="${module.aviatrixcontroller.private_ip}"
+    value = "${module.aviatrixcontroller.private_ip}"
 }
 
 output "controller_public_ip" {
-    value="${module.aviatrixcontroller.public_ip}"
+    value = "${module.aviatrixcontroller.public_ip}"
 }
 
 ```
@@ -69,36 +91,32 @@ output "controller_public_ip" {
 > cd ..
 ```
 
-#### 2. Initialize the Controller
+#### 3. Initialize the Controller
 
-**init/main.tf**
+**init.tf**
 
 ``` terraform
 provider "aws" {
    <<< your credentials and region >>>
 }
-data "aws_caller_identity" "current" {}
 
-variable "controller_private_ip" {
-}
-variable "controller_public_ip" {
-}
+variable "controller_private_ip" {}
 
-/* aviatrix provider */
-provider "aviatrix" {
-    username = "admin"
-    password = "${var.controller_private_ip}"
-    controller_ip = "${var.controller_public_ip}"
-}
+variable "controller_public_ip" {}
 
 module "aviatrix-controller-init" {
     source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
+    admin_email           = "<<< your administrator email address >>>"
+    admin_password        = "<<< your new admin password >>>"
+    private_ip            = "${var.controller_private_ip}"
+    public_ip             = "${var.controller_public_ip}"
+    access_account_name   = "<<< your account name mapping to your AWS account in the Aviatrix Controller >>>"
+    aws_account_id        = "<<< your aws account id >>>"
+    customer_license_id   = "<<< your customer license id (optional) >>>"   
+}
 
-    admin_password = "<<< new admin password >>>"
-    admin_email = "<<< administrator email address >>>"
-    private_ip = "${var.controller_private_ip}"
-    public_ip = "${var.controller_public_ip}"
-    aviatrix_account_name = "<<< Name of a cloud account to be created on the new controller >>>" 
+output "lambda_result" {
+   value = "${module.aviatrix_controller_init.result}"
 }
 
 ```
@@ -110,3 +128,8 @@ module "aviatrix-controller-init" {
 > terraform init
 > terraform apply -var-file=../aviatrix_controller.tfvars
 ```
+
+### More
+
+The Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430) for a provider, so Building a Controller and Initializing it can be done in one step. 
+
