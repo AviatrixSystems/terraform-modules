@@ -104,7 +104,7 @@ variable "controller_private_ip" {}
 
 variable "controller_public_ip" {}
 
-module "aviatrix-controller-init" {
+module "aviatrix_controller_init" {
     source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
     admin_email           = "<<< your administrator email address >>>"
     admin_password        = "<<< your new admin password >>>"
