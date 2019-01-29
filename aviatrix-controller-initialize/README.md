@@ -17,6 +17,11 @@ module "aviatrix_controller_init" {
    aws_account_id      = "<<< enter the aws account id >>>"
    customer_license_id = "<<< enter the customer license id (optional) >>>" 
 }
+
+
+output "lambda_result" {
+   value = "${module.aviatrix_controller_init.result}"
+}
 ```
 
 ### Variables
@@ -47,8 +52,12 @@ The AWS account ID.
 
 - **customer_license_id**
 
-The customer license ID, optional
+The customer license ID, optional. Required if using a BYOL controller
 
 ### Outputs
+
+- **lambda_result**
+
+The status of lambda execution
 
 None.
