@@ -54,7 +54,7 @@ EOF
 }
 
 data "template_file" "iam_policy_assume_role" {
-  template = "${file("./data/iam_policy_assume_role.tpl")}"
+  template = "${file("${path.module}/data/iam_policy_assume_role.tpl")}"
 }
 
 resource "aws_iam_policy" "aviatrix-assume-role-policy" {
@@ -65,7 +65,7 @@ resource "aws_iam_policy" "aviatrix-assume-role-policy" {
 }
 
 data "template_file" "iam_policy_ec2_role" {
-  template = "${file("./data/iam_policy_ec2_role.tpl")}"
+  template = "${file("${path.module}/data/iam_policy_ec2_role.tpl")}"
 }
 
 resource "aws_iam_policy" "aviatrix-app-policy" {
