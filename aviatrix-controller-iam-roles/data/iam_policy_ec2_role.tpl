@@ -19,9 +19,7 @@
                 "iam:Get*",
                 "directconnect:Describe*",
                 "guardduty:Get*",
-                "guardduty:List*",
-                "ram:Get*",
-                "ram:List*"
+                "guardduty:List*"
             ],
             "Resource": "*"
         },
@@ -149,21 +147,6 @@
                 "ec2:DeleteSnapshot",
                 "ec2:AttachVolume",
                 "ec2:DetachVolume"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ram:CreateResourceShare",
-                "ram:DeleteResourceShare",
-                "ram:UpdateResourceShare",
-                "ram:AssociateResourceShare",
-                "ram:DisassociateResourceShare",
-                "ram:TagResource",
-                "ram:UntagResource",
-                "ram:AcceptResourceShareInvitation",
-                "ram:EnableSharingWithAwsOrganization"
             ],
             "Resource": "*"
         },
