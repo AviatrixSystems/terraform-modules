@@ -93,7 +93,7 @@
                 "ec2:ResetNetworkInterfaceAttribute",
                 "ec2:RevokeSecurityGroupEgress",
                 "ec2:RevokeSecurityGroupIngress",
-                "ec2:RunInstances"
+                "ec2:RunInstances",
                 "ec2:Search*",
                 "ec2:StartInstances",
                 "ec2:StopInstances",
@@ -136,7 +136,7 @@
                 "route53:DeleteHostedZone",
                 "route53:Get*",
                 "route53:List*",
-                "s3:DeleteObject"
+                "s3:DeleteObject",
                 "s3:Get*",
                 "s3:List*",
                 "s3:PutObject",
