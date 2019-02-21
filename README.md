@@ -28,7 +28,7 @@ The Aviatrix provider requires the Controller to be up and running before it can
 
 **creatIAM.tf**
 
-``` terraform
+``` hcl
 
 provider "aws" {
    <<< your credentials and region >>>
@@ -56,7 +56,7 @@ module "iam_roles" {
 
 **build.tf**
 
-``` terraform
+``` hcl
 
 provider "aws" {
    <<< your credentials and region >>>
@@ -95,7 +95,7 @@ output "controller_public_ip" {
 
 **init.tf**
 
-``` terraform
+``` hcl
 provider "aws" {
    <<< your credentials and region >>>
 }
@@ -129,7 +129,50 @@ output "lambda_result" {
 > terraform apply -var-file=../aviatrix_controller.tfvars
 ```
 
-### More
+### Putting it all together
 
-The Terraform supports a concept of [`depends_on`](https://github.com/hashicorp/terraform/issues/2430) for a provider, so Building a Controller and Initializing it can be done in one step. 
+You can run each of these steps in a single .tf file.  Here is an example:
+
+``` hcl
+
+provider "aws" {
+}
+data "aws_caller_identity" "current" {
+   <<< your credentials and region >>>
+}
+
+module "aviatrix-iam-roles" {
+  source            = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  master-account-id = "${data.aws_caller_identity.current.account_id}"
+}
+
+module "aviatrix-controller-build" {
+    source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
+    vpc = "<<< VPC ID >>>"
+    subnet = "<<< Subnet ID >>>"
+    keypair = "<<< Keypair name >>>"
+    ec2role = "${module.aviatrix-iam-roles.aviatrix-role-ec2-name}"
+}
+
+provider "aviatrix" {
+    username = "admin"
+    password = "${module.aviatrix-controller-build.private_ip}"
+    controller_ip = "${module.aviatrix-controller-build.public_ip}"
+}
+
+module "aviatrix-controller-initialize" {
+    source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
+
+    admin_password = "<<< new admin password >>>"
+    admin_email = "<<< admin email address >>>"
+    private_ip = "${module.aviatrix-controller-build.private_ip}"
+    public_ip = "${module.aviatrix-controller-build.public_ip}"
+    access_account_name = "<<< account name for this AWS account >>>"
+    aws_account_id = "${data.aws_caller_identity.current.account_id}"
+}
+
+output "result" {
+   value = "${module.aviatrix-controller-initialize.result}"
+}
+```
 
