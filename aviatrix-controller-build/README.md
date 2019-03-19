@@ -57,9 +57,7 @@ module "aviatrixcontroller" {
 
 - **incoming_ssl_cidr**
   
-  Type is "list"
-  
-  Default value is ["0.0.0.0/0"]
+  Type is "list", and default value is ["0.0.0.0/0"]
 
 - **instance_type**
 
