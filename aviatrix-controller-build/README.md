@@ -47,6 +47,30 @@ module "aviatrixcontroller" {
 
   The name of the aviatrix-ec2-role IAM role
 
+- **root_volume_size**
+  
+  Default value is 16, as suggested by Aviatrix
+
+- **root_volume_type**
+  
+  Default value is "standard"
+
+- **incoming_ssl_cidr**
+  
+  Type is "list", and default value is ["0.0.0.0/0"]
+
+- **instance_type**
+
+  Default value is "t2.large"
+
+- **name_prefix**
+
+  Default value is ""
+
+- **type**
+
+  Default value is "metered". Valid vales are "metered"/"BYOL"
+
 ### Outputs
 - **aws-account**
 
