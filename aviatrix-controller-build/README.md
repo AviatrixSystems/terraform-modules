@@ -49,7 +49,7 @@ module "aviatrixcontroller" {
 
 - **root_volume_size**
   
-  Default value is 16, as suggested by Aviatrix
+  Default value is 20, as suggested by Aviatrix
 
 - **root_volume_type**
   
