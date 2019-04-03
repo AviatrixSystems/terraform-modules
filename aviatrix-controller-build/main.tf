@@ -22,11 +22,12 @@ resource "aws_network_interface" "eni-controller" {
 }
 
 resource "aws_instance" "aviatrixcontroller" {
-  count                = "${var.num_controllers}"
-  ami                  = "${local.ami_id}"
-  instance_type        = "${var.instance_type}"
-  key_name             = "${var.keypair}"
-  iam_instance_profile = "${var.ec2role}"
+  count                   = "${var.num_controllers}"
+  ami                     = "${local.ami_id}"
+  instance_type           = "${var.instance_type}"
+  key_name                = "${var.keypair}"
+  iam_instance_profile    = "${var.ec2role}"
+  disable_api_termination = true
 
   network_interface {
     network_interface_id = "${element(aws_network_interface.eni-controller.*.id, count.index)}"
