@@ -3,7 +3,7 @@
 ### Description
 This Terraform module creates the Aviatrix IAM roles required to connect your Aviatrix Controller to an existing AWS account.  This should be run in the account where you are installing the Controller and any additional accounts that will be connected to the Controller.
 
-When running this for the initial installation of the Controller, the `master-account-id` should be set to the current AWS account ID.  For additional accounts, the `master-account-id` should be the AWS account ID where the controller is installed.'
+When running this for the initial installation of the Controller, the `master-account-id` should be set to the current AWS account ID.  For additional accounts, the `master-account-id` should be the AWS account ID where the controller is installed. NOTE: Please make sure the role name created MUST be exactly “aviatrix-role-ec2”.
 
 For additional details on these roles see the [documentation](https://docs.aviatrix.com/HowTos/HowTo_IAM_role.html).
 
