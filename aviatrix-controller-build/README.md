@@ -84,10 +84,10 @@ module "aviatrixcontroller" {
 
   The AWS IAM role ARN created for granting the controller access to the account.
 
-- **controller-private-ip**
+- **private_ip**
 
   The private IP address of the AWS EC2 instance created for the controller.
 
-- **controller-public-ip**
+- **public_ip**
 
   The public IP address of the AWS EC2 instance created for the controller.
