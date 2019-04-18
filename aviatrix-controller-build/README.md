@@ -17,7 +17,7 @@ This Terraform module creates an Aviatrix Controller and related components in a
 
 ### Usage:
 
-To create an Aviatrix BYOL Controller:
+To create an Aviatrix Controller:
 
 ```
 module "aviatrixcontroller" {
@@ -69,7 +69,7 @@ module "aviatrixcontroller" {
 
 - **type**
 
-  Default value is "metered". Valid vales are "metered"/"BYOL"
+  Default value is "metered". Valid values are "metered", "BYOL"
 
 ### Outputs
 - **aws-account**
