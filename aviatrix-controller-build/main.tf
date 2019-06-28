@@ -27,7 +27,7 @@ resource "aws_instance" "aviatrixcontroller" {
   instance_type           = "${var.instance_type}"
   key_name                = "${var.keypair}"
   iam_instance_profile    = "${var.ec2role}"
-  disable_api_termination = true
+  disable_api_termination = "${var.termination_protection}"
 
   network_interface {
     network_interface_id = "${element(aws_network_interface.eni-controller.*.id, count.index)}"
