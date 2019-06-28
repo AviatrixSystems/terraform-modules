@@ -10,6 +10,10 @@ variable "keypair" {}
 
 variable "ec2role" {}
 
+variable "termination_protection" {
+    default = true
+}
+
 #
 # Defaults
 #
