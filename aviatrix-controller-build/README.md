@@ -49,27 +49,31 @@ module "aviatrixcontroller" {
 
 - **root_volume_size**
   
-  Default value is 20, as suggested by Aviatrix
+  The size of the hard disk for the controller instance, default value is 20, as suggested by Aviatrix
 
 - **root_volume_type**
   
-  Default value is "standard"
+  The type of the hard disk for the controller instance, Default value is "standard"
 
 - **incoming_ssl_cidr**
   
-  Type is "list", and default value is ["0.0.0.0/0"]
+  The CIDR to be allowed for HTTPS(port 443) access to the controller. Type is "list", and default value is ["0.0.0.0/0"]
 
 - **instance_type**
 
-  Default value is "t2.large"
+  The instance size for the Aviatrix controller instance. Default value is "t2.large"
 
 - **name_prefix**
 
-  Default value is ""
+  A prefix to be added the Aviatrix controller instance name. Default value is ""
 
 - **type**
 
-  Default value is "metered". Valid values are "metered", "BYOL"
+  The license type for the Aviatrix controller. Default value is "metered". Valid values are "metered", "BYOL"
+
+- **termination_protection**
+
+  Whether termination protection is enabled for the controller. Default value is true. Valid values are true/false
 
 ### Outputs
 - **aws-account**
