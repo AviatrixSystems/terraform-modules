@@ -29,35 +29,17 @@ EOF
 }
 
 resource "aws_iam_role" "aviatrix-role-app" {
-  name = "${local.name_prefix}aviatrix-role-app"
-  description = "Aviatrix APP - Created by Terraform+Aviatrix"
-  path = "/"
-  assume_role_policy = <<EOF
-{
-      "Version": "2012-10-17",
-      "Statement": [
-         {
-              "Effect": "Allow",
-              "Principal": {
-                "AWS": [
-                    "arn:aws:iam::${var.master-account-id}:root",
-                    "arn:aws:iam::${local.other-account-id}:root"
-                  ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-          }
-      ]
-}
-EOF
+  name               = "${local.name_prefix}aviatrix-role-app"
+  description        = "Aviatrix APP - Created by Terraform+Aviatrix"
+  path               = "/"
+  assume_role_policy = "${var.external-controller-account-id == "" ? local.policy_primary : local.policy_cross}"
 }
 
 data "http" "iam_policy_assume_role" {
-    url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/iam_assume_role_policy.txt"
-    request_headers {
-        "Accept" = "application/json"
-    }
+  url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/iam_assume_role_policy.txt"
+  request_headers {
+    "Accept" = "application/json"
+  }
 }
 
 resource "aws_iam_policy" "aviatrix-assume-role-policy" {
