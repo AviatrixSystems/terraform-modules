@@ -36,7 +36,7 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
 }
 
 ```
@@ -61,7 +61,7 @@ provider "aws" {
 }
 
 module "aviatrixcontroller" {
-  source      = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
+  source      = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.12"
   vpc         = "<<< your VPC ID >>>"
   subnet      = "<<< your public Subnet ID >>>"
   keypair     = "<<< your EC2 key pair name >>>"
@@ -103,14 +103,14 @@ variable "controller_private_ip" {}
 variable "controller_public_ip" {}
 
 module "aviatrix_controller_init" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
-  admin_email           = "<<< your administrator email address >>>"
-  admin_password        = "<<< your new admin password >>>"
-  private_ip            = var.controller_private_ip
-  public_ip             = var.controller_public_ip
-  access_account_name   = "<<< your account name mapping to your AWS account in the Aviatrix Controller >>>"
-  aws_account_id        = "<<< your aws account id >>>"
-  customer_license_id   = "<<< your customer license id (optional) >>>"   
+  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.12"
+  admin_email         = "<<< your administrator email address >>>"
+  admin_password      = "<<< your new admin password >>>"
+  private_ip          = var.controller_private_ip
+  public_ip           = var.controller_public_ip
+  access_account_name = "<<< your account name mapping to your AWS account in the Aviatrix Controller >>>"
+  aws_account_id      = "<<< your aws account id >>>"
+  customer_license_id = "<<< your customer license id (optional) >>>"   
 }
 
 output "lambda_result" {
