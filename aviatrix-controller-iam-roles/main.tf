@@ -29,15 +29,15 @@ EOF
 }
 
 resource "aws_iam_role" "aviatrix-role-app" {
-  name               = "${local.name_prefix}aviatrix-role-app"
-  description        = "Aviatrix APP - Created by Terraform+Aviatrix"
-  path               = "/"
+  name = "${local.name_prefix}aviatrix-role-app"
+  description = "Aviatrix APP - Created by Terraform+Aviatrix"
+  path = "/"
   assume_role_policy = "${var.external-controller-account-id == "" ? local.policy_primary : local.policy_cross}"
 }
 
 data "http" "iam_policy_assume_role" {
   url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/iam_assume_role_policy.txt"
-  request_headers {
+  request_headers = {
     "Accept" = "application/json"
   }
 }
@@ -50,8 +50,8 @@ resource "aws_iam_policy" "aviatrix-assume-role-policy" {
 }
 
 data "http" "iam_policy_ec2_role" {
-  url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/IAM_access_policy_for_CloudN.txt"
-  request_headers {
+  url             = "https://s3-us-west-2.amazonaws.com/aviatrix-download/IAM_access_policy_for_CloudN.txt"
+  request_headers = {
     "Accept" = "application/json"
   }
 }
