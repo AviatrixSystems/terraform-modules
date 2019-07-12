@@ -29,9 +29,9 @@ EOF
 }
 
 resource "aws_iam_role" "aviatrix-role-app" {
-  name = "${local.name_prefix}aviatrix-role-app"
-  description = "Aviatrix APP - Created by Terraform+Aviatrix"
-  path = "/"
+  name               = "${local.name_prefix}aviatrix-role-app"
+  description        = "Aviatrix APP - Created by Terraform+Aviatrix"
+  path               = "/"
   assume_role_policy = "${var.external-controller-account-id == "" ? local.policy_primary : local.policy_cross}"
 }
 
