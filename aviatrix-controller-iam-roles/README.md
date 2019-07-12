@@ -20,7 +20,7 @@ Please refer to the documentation below for more detail:
 To create roles necessary for Aviatrix access on your AWS account:
 ```
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
 }
 
 # cross account 

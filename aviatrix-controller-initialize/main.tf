@@ -37,7 +37,7 @@ resource "aws_lambda_function" "lambda" {
 }
 
 data "aws_lambda_invocation" "example" {
-  function_name   = "${aws_lambda_function.lambda.function_name}"
+  function_name = "${aws_lambda_function.lambda.function_name}"
 
   input = <<JSON
 { "ResourceProperties":
