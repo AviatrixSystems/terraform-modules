@@ -1,9 +1,9 @@
 resource "aws_security_group" "AviatrixSecurityGroup" {
   name        = "${local.name_prefix}AviatrixSecurityGroup"
   description = "Aviatrix - Controller Security Group"
-  vpc_id      = "${var.vpc}"
+  vpc_id      = var.vpc
 
-  tags {
+  tags = {
     Name      = "${local.name_prefix}AviatrixSecurityGroup"
     Createdby = "Terraform+Aviatrix"
   }
@@ -14,8 +14,8 @@ resource "aws_security_group_rule" "ingress_rule" {
   from_port         = 443
   to_port           = 443
   protocol          = "tcp"
-  cidr_blocks       = "${var.incoming_ssl_cidr}"
-  security_group_id = "${aws_security_group.AviatrixSecurityGroup.id}"
+  cidr_blocks       = var.incoming_ssl_cidr
+  security_group_id = aws_security_group.AviatrixSecurityGroup.id
 }
 
 resource "aws_security_group_rule" "egress_rule" {
@@ -24,5 +24,5 @@ resource "aws_security_group_rule" "egress_rule" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = "${aws_security_group.AviatrixSecurityGroup.id}"
+  security_group_id = aws_security_group.AviatrixSecurityGroup.id
 }
