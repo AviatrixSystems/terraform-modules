@@ -54,10 +54,10 @@ value as part of the initialization.
 
 - **customer_license_id**
 
-  The customer license ID, optional. Required if using a BYOL controller
+The customer license ID, optional. Required if using a BYOL controller.
 
 ### Outputs
 
 - **lambda_result**
 
-  The status of lambda execution.
+The status of lambda execution.

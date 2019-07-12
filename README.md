@@ -137,16 +137,14 @@ provider "aws" {
   <<< your credentials and region >>>
 }
 
-data "aws_caller_identity" "current" {
-  <<< your credentials and region >>>
-}
+data "aws_caller_identity" "current" {}
 
 module "aviatrix-iam-roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-iam-roles"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
 }
 
 module "aviatrix-controller-build" {
-  source  = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-build"
+  source  = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.12"
   vpc     = "<<< VPC ID >>>"
   subnet  = "<<< Subnet ID >>>"
   keypair = "<<< Keypair name >>>"
@@ -160,8 +158,7 @@ provider "aviatrix" {
 }
 
 module "aviatrix-controller-initialize" {
-  source              = "github.com/AviatrixSystems/terraform-modules.git/aviatrix-controller-initialize"
-
+  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.12"
   admin_password      = "<<< new admin password >>>"
   admin_email         = "<<< admin email address >>>"
   private_ip          = module.aviatrix-controller-build.private_ip

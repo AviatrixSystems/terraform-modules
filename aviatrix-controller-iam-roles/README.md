@@ -1,13 +1,13 @@
 ## Aviatrix - Terraform Modules - IAM Roles
 
 ### Description
-This Terraform module creates the Aviatrix IAM roles required to connect your Aviatrix Controller to an existing AWS
-account.  This should be run in the account where you are installing the Controller and any additional accounts that
-will be connected to the Controller.
+This Terraform module creates AWS IAM credentials (IAM roles, policies, etc...), which are used to grant AWS API
+permissions for Aviatrix controller in order to allow the controller to access resources in AWS account(s). This
+Terraform module should be run in the AWS account where you are installing the Controller and any additional AWS 
+accounts that will be connected to the Controller.
 
-When running this for the initial installation of the Controller, the `external-controller-account-id` should NOT be
-set.  For additional accounts, the `external-controller-account-id` should be the AWS account ID where the controller
-is installed.
+If this module is applied for setting up IAM credentials on the AWS account where your controller is (going to be)
+located, the Terraform variable, "external-controller-account-id" should NOT be set.
 
 If this module is applied for AWS account(s), which will be managed by the controller, please configure the Terraform
 variable, "external-controller-account-id" and set the value to be the AWS account ID of the controller.
@@ -26,7 +26,7 @@ module "iam_roles" {
 # cross account 
 module "iam_roles" {
   source                         = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
-  external-controller-account-id = "<<insert controller aws account ID here>>"
+  external-controller-account-id = "<<insert AWS account ID of the controller here>>"
 }
 ```
 
@@ -34,9 +34,9 @@ module "iam_roles" {
   
 - **external-controller-account-id** <Optional>
 
-  The AWS account ID where the Aviatrix Controller was launched. This is only required if you are creating roles for 
-  secondary account different from the account where controller was launched. DO NOT use this parameter if creating role 
-  in account where controller was launched.
+  The AWS account ID where the Aviatrix Controller was/will be launched. This is only required if you are creating roles
+  for the secondary account different from the account where controller was/will be launched. DO NOT use this parameter
+  if this Terraform module is applied on the AWS account of your controller.
 
 ### Outputs
 
