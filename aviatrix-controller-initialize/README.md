@@ -54,12 +54,10 @@ The AWS account ID.
 
 - **customer_license_id**
 
-The customer license ID, optional. Required if using a BYOL controller
+The customer license ID, optional. Required if using a BYOL controller.
 
 ### Outputs
 
 - **lambda_result**
 
-The status of lambda execution
-
-None.
+The status of lambda execution.
