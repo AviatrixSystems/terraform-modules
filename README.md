@@ -34,7 +34,6 @@ separated from building the Controller:
 provider "aws" {
   <<< your credentials and region >>>
 }
-data "aws_caller_identity" "current" {}
 
 module "iam_roles" {
   source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.11"
@@ -141,7 +140,6 @@ data "aws_caller_identity" "current" {}
 
 module "aviatrix-iam-roles" {
   source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.11"
-  master-account-id = "${data.aws_caller_identity.current.account_id}"
 }
 
 module "aviatrix-controller-build" {
