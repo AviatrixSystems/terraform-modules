@@ -20,7 +20,7 @@ variable "termination_protection" {
 
 # This is the default root volume size as suggested by Aviatrix
 variable "root_volume_size" {
-  default = 20
+  default = 32
 }
 
 variable "root_volume_type" {
