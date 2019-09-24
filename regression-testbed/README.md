@@ -386,9 +386,20 @@ For GCP access account, you will need to provide an absolute filepath to the gcp
   - password: admin_password
 
 #### Destroying Environment
-
 1. Change ```termination_protection``` to be false.
-  -   Terraform won't automatically remove termination protection.
-2. ```terraform destroy -target module.aviatrix-access-accounts```, to destroy the aviatrix access accounts first
-  -   Not destroying the access accounts first will end up with a dependency error. Currently Terraform doesn't support module to module dependency.
-3. ```terraform destroy```, to destroy the rest of the resources.
+  - Terraform won't automatically remove termination protection.
+
+2. ```terraform destroy -target module.aviatrix-access-accounts```, to destroy the aviatrix access accounts first.
+  - Not destroying the access accounts first will end up with a dependency error. Currently Terraform doesn't support module to module dependency.
+
+3. Comment out
+```
+provider "aviatrix" {
+  ...
+}
+module "aviatrix-access-accounts" {
+  ...
+}
+```
+
+4. ```terraform destroy```, to destroy the rest of the resources.
