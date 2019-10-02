@@ -71,7 +71,7 @@ locals {
     us-east-1      = "ami-02465f499ff5092e1"
     us-east-2      = "ami-0861f8a0e35a19b0b"
     us-west-1      = "ami-0cf70ae96639f0057"
-    us-west-2  	   = "ami-0d1499f297ecddea6"
+    us-west-2      = "ami-0d1499f297ecddea6"
     ca-central-1   = "ami-08ca66ca024bbce49"
     eu-central-1   = "ami-0f27d29114cb3e116"
     eu-west-1      = "ami-08d86496a8dcb9d33"
