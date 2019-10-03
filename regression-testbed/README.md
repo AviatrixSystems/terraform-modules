@@ -66,6 +66,14 @@ module "regression-testbed" {
   pri_subnet_cidr_east2       = [<<insert cidrs>>]
   ubuntu_ami_east2            = "<<insert ami>>"
 
+  # AWS Cross account
+  vpc_count_cross_aws             = <<input number of vpcs>>
+  vpc_cidr_cross_aws              = [<<insert cidrs>>]
+  pub_subnet1_cidr_cross_aws      = [<<insert cidrs>>]
+  pub_subnet2_cidr_cross_aws      = [<<insert cidrs>>]
+  pri_subnet_cidr_cross_aws       = [<<insert cidrs>>]
+  ubuntu_ami_cross_aws            = "<<insert ami>>"
+
   # AWS VPC for controller
   controller_region           = "<<insert region to launch controller>>"
   controller_vpc_cidr         = "<<insert vpc cidr for controller>>"
@@ -238,6 +246,7 @@ Number to be used for private ubuntu instance private ip host part. Must be a wh
 - **vpc_count_west2**
 - **vpc_count_east1**
 - **vpc_count_east2**
+- **vpc_count_cross_aws**
 
 The number of vpcs to create in the given AWS region.
 
@@ -245,6 +254,7 @@ The number of vpcs to create in the given AWS region.
 - **vpc_cidr_west2**
 - **vpc_cidr_east1**
 - **vpc_cidr_east2**
+- **vpc_cidr_cross_aws**
 
 The cidr of a vpc for a given region. List of strings.
 
@@ -252,6 +262,7 @@ The cidr of a vpc for a given region. List of strings.
 - **pub_subnet1_cidr_west2**
 - **pub_subnet1_cidr_east1**
 - **pub_subnet1_cidr_east2**
+- **pub_subnet1_cidr_cross_aws**
 
 The cidr for public subnet 1 of a given region. List of strings.
 
@@ -259,6 +270,7 @@ The cidr for public subnet 1 of a given region. List of strings.
 - **pub_subnet2_cidr_west2**
 - **pub_subnet2_cidr_east1**
 - **pub_subnet2_cidr_east2**
+- **pub_subnet2_cidr_cross_aws**
 
 The cidr for public subnet 2 of a given region. List of strings.
 
@@ -266,6 +278,7 @@ The cidr for public subnet 2 of a given region. List of strings.
 - **pri_subnet_cidr_west2**
 - **pri_subnet_cidr_east1**
 - **pri_subnet_cidr_east2**
+- **pri_subnet_cidr_cross_aws**
 
 The cidr for a private subnet of a given region. List of strings.
 
@@ -273,8 +286,21 @@ The cidr for a private subnet of a given region. List of strings.
 - **ubuntu_ami_west2**
 - **ubuntu_ami_east1**
 - **ubuntu_ami_east2**
+- **ubuntu_ami_cross_aws**
 
 AMI of the ubuntu instances.
+
+- **cross_aws_acct_region**
+
+Region to launch cross aws account vpc.
+
+- **cross_aws_acct_access_key**
+
+Access key for cross aws account.
+
+- **cross_aws_acct_secret_key**
+
+Secret key for cross aws account.
 
 - **controller_vpc_cidr**
 

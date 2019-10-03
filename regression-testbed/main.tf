@@ -48,6 +48,14 @@ provider "aws" {
   secret_key    = var.aws_primary_acct_secret_key
 }
 
+provider "aws" {
+	alias					= "cross_aws_acc"
+  version       = "~> 2.7"
+  region        = var.cross_aws_acct_region
+  access_key    = var.cross_aws_acct_access_key
+  secret_key    = var.cross_aws_acct_secret_key
+}
+
 provider "aviatrix" {
   username      = "admin"
   password      = module.aviatrix-controller.private_ip
@@ -155,4 +163,22 @@ module "windows-instance" {
   ami   					= var.windows_ami
   termination_protection = var.termination_protection
 	resource_name_label		 = var.resource_name_label
+}
+
+module "aws-cross-acct" {
+  source                = "./modules/testbed-vpcs"
+  providers = {
+    aws = aws.cross_aws_acct
+  }
+  vpc_count             = var.vpc_count_cross_aws
+  resource_name_label   = var.resource_name_label
+	pub_hostnum						= var.pub_hostnum
+  pri_hostnum           = var.pri_hostnum
+  vpc_cidr              = var.vpc_cidr_cross_aws
+  pub_subnet1_cidr      = var.pub_subnet1_cidr_cross_aws
+  pub_subnet2_cidr      = var.pub_subnet2_cidr_cross_aws
+  pri_subnet_cidr       = var.pri_subnet_cidr_cross_aws
+  ubuntu_ami            = var.ubuntu_ami_cross_aws
+  public_key            = var.vpc_public_key
+	termination_protection = var.termination_protection
 }

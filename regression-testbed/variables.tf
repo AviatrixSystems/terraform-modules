@@ -4,7 +4,6 @@ variable "aws_primary_acct_access_key" {
   type        = string
   description = "AWS primary account's access key."
 }
-
 variable "aws_primary_acct_secret_key" {
   type        = string
   description = "AWS primary account's secret key."
@@ -132,6 +131,44 @@ variable "pri_subnet_cidr_east2" {
   description = "The cidr for a private subnet."
 }
 variable "ubuntu_ami_east2" {
+  type        = string
+  description = "AMI of the ubuntu instances"
+}
+
+# AWS Cross Account
+variable "cross_aws_acct_access_key" {
+  type        = string
+  description = "Access key of AWS Cross Account."
+}
+variable "cross_aws_acct_secret_key" {
+  type        = string
+  description = "Secret key of AWS Cross Account."
+}
+variable "cross_aws_region" {
+  type        = string
+  description = "Region to launch AWS Cross account vpc."
+}
+variable "vpc_count_cross_aws" {
+  type        = number
+  description = "The number of vpcs to create in the given aws region."
+}
+variable "vpc_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for a vpc."
+}
+variable "pub_subnet1_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for public subnet 1."
+}
+variable "pub_subnet2_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for public subnet 2."
+}
+variable "pri_subnet_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for a private subnet."
+}
+variable "ubuntu_ami_cross_aws" {
   type        = string
   description = "AMI of the ubuntu instances"
 }
