@@ -10,7 +10,7 @@ resource "aws_eip_association" "eip_assoc" {
 }
 
 resource "aws_network_interface" "eni-controller" {
-  count            = var.num_controllers
+  count           = var.num_controllers
   subnet_id       = var.subnet
   security_groups = ["${aws_security_group.AviatrixSecurityGroup.id}"]
   tags            = {
