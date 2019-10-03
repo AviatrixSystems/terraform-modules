@@ -1,4 +1,4 @@
-## Aviatrix - Terraform Modules - AWS VPC Setup 
+## Aviatrix - Terraform Modules - AWS VPC Setup
 
 ### Description
 This Terraform module creates an AWS VPC for the Regression Testbed environment. VPC includes: 2 public subnets, 1 private subnet, public rtb, private rtb, public ubuntu, private ubuntu. Ubuntu instances have an eip assigned to them and termination protection enabled. SSH and ICMP are open to 0.0.0.0/0. Nested module of the Terraform Regression Testbed module.
@@ -7,16 +7,17 @@ This Terraform module creates an AWS VPC for the Regression Testbed environment.
 To create a filled AWS VPC:
 ```
 module "aws-vpc" {
-  source          	= "./modules/testbed-vpcs"
-  vpc_count	  	= "<<insert amount of vpcs>> ie: 2"
+  source          	  = "./modules/testbed-vpcs"
+  vpc_count	        	= "<<insert amount of vpcs>> ie: 2"
   resource_name_label	= "<<insert label name>>"
-  hostnum		= "<<insert host number part>>"
-  vpc_cidr        	= "<<insert vpc cidr here> ie: 10.10.0.0/16"
-  pub_subnet1_cidr     	= "<<insert subnet cidr ie: 10.10.5.0/24 >"
-  pub_subnet2_cidr     	= "<<insert subnet cidr ie: 10.10.5.0/24 >"
-  pri_subnet_cidr     	= "<<insert subnet cidr ie: 10.10.5.0/24 >"
-  ubuntu_ami		= "<<insert ami of ubuntu instance>>"
-  public_key      	= "<<insert public key>>"
+  pub_hostnum		      = "<<insert host number part>>"
+  pri_hostnum		      = "<<insert host number part>>"
+  vpc_cidr        	  = "<<insert vpc cidr here> ie: 10.10.0.0/16"
+  pub_subnet1_cidr    = "<<insert subnet cidr ie: 10.10.5.0/24 >"
+  pub_subnet2_cidr    = "<<insert subnet cidr ie: 10.10.5.0/24 >"
+  pri_subnet_cidr     = "<<insert subnet cidr ie: 10.10.5.0/24 >"
+  ubuntu_ami		      = "<<insert ami of ubuntu instance>>"
+  public_key      	  = "<<insert public key>>"
   termination_protection = <<true/false>>
 }
 ```
@@ -35,9 +36,13 @@ The label for the resource name.
 
 Public key to create a new key pair for the controller.
 
-- **host**
+- **pub_hostnum**
 
-Number to be used for ubuntu instsance private ip host part. Must be a whole number that can be represented as a binary integer.
+Number to be used for public ubuntu instance private ip host part. Must be a whole number that can be represented as a binary integer.
+
+- **pri_hostnum**
+
+Number to be used for private ubuntu instance private ip host part. Must be a whole number that can be represented as a binary integer.
 
 - **vpc_cidr**
 
@@ -87,7 +92,7 @@ Name of the Ubuntu instances.
 
 - **ubuntu_public_ip**
 
-Public IP of the Ubuntu instances.
+Public IP of the public Ubuntu instance.
 
 - **ubuntu_private_ip**
 

@@ -12,10 +12,10 @@ To create an Aviatrix controller:
 ```
 module "aviatrix-controller" {
   source          = "./modules/testbed-aviatrix-controller"
-  vpc_cidr        = "<<insert vpc cidr here> ie: 10.10.0.0/16"
-  subnet_cidr     = "<<insert subnet cidr ie: 10.10.5.0/24 >"
+  vpc_cidr        = "<<insert vpc cidr here>> ie: 10.10.0.0/16"
+  subnet_cidr     = "<<insert subnet cidr>> ie: 10.10.5.0/24"
   sg_source_ip    = "<<insert source ip to allow ssh and https>> ie: 10.10.5.0"
-  public_key      = "<<insert public key>> ie: >>"
+  public_key      = "<<insert public key contents>>"
   admin_email     = "<<insert admin email>> ie: user@aviatrix.com"
   admin_password  = "<<insert admin password>> ie: aviatrix123!"
   access_account  = "<<insert access account name>> ie: regression-admin"
@@ -28,15 +28,15 @@ module "aviatrix-controller" {
 
 - **vpc_cidr**
 
-VPC cidr to launch Windows instance in.
+VPC cidr to launch Aviatrix controller in.
 
 - **subnet_cidr**
 
-Public subnet cidr to launch Windows in.
+Public subnet cidr to launch Aviatrix controller in.
 
 - **sg_source_ip**
 
-Source IP that Windows instance security group will allow for ingress RDP rule.
+Source IP that Aviatrix controller will allow ssh for.
 
 - **public_key**
 
@@ -54,7 +54,7 @@ Admin password to be used for logging into the Aviatrix controller.
 
 Account name for this AWS access account to be used for Aviatrix controller.
 
-- **customer_id** 
+- **customer_id**
 
 Customer license ID for the Aviatrix controller, if using BYOL controller.
 

@@ -1,13 +1,13 @@
 # Variable declarations for TF Regression Testbed Windows instance setup
 
-variable "vpc" {
+variable "vpc_cidr" {
 	type					= string
-	description		= "VPC ID."
+	description		= "VPC cidr."
 }
 
-variable "subnet" {
+variable "subnet_cidr" {
 	type					= string
-	description		= "Pubic subnet ID."
+	description		= "Pubic subnet cidr."
 }
 
 variable "sg_source_ip" {
@@ -15,14 +15,14 @@ variable "sg_source_ip" {
   description   = "Source IP that Windows instance security group will allow."
 }
 
-variable "windows_ami" {
+variable "ami" {
   type          = string
   description   = "Amazon Machine Id for the windows instance to be created."
 }
 
-variable "keypair" {
+variable "public_key" {
 	type					= string
-	description		= "Name of the key pair used to connect to instance."
+	description		= "Public ssh key."
 }
 
 variable "termination_protection" {

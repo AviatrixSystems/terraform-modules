@@ -16,39 +16,36 @@ To create a Windows instance:
 ```
 module "windows-instance" {
   source  	= "./modules/testbed-windows-instance"
-  providers = {
-	aws = aws.controller
-  }
-  vpc	  	= "<<insert VPC here> ie. vpc-xxxxxx>"
-  subnet  	= "<<insert public subnet id ie.: subnet-9x3237xx>>"
+  vpc_cidr	  	= "<<insert cidr>> ie: 10.0.0.0/16"
+  subnet_cidr  	= "<<insert cidr>> ie: 10.0.0.0/24"
   sg_source_ip	= "<<insert source ip to allow rdp>> ie: 10.10.1.0"
-  windows_ami	= "<<insert ami for instance>> ie: ami-0acfa9d37b413b160"
-  keypair 	= "<<insert keypair name ie.: keypairname>>"
+  ami	          = "<<insert ami for instance>> ie: ami-0acfa9d37b413b160"
+  public_key 	  = "<<insert public key contents>>"
   termination_protection = <<true/false>>
 }
 ```
 
 ### Variables
 
-- **vpc**
+- **vpc_cidr**
 
-VPC ID to launch Windows instance in.
+VPC cidr to launch Windows instance in.
 
-- **subnet**
+- **subnet_cidr**
 
-Public subnet ID to launch Windows in.
+Public subnet cidr to launch windows instance in.
+
+- **public_key**
+
+Public key to create a new key pair for the controller.
 
 - **sg_source_ip**
 
 Source IP that Windows instance security group will allow for ingress RDP rule.
 
-- **windows_ami**
+- **ami**
 
 Amazon Machine Id to create the Windows instance from.
-
-- **keypair**
-
-Name of the key pair used to connect to the instance.
 
 - **termination_protection**
 

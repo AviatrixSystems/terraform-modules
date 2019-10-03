@@ -1,4 +1,4 @@
-## Regression Testbed Terraform
+windows## Regression Testbed Terraform
 
 ### Description
 
@@ -15,8 +15,7 @@ This Terraform configuration creates an AWS VPC testbed environment with ubuntu 
 
 ### Usage
 
-1. ```terraform init``` to initialize the workspace with .tf files
-2. Create testbed.tf and testbed_outputs.tf
+1. Create testbed.tf and testbed_outputs.tf
 
 ```
 ## testbed.tf
@@ -30,11 +29,12 @@ module "regression-testbed" {
   aws_primary_acct_secret_key = "<<your aws primary secret key>>"
 
   # AWS VPC setup
-  vpc_count                   = <<input number of vpcs to create in each region>>
   vpc_public_key              = "<<your public key to access ubuntu instances>>"
-  hostnum                     = <<input instance private ip hostnum>>
+  pub_hostnum                 = <<input instance private ip hostnum>>
+  pri_hostnum                 = <<input instance private ip hostnum>>
 
   # US West 1
+  vpc_count_west1             = <<input number of vpcs>>
   vpc_cidr_west1              = [<<insert cidrs>>]
   pub_subnet1_cidr_west1      = [<<insert cidrs>>]
   pub_subnet2_cidr_west1      = [<<insert cidrs>>]
@@ -43,6 +43,7 @@ module "regression-testbed" {
   ubuntu_ami_west1            = "<<insert ami>>"
 
   # US West 2
+  vpc_count_west2             = <<input number of vpcs>>
   vpc_cidr_west2              = [<<insert cidrs>>]
   pub_subnet1_cidr_west2      = [<<insert cidrs>>]
   pub_subnet2_cidr_west2      = [<<insert cidrs>>]
@@ -50,12 +51,15 @@ module "regression-testbed" {
   ubuntu_ami_west2            = "<<insert ami>>"
 
   # US East 1
+  vpc_count_east1             = <<input number of vpcs>>
   vpc_cidr_east1              = [<<insert cidrs>>]
   pub_subnet1_cidr_east1      = [<<insert cidrs>>]
   pub_subnet2_cidr_east1      = [<<insert cidrs>>]
   pri_subnet_cidr_east1       = [<<insert cidrs>>]
   ubuntu_ami_east1            = "<<insert ami>>"
 
+  # US East 2
+  vpc_count_east2             = <<input number of vpcs>>
   vpc_cidr_east2              = [<<insert cidrs>>]
   pub_subnet1_cidr_east2      = [<<insert cidrs>>]
   pub_subnet2_cidr_east2      = [<<insert cidrs>>]
@@ -66,7 +70,7 @@ module "regression-testbed" {
   controller_region           = "<<insert region to launch controller>>"
   controller_vpc_cidr         = "<<insert vpc cidr for controller>>"
   controller_subnet_cidr      = "<<insert subnet cidr for controller>>"
-  controller_public_key       = "<<insert your public key to access controller and windows instance>>""
+  controller_public_key       = "<<insert your public key to access controller>>""
   controller_sg_source_ip     = "<<insert controller source ip>>"
 
   # Aviatrix controller
@@ -76,8 +80,12 @@ module "regression-testbed" {
   customer_id                 = "<<insert your license id>>"
 
   # Windows instance
+  windows_region              = "<<insert region to launch windows instance>>"
+  windows_vpc_cidr            = "<<insert vpc cidr for windows instance>>"
+  windows_subnet_cidr         = "<<insert subnet cidr for windows instance>>"
+  windows_public_key          = "<<insert public key to access windows instance>>
   windows_ami                 = "<<insert windows ami>>"
-  windows_sg_source_ip        = "<<insert source ip>>"
+  windows_sg_source_ip        = "<<insert windows instance source ip>>"
 }
 ```
 
@@ -98,7 +106,7 @@ output "us-east-2" {
   value = [module.regression-testbed.east2_vpc_info, module.regression-testbed.east2_subnet_info, module.regression-testbed.east2_ubuntu_info]
 }
 
-# Aviatrix Controller
+# Aviatrix controller
 output "controller_public_ip" {
  value = module.regression-testbed.controller_public_ip
 }
@@ -117,6 +125,8 @@ output "windows_key" {
   value = module.regression-testbed.windows_key
 }
 ```
+
+2. ```terraform init``` to initialize the workspace with .tf files
 
 3. Initial ```terraform apply```
 
@@ -208,10 +218,6 @@ AWS primary account's secret key.
 
 Whether to enable termination protection for ec2 instances.
 
-- **vpc_count**
-
-The number of vpcs to create in the given AWS region.
-
 - **resource_name_label**
 
 The label for the resource name.
@@ -220,9 +226,20 @@ The label for the resource name.
 
 Public key used for creating key pair for all instances.
 
-- **hostnum**
+- **pub_hostnum**
 
-Number to be used for ubuntu instance private ip host part, Must be a whole number than an be represented as a binary integer.
+Number to be used for public ubuntu instance private ip host part. Must be a whole number that can be represented as a binary integer.
+
+- **pri_hostnum**
+
+Number to be used for private ubuntu instance private ip host part. Must be a whole number that can be represented as a binary integer.
+
+- **vpc_count_west1**
+- **vpc_count_west2**
+- **vpc_count_east1**
+- **vpc_count_east2**
+
+The number of vpcs to create in the given AWS region.
 
 - **vpc_cidr_west1**
 - **vpc_cidr_west2**
@@ -291,6 +308,18 @@ Account name for this AWS access account to be used for the Aviatrix controller.
 
 Customer license ID for the Aviatrix controller, if using BYOL controller.
 
+- **windows_vpc_cidr**
+
+AWS VPC cidr being created for windows instance.
+
+- **windows_subnet_cidr**
+
+Public subnet cidr of the vpc being created for windows instance.
+
+- **windows_public_key**
+
+Public key to create a new key pair for the windows instance.
+
 - **windows_sg_source_ip**
 
 Source IP that Windows instance security group will allow.
@@ -333,7 +362,7 @@ Outputs the cidr for all subnets in the given regions.
 - **us-east-1_ubuntu_public_ip**
 - **us-east-2_ubuntu_public_ip**
 
-Outputs the public IP of the ubuntu instances in the given regions.
+Outputs the public IP of the public ubuntu instances in the given regions.
 
 - **us-west-1_ubuntu_private_ip**
 - **us-west-2_ubuntu_private_ip**

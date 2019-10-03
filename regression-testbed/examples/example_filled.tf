@@ -10,7 +10,8 @@ module "regression-testbed" {
   vpc_count                   = 2
   resource_name_label         = "regression"
   vpc_public_key              = ""
-	hostnum											= 130
+  pub_hostnum                 = 20
+  pri_hostnum                 = 30
 
   # US West 1
 	# each variable for the cidr are lists
@@ -49,15 +50,19 @@ module "regression-testbed" {
 	controller_subnet_cidr			= "10.22.23.0/24"
 	controller_public_key       = ""
 	controller_sg_source_ip     = "0.0.0.0/0"
-	
+
 	# Aviatrix controller
 	admin_email                 = ""
 	admin_password              = ""
 	access_account              = ""
 	customer_id                 = ""
-	
+
 	# Windows instance
-	windows_ami                 = "ami-0069635df219ce9e5"
+  windows_region              = "us-east-1"
+  windows_vpc_cidr            = "20.5.0.0/16"
+  windows_subnet_cidr         = "20.5.1.0/24"
+  windows_public_key          = ""
+  windows_ami                 = "ami-0069635df219ce9e5"
 	windows_sg_source_ip        = "0.0.0.0/0"
 }
 
