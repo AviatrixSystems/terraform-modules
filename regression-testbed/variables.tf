@@ -191,8 +191,8 @@ variable "controller_public_key" {
   description   = "Public key to create a new key pair for the controller."
 }
 variable "controller_sg_source_ip" {
-  type          = string
-  description   = "Source IP that AWS security group will allow for controller."
+  type          = list(string)
+  description   = "Source IP's that AWS security group will allow for controller."
 }
 variable "admin_email" {
   type          = string
@@ -229,8 +229,8 @@ variable "windows_public_key" {
   description   = "Public key to create a new key pair for the Windows instance."
 }
 variable "windows_sg_source_ip" {
-  type          = string
-  description   = "Source IP that Windows instance security group will allow."
+  type          = list(string)
+  description   = "Source IP's that Windows instance security group will allow."
 }
 variable "windows_ami" {
   type          = string

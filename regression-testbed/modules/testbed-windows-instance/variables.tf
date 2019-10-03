@@ -11,8 +11,8 @@ variable "subnet_cidr" {
 }
 
 variable "sg_source_ip" {
-  type          = string
-  description   = "Source IP that Windows instance security group will allow."
+  type          = list(string)
+  description   = "Source IPs that Windows instance security group will allow."
 }
 
 variable "ami" {

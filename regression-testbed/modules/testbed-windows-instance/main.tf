@@ -54,7 +54,7 @@ resource "aws_security_group" "sg" {
   from_port   = 3389
   to_port     = 3389
   protocol    = "tcp"
-  cidr_blocks = [var.sg_source_ip]
+  cidr_blocks = var.sg_source_ip
   }
   tags  = {
     Name      = "${var.resource_name_label}_windows-security_group"

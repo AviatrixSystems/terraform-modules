@@ -79,7 +79,7 @@ module "regression-testbed" {
   controller_vpc_cidr         = "<<insert vpc cidr for controller>>"
   controller_subnet_cidr      = "<<insert subnet cidr for controller>>"
   controller_public_key       = "<<insert your public key to access controller>>""
-  controller_sg_source_ip     = "<<insert controller source ip>>"
+  controller_sg_source_ip     = ["<<insert controller source ip>>"]
 
   # Aviatrix controller
   admin_email                 = "<<insert your email>>"
@@ -93,7 +93,7 @@ module "regression-testbed" {
   windows_subnet_cidr         = "<<insert subnet cidr for windows instance>>"
   windows_public_key          = "<<insert public key to access windows instance>>
   windows_ami                 = "<<insert windows ami>>"
-  windows_sg_source_ip        = "<<insert windows instance source ip>>"
+  windows_sg_source_ip        = ["<<insert windows instance source ip>>"]
 }
 ```
 

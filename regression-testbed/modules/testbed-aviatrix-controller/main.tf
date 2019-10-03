@@ -54,7 +54,7 @@ resource "aws_security_group" "sg" {
   from_port   = 22
   to_port     = 22
   protocol    = "tcp"
-  cidr_blocks = ["0.0.0.0/0", var.sg_source_ip]
+  cidr_blocks = distinct(concat(["0.0.0.0/0"], var.sg_source_ip))
   }
   ingress {
   # HTTPS

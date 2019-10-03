@@ -14,8 +14,8 @@ variable "public_key" {
 	description		= "Public key to create a new key pair for the controller."
 }
 variable "sg_source_ip" {
-  type          = string
-  description   = "Source IP that AWS security group will allow for controller."
+  type          = list(string)
+  description   = "Source IPs that AWS security group will allow for controller."
 }
 
 # Controller set up for build
