@@ -1,4 +1,4 @@
-windows## Regression Testbed Terraform
+## Regression Testbed Terraform
 
 ### Description
 
