@@ -1,4 +1,4 @@
-module "regression-testbed" {
+vpc_count_west2module "regression-testbed" {
   source = "<<module path>> ie: ./regression-testbed"
   termination_protection      = <<true/false>>
 	resource_name_label					= "<<input label for all resources>>"
@@ -8,12 +8,12 @@ module "regression-testbed" {
   aws_primary_acct_secret_key = "<<your aws primary secret key>>"
 
   # AWS VPC setup
-  vpc_count                   = <<input number of vpcs to create in each region>>
   vpc_public_key              = "<<your public key to access ubuntu instances>>"
-  pub_hostnum                     = <<input instance private ip hostnum>>
-  pri_hostnum                     = <<input instance private ip hostnum>>
+  pub_hostnum                 = <<input instance private ip hostnum>>
+  pri_hostnum                 = <<input instance private ip hostnum>>
 
   # US West 1
+  vpc_count_west1             = <<input number of vpcs to create in each region>>
   vpc_cidr_west1              = [<<insert cidrs>>]
   pub_subnet1_cidr_west1      = [<<insert cidrs>>]
   pub_subnet2_cidr_west1      = [<<insert cidrs>>]
@@ -22,6 +22,7 @@ module "regression-testbed" {
   ubuntu_ami_west1            = "<<insert ami>>"
 
   # US West 2
+  vpc_count_west2             = <<input number of vpcs to create in each region>>
   vpc_cidr_west2              = [<<insert cidrs>>]
   pub_subnet1_cidr_west2      = [<<insert cidrs>>]
   pub_subnet2_cidr_west2      = [<<insert cidrs>>]
@@ -29,12 +30,15 @@ module "regression-testbed" {
   ubuntu_ami_west2            = "<<insert ami>>"
 
   # US East 1
+  vpc_count_east1             = <<input number of vpcs to create in each region>>
   vpc_cidr_east1              = [<<insert cidrs>>]
   pub_subnet1_cidr_east1      = [<<insert cidrs>>]
   pub_subnet2_cidr_east1      = [<<insert cidrs>>]
   pri_subnet_cidr_east1       = [<<insert cidrs>>]
   ubuntu_ami_east1            = "<<insert ami>>"
 
+  # US East 2
+  vpc_count_east2             = <<input number of vpcs to create in each region>>
   vpc_cidr_east2              = [<<insert cidrs>>]
   pub_subnet1_cidr_east2      = [<<insert cidrs>>]
   pub_subnet2_cidr_east2      = [<<insert cidrs>>]

@@ -1,14 +1,14 @@
 module "regression-testbed" {
   source = "./regression-testbed"
+	termination_protection			= false
+  resource_name_label         = "regression"
+
   # Provider
   aws_primary_acct_access_key = ""
   aws_primary_acct_secret_key = ""
 
-	termination_protection			= false
   # AWS VPC setup
 	# example for 2 vpcs
-  vpc_count                   = 2
-  resource_name_label         = "regression"
   vpc_public_key              = ""
   pub_hostnum                 = 20
   pri_hostnum                 = 30
@@ -17,6 +17,7 @@ module "regression-testbed" {
 	# each variable for the cidr are lists
 	# because vpc_count is set to 2,
 	# make sure there are 2 elements in each list
+  vpc_count_west1             = 2
   vpc_cidr_west1              = ["10.1.0.0/16", "10.2.0.0/16"]
   pub_subnet1_cidr_west1      = ["10.1.1.0/24", "10.2.1.0/24"]
   pub_subnet2_cidr_west1      = ["10.1.10.0/24", "10.2.10.0/24"]
@@ -24,6 +25,7 @@ module "regression-testbed" {
   ubuntu_ami_west1            = "ami-0acfa9d37b413b160"
 
   # US West 2
+  vpc_count_west2             = 2
   vpc_cidr_west2              = ["10.3.0.0/16", "10.4.0.0/16"]
   pub_subnet1_cidr_west2      = ["10.3.1.0/24", "10.4.1.0/24"]
   pub_subnet2_cidr_west2      = ["10.3.10.0/24", "10.4.10.0/24"]
@@ -31,6 +33,7 @@ module "regression-testbed" {
   ubuntu_ami_west2            = "ami-0eaedb5f9e4e556f4"
 
   # US East 1
+  vpc_count_east1             = 2
   vpc_cidr_east1              = ["10.5.0.0/16", "10.6.0.0/16"]
   pub_subnet1_cidr_east1      = ["10.5.1.0/24", "10.6.1.0/24"]
   pub_subnet2_cidr_east1      = ["10.5.10.0/24", "10.6.10.0/24"]
@@ -38,6 +41,7 @@ module "regression-testbed" {
   ubuntu_ami_east1            = "ami-0f40d38d3ce4a1354"
 
   # US East 2
+  vpc_count_east2             = 2
   vpc_cidr_east2              = ["10.7.0.0/16", "10.8.0.0/16"]
   pub_subnet1_cidr_east2      = ["10.7.1.0/24", "10.8.1.0/24"]
   pub_subnet2_cidr_east2      = ["10.7.10.0/24", "10.8.10.0/24"]
