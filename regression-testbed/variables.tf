@@ -1,5 +1,6 @@
 # Variables for Terraform Regression Testbed setup
 
+# Providers
 variable "aws_primary_acct_access_key" {
   type        = string
   description = "AWS primary account's access key."
@@ -8,6 +9,31 @@ variable "aws_primary_acct_secret_key" {
   type        = string
   description = "AWS primary account's secret key."
 }
+variable "cross_aws_acct_access_key" {
+  type        = string
+  description = "Access key of AWS Cross Account."
+}
+variable "cross_aws_acct_secret_key" {
+  type        = string
+  description = "Secret key of AWS Cross Account."
+}
+variable "arm_subscription_id" {
+  type        = string
+  description = "Subscription ID of Azure RM."
+}
+variable "arm_tenant_id" {
+  type        = string
+  description = "Tenant ID of Azure RM."
+}
+variable "arm_client_id" {
+  type        = string
+  description = "Client ID of Azure RM."
+}
+variable "arm_client_secret" {
+  type        = string
+  description = "Client secret of Azure RM."
+}
+
 variable "termination_protection" {
 	type				= bool
 	description = "Whether to enable termination protection for ec2 instances."
@@ -136,14 +162,6 @@ variable "ubuntu_ami_east2" {
 }
 
 # AWS Cross Account
-variable "cross_aws_acct_access_key" {
-  type        = string
-  description = "Access key of AWS Cross Account."
-}
-variable "cross_aws_acct_secret_key" {
-  type        = string
-  description = "Secret key of AWS Cross Account."
-}
 variable "cross_aws_region" {
   type        = string
   description = "Region to launch AWS Cross account vpc."
@@ -171,6 +189,28 @@ variable "pri_subnet_cidr_cross_aws" {
 variable "ubuntu_ami_cross_aws" {
   type        = string
   description = "AMI of the ubuntu instances"
+}
+
+# ARM VNET
+variable "arm_region" {
+  type        = string
+  description = "Region to launch AWS Cross account vpc."
+}
+variable "vnet_count_arm" {
+  type        = number
+  description = "The number of vnets to create in the given arm region."
+}
+variable "vnet_cidr_arm" {
+  type        = list(string)
+  description = "The cidr for a vnet."
+}
+variable "pub_subnet_cidr_arm" {
+  type        = list(string)
+  description = "The cidr for public subnet."
+}
+variable "pri_subnet_cidr_arm" {
+  type        = list(string)
+  description = "The cidr for a private subnet."
 }
 
 # Aviatrix Controller

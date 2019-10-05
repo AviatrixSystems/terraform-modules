@@ -25,9 +25,21 @@ module "regression-testbed" {
   resource_name_label         = ""<<input label for all resources>>"
 
   # Provider
+  # AWS Primary
   aws_primary_acct_access_key = "<<your aws primary access key>>"
   aws_primary_acct_secret_key = "<<your aws primary secret key>>"
 
+  # AWS Cross
+  cross_aws_acct_region       = "<<your region to launch cross aws vpc>>"
+  cross_aws_acct_access_key   = "<<your cross aws access key"
+  cross_aws_acct_secret_key   = "<<your cross aws secret key"
+
+  # ARM
+  arm_subscription_id         = "<<your arm subscription id>>"
+  arm_tenant_id              = "<<your arm tenant id>>"
+  arm_client_id               = "<<your arm client id>>"
+  arm_client_secret           = "<<your arm client secret>>"
+  
   # AWS VPC setup
   vpc_public_key              = "<<your public key to access ubuntu instances>>"
   pub_hostnum                 = <<input instance private ip hostnum>>
@@ -66,13 +78,21 @@ module "regression-testbed" {
   pri_subnet_cidr_east2       = [<<insert cidrs>>]
   ubuntu_ami_east2            = "<<insert ami>>"
 
-  # AWS Cross account
+  # AWS Cross Account
+  cross_aws_region                = "<<region to launch cross aws vpc>>"
   vpc_count_cross_aws             = <<input number of vpcs>>
   vpc_cidr_cross_aws              = [<<insert cidrs>>]
   pub_subnet1_cidr_cross_aws      = [<<insert cidrs>>]
   pub_subnet2_cidr_cross_aws      = [<<insert cidrs>>]
   pri_subnet_cidr_cross_aws       = [<<insert cidrs>>]
   ubuntu_ami_cross_aws            = "<<insert ami>>"
+
+  #ARM VNET
+  arm_region                   = "<<input ARM region>>"
+  vnet_count_arm               = <<input number of vnets>>
+  vnet_cidr_arm                = [<<insert cidrs>>]
+  pub_subnet_cidr_arm          = [<<insert cidrs>>]
+  pri_subnet_cidr_arm          = [<<insert cidrs>>]
 
   # AWS VPC for controller
   controller_region           = "<<insert region to launch controller>>"
@@ -112,6 +132,12 @@ output "us-east-1" {
 }
 output "us-east-2" {
   value = [module.regression-testbed.east2_vpc_info, module.regression-testbed.east2_subnet_info, module.regression-testbed.east2_ubuntu_info]
+}
+output "cross-aws-vpc" {
+  value = [module.regression-testbed.cross_aws_vpc_info, module.regression-testbed.cross_aws_subnet_info, module.regression-testbed.cross_aws_ubuntu_info]
+}
+output "arm-vnet" {
+  value = [module.regression-testbed.arm_vpc_info, module.regression-testbed.arm_subnet_info, module.regression-testbed.arm_ubuntu_info]
 }
 
 # Aviatrix controller
@@ -247,16 +273,18 @@ Number to be used for private ubuntu instance private ip host part. Must be a wh
 - **vpc_count_east1**
 - **vpc_count_east2**
 - **vpc_count_cross_aws**
+- **vnet_count_arm**
 
-The number of vpcs to create in the given AWS region.
+The number of vpcs/vnets to create in the given AWS/ARM region.
 
 - **vpc_cidr_west1**
 - **vpc_cidr_west2**
 - **vpc_cidr_east1**
 - **vpc_cidr_east2**
 - **vpc_cidr_cross_aws**
+- **vnet_cidr_arm**
 
-The cidr of a vpc for a given region. List of strings.
+The cidr of a vpc/vnet for a given region. List of strings.
 
 - **pub_subnet1_cidr_west1**
 - **pub_subnet1_cidr_west2**
@@ -274,11 +302,16 @@ The cidr for public subnet 1 of a given region. List of strings.
 
 The cidr for public subnet 2 of a given region. List of strings.
 
+- **pub_subnet_cidr_arm**
+
+The cidr for a public subnet of a given region. List of strings.
+
 - **pri_subnet_cidr_west1**
 - **pri_subnet_cidr_west2**
 - **pri_subnet_cidr_east1**
 - **pri_subnet_cidr_east2**
 - **pri_subnet_cidr_cross_aws**
+- **pri_subnet_cidr_arm**
 
 The cidr for a private subnet of a given region. List of strings.
 
@@ -301,6 +334,26 @@ Access key for cross aws account.
 - **cross_aws_acct_secret_key**
 
 Secret key for cross aws account.
+
+- **arm_region**
+
+Region to launch arm vnet.
+
+- **arm_subscription_id**
+
+Subscription ID for Azure RM.
+
+- **arm_tenant_id**
+
+Tenant ID for Azure RM.
+
+- **arm_client_id**
+
+Client ID for Azure RM.
+
+- **arm_client_secret**
+
+Client secret for Azure RM.
 
 - **controller_vpc_cidr**
 

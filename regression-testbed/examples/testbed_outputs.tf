@@ -13,6 +13,12 @@ output "us-east-1" {
 output "us-east-2" {
   value = [module.regression-testbed.east2_vpc_info, module.regression-testbed.east2_subnet_info, module.regression-testbed.east2_ubuntu_info]
 }
+output "cross-aws-vpc" {
+  value = [module.regression-testbed.cross_aws_vpc_info, module.regression-testbed.cross_aws_subnet_info, module.regression-testbed.cross_aws_ubuntu_info]
+}
+output "arm-vnet" {
+  value = [module.regression-testbed.arm_vnet_info, module.regression-testbed.arm_subnet_info, module.regression-testbed.arm_ubuntu_info]
+}
 
 # Aviatrix Controller
 output "controller_public_ip" {

@@ -51,9 +51,17 @@ provider "aws" {
 provider "aws" {
 	alias					= "cross_aws_acc"
   version       = "~> 2.7"
-  region        = var.cross_aws_acct_region
+  region        = var.cross_aws_region
   access_key    = var.cross_aws_acct_access_key
   secret_key    = var.cross_aws_acct_secret_key
+}
+
+provider "azurerm" {
+	version = "1.34"
+	subscription_id = var.arm_subscription_id
+	tenant_id 			= var.arm_tenant_id
+	client_id 			= var.arm_client_id
+	client_secret   = var.arm_client_secret
 }
 
 provider "aviatrix" {
@@ -168,7 +176,7 @@ module "windows-instance" {
 module "aws-cross-acct" {
   source                = "./modules/testbed-vpcs"
   providers = {
-    aws = aws.cross_aws_acct
+    aws = aws.cross_aws_acc
   }
   vpc_count             = var.vpc_count_cross_aws
   resource_name_label   = var.resource_name_label
@@ -181,4 +189,17 @@ module "aws-cross-acct" {
   ubuntu_ami            = var.ubuntu_ami_cross_aws
   public_key            = var.vpc_public_key
 	termination_protection = var.termination_protection
+}
+
+module "arm-vnet" {
+	source 								= "./modules/testbed-vnet-arm"
+	region 			 					= var.arm_region
+	vnet_count 						= var.vnet_count_arm
+	resource_name_label 	= var.resource_name_label
+  pub_hostnum						= var.pub_hostnum
+  pri_hostnum           = var.pri_hostnum
+  vnet_cidr             = var.vnet_cidr_arm
+  pub_subnet_cidr       = var.pub_subnet_cidr_arm
+  pri_subnet_cidr       = var.pri_subnet_cidr_arm
+	public_key 						= var.vpc_public_key
 }
