@@ -136,7 +136,7 @@ resource "aws_security_group" "sg" {
 	from_port		= 22
 	to_port			= 22
 	protocol		= "tcp"
-	cidr_blocks = ["0.0.0.0/0", aws_subnet.public_subnet1[count.index].cidr_block]
+	cidr_blocks = ["0.0.0.0/0"]
 	}
 
 	ingress {
@@ -148,14 +148,6 @@ resource "aws_security_group" "sg" {
 	}
 	tags	= {
 		Name			= "${var.resource_name_label}_security-group${count.index}_${data.aws_region.current.name}"
-	}
-
-	egress {
-	# SSH
-	from_port		= 22
-	to_port			= 22
-	protocol		= "tcp"
-	cidr_blocks	= [aws_subnet.private_subnet[count.index].cidr_block]
 	}
 }
 

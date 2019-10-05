@@ -65,7 +65,7 @@ resource "azurerm_subnet" "private_subnet" {
 }
 
 # ARM Network SG
-resource "azurerm_network_security_group" "network_sg1" {
+resource "azurerm_network_security_group" "network_sg" {
 	name								= "${var.resource_name_label}-pub-network-sg"
 	resource_group_name	= azurerm_resource_group.rg.name
 	location						= azurerm_resource_group.rg.location
@@ -87,36 +87,13 @@ resource "azurerm_network_security_group" "network_sg1" {
 	}
 }
 
-resource "azurerm_network_security_group" "network_sg2" {
-	count								= var.vnet_count
-	name								= "${var.resource_name_label}-pri-network-sg${count.index}"
-	resource_group_name	= azurerm_resource_group.rg.name
-	location						= azurerm_resource_group.rg.location
-
-	security_rule {
-    name                       = "AllowSSHInbound"
-    priority                   = 1001
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefix      = azurerm_subnet.public_subnet[count.index].address_prefix
-    destination_address_prefix = "*"
-	}
-
-	tags = {
-		environment	= "${var.resource_name_label}-Testbed"
-	}
-}
-
 # ARM virtual network interface card
 resource "azurerm_network_interface" "network_interface1" {
 	count											= var.vnet_count
 	name											= "${var.resource_name_label}-public-network-interface${count.index}"
 	location									= azurerm_resource_group.rg.location
 	resource_group_name				= azurerm_resource_group.rg.name
-	network_security_group_id	= azurerm_network_security_group.network_sg1.id
+	network_security_group_id	= azurerm_network_security_group.network_sg.id
 
 	ip_configuration {
 		name													= "${var.resource_name_label}-public-instance-ip-config"
@@ -136,7 +113,7 @@ resource "azurerm_network_interface" "network_interface2" {
 	name											= "${var.resource_name_label}-private-network-interface${count.index}"
 	location									= azurerm_resource_group.rg.location
 	resource_group_name				= azurerm_resource_group.rg.name
-	network_security_group_id	= azurerm_network_security_group.network_sg2[count.index].id
+	network_security_group_id	= azurerm_network_security_group.network_sg.id
 
 	ip_configuration {
 		name													= "${var.resource_name_label}-private-instance-ip-config"
