@@ -64,7 +64,7 @@ resource "aws_security_group" "sg" {
 # Launch windows instance
 resource "aws_instance" "instance" {
  ami                     = var.ami
- instance_type           = "t2.medium"
+ instance_type           = "t3.medium"
  disable_api_termination = var.termination_protection
  subnet_id               = aws_subnet.subnet.id
  key_name								 = aws_key_pair.key_pair.key_name
