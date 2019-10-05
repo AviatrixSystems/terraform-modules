@@ -39,9 +39,13 @@ resource "aws_route_table_association" "public_rtb_associate" {
   route_table_id  = aws_route_table.public_rtb.id
 }
 
+resource "random_id" "key_id" {
+	byte_length = 4
+}
+
 # Key pair is used for Aviatrix Controller
 resource "aws_key_pair" "key_pair" {
-  key_name        = "controller_ssh_key"
+  key_name        = "controller_ssh_key-${random_id.key_id.dec}"
   public_key      = var.public_key
 }
 

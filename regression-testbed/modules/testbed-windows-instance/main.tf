@@ -39,9 +39,13 @@ resource "aws_route_table_association" "rtb_associate" {
   route_table_id  = aws_route_table.rtb.id
 }
 
+resource "random_id" "key_id" {
+	byte_length = 4
+}
+
 # Key pair is used for  Windows instance
 resource "aws_key_pair" "key_pair" {
-  key_name        = "windows_ssh_key"
+  key_name        = "windows_ssh_key-${random_id.key_id.dec}"
   public_key      = var.public_key
 }
 

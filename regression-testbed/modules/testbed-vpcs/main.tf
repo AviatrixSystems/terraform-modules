@@ -88,9 +88,13 @@ resource "aws_route_table_association" "private_rtb_associate" {
 	route_table_id  = aws_route_table.private_rtb[count.index].id
 }
 
+resource "random_id" "key_id" {
+	byte_length = 4
+}
+
 # Key pair is used for all ubuntu instances
 resource "aws_key_pair" "key_pair" {
-	key_name				= "testbed_ubuntu_key"
+	key_name				= "testbed_ubuntu_key-${random_id.key_id.dec}"
 	public_key			= var.public_key
 }
 
