@@ -109,12 +109,13 @@ module "regression-testbed" {
 #}
 #module "aviatrix-access-accounts" {
 #  source                = "./regression-testbed/modules/testbed-aviatrix-accounts"
-#  aws_acc_number        = ""
-#  aws_acc_access_key    = ""
-#  aws_acc_secret_key    = ""
+#  cross_aws_acc_number        = ""
+#  cross_aws_acc_access_key    = ""
+#  cross_aws_acc_secret_key    = ""
 #  arm_subscription_id   = ""
 #  arm_directory_id      = ""
 #  arm_application_id    = ""
 #  arm_application_key   = ""
+#  gcp_id                   =
 #  gcp_credentials_filepath = ""
 #}

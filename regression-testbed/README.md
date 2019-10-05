@@ -39,7 +39,7 @@ module "regression-testbed" {
   arm_tenant_id              = "<<your arm tenant id>>"
   arm_client_id               = "<<your arm client id>>"
   arm_client_secret           = "<<your arm client secret>>"
-  
+
   # AWS VPC setup
   vpc_public_key              = "<<your public key to access ubuntu instances>>"
   pub_hostnum                 = <<input instance private ip hostnum>>
@@ -181,13 +181,14 @@ provider "aviatrix" {
 module "aviatrix-access-accounts" {
   # this module is within the regression-terraform modules folder
   source                = "./regression-terraform/modules/testbed-aviatrix-accounts"
-  aws_acc_number        = "<<input aws acc number>>"
-  aws_acc_access_key    = "<<input aws access key>>"
-  aws_acc_secret_key    = "<<input aws secret key>>"
+  cross_aws_acc_number        = "<<input aws acc number>>"
+  cross_aws_acc_access_key    = "<<input aws access key>>"
+  cross_aws_acc_secret_key    = "<<input aws secret key>>"
   arm_subscription_id   = "<<input arm subscription id>>"
   arm_directory_id      = "<<input arm directory id>>"
   arm_application_id    = "<<input application id>>"
   arm_application_key   = "<<input application key>>"
+  gcp_id                = "<<input gcp id>>"
   gcp_credentials_filepath = "<<input gcp cred filepath>>"
 }
 ```

@@ -109,12 +109,13 @@ module "regression-testbed" {
 #module "aviatrix-access-accounts" {
 #  # this module is within the regression-testbed modules folder
 #  source                = "./regression-testbed/modules/testbed-aviatrix-accounts"
-#  aws_acc_number        = "<<input aws acc number>>"
-#  aws_acc_access_key    = "<<input aws access key>>"
-#  aws_acc_secret_key    = "<<input aws secret key>>"
+#  cross_aws_acc_number        = "<<input aws acc number>>"
+#  cross_aws_acc_access_key    = "<<input aws access key>>"
+#  cross_aws_acc_secret_key    = "<<input aws secret key>>"
 #  arm_subscription_id   = "<<input arm subscription id>>"
 #  arm_directory_id      = "<<input arm directory id>>"
 #  arm_application_id    = "<<input application id>>"
 #  arm_application_key   = "<<input application key>>"
+#  gcp_id                   = "<<input gcp id>>"
 #  gcp_credentials_filepath = "<<input gcp cred filepath>>"
 #}
