@@ -21,7 +21,7 @@ output "ubuntu_name" {
 }
 
 output "ubuntu_public_ip" {
-	value	= [azurerm_public_ip.public_ip[*].ip_address]
+	value	= [data.azurerm_public_ip.public_ip[*].ip_address]
 }
 
 output "ubuntu_private_ip" {
