@@ -102,7 +102,7 @@ resource "aws_instance" "public_instance" {
 	# Ubuntu
 	count												= var.vpc_count
 	ami													= var.ubuntu_ami
-	instance_type								= "t3.micro"
+	instance_type								= "t2.micro"
 	disable_api_termination			= var.termination_protection
 	associate_public_ip_address = true
 	subnet_id										= aws_subnet.public_subnet1[count.index].id
@@ -118,7 +118,7 @@ resource "aws_instance" "private_instance" {
 	# Ubuntu
   count                       = var.vpc_count
   ami                         = var.ubuntu_ami
-  instance_type               = "t3.micro"
+  instance_type               = "t2.micro"
 	disable_api_termination     = var.termination_protection
   subnet_id                   = aws_subnet.private_subnet[count.index].id
 	private_ip									= cidrhost(aws_subnet.private_subnet[count.index].cidr_block, var.pri_hostnum)
