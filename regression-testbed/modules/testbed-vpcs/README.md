@@ -12,10 +12,10 @@ module "aws-vpc" {
   resource_name_label	= "<<insert label name>>"
   pub_hostnum		      = "<<insert host number part>>"
   pri_hostnum		      = "<<insert host number part>>"
-  vpc_cidr        	  = "<<insert vpc cidr here> ie: 10.10.0.0/16"
-  pub_subnet1_cidr    = "<<insert subnet cidr ie: 10.10.5.0/24 >"
-  pub_subnet2_cidr    = "<<insert subnet cidr ie: 10.10.5.0/24 >"
-  pri_subnet_cidr     = "<<insert subnet cidr ie: 10.10.5.0/24 >"
+  vpc_cidr        	  = ["<<insert vpc cidr here> ie: 10.10.0.0/16"]
+  pub_subnet1_cidr    = ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
+  pub_subnet2_cidr    = ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
+  pri_subnet_cidr     = ["<<insert subnet cidr ie: 10.10.5.0/24 >"]
   ubuntu_ami		      = "<<insert ami of ubuntu instance>>"
   public_key      	  = "<<insert public key>>"
   termination_protection = <<true/false>>
