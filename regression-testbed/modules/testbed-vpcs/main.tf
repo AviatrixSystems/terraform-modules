@@ -153,6 +153,14 @@ resource "aws_security_group" "sg" {
 	tags	= {
 		Name			= "${var.resource_name_label}_security-group${count.index}_${data.aws_region.current.name}"
 	}
+
+	egress {
+	# Allow all
+	from_port 	= 0
+	to_port 		= 0
+	protocol 		= "-1"
+	cidr_blocks = ["0.0.0.0/0"]
+	}
 }
 
 resource "aws_eip" "eip" {
