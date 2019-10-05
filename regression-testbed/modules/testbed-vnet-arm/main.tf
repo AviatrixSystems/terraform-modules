@@ -214,7 +214,7 @@ resource "azurerm_virtual_machine" "ubuntu_private" {
 		vm_size								= "Standard_B1ls"
 
    storage_os_disk {
-       name              = "${var.resource_name_label}-OsDisk-public-ubuntu${count.index}"
+       name              = "${var.resource_name_label}-OsDisk-private-ubuntu${count.index}"
        caching           = "ReadWrite"
        create_option     = "FromImage"
        managed_disk_type = "Premium_LRS"
