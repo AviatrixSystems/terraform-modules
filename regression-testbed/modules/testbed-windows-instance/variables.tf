@@ -1,5 +1,10 @@
 # Variable declarations for TF Regression Testbed Windows instance setup
 
+variable "deploy_windows" {
+	type 					= bool
+	description   = "Whether to launch windows instance."
+}
+
 variable "vpc_cidr" {
 	type					= string
 	description		= "VPC cidr."

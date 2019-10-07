@@ -164,6 +164,7 @@ module "windows-instance" {
   providers = {
     aws = aws.windows
   }
+	deploy_windows  = var.deploy_windows
   vpc_cidr       	= var.windows_vpc_cidr
   subnet_cidr     = var.windows_subnet_cidr
   public_key      = var.windows_public_key

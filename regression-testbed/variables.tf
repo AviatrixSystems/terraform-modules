@@ -252,6 +252,10 @@ variable "customer_id" {
 }
 
 # Windows instance
+variable "deploy_windows" {
+  type        = bool
+  description = "Whether to launch Windows instance as part of regression testbed."
+}
 variable "windows_region" {
 	type				= string
 	description	= "Region to launch Windows instance."

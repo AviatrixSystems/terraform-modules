@@ -16,6 +16,7 @@ To create a Windows instance:
 ```
 module "windows-instance" {
   source  	= "./modules/testbed-windows-instance"
+  deploy_windows         = <<true/false>>
   resource_name_label    = "<<insert label>>"
   vpc_cidr	  	         = "<<insert cidr>> ie: 10.0.0.0/16"
   subnet_cidr  	         = "<<insert cidr>> ie: 10.0.0.0/24"
@@ -27,6 +28,10 @@ module "windows-instance" {
 ```
 
 ### Variables
+
+- **deploy_windows**
+
+Whether to launch windows instance as part of regression testbed.
 
 - **vpc_cidr**
 

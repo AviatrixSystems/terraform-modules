@@ -108,6 +108,7 @@ module "regression-testbed" {
   customer_id                 = "<<insert your license id>>"
 
   # Windows instance
+  deploy_windows              = <<true/false>>
   windows_region              = "<<insert region to launch windows instance>>"
   windows_vpc_cidr            = "<<insert vpc cidr for windows instance>>"
   windows_subnet_cidr         = "<<insert subnet cidr for windows instance>>"
@@ -387,6 +388,10 @@ Account name for this AWS access account to be used for the Aviatrix controller.
 - **customer_id**
 
 Customer license ID for the Aviatrix controller, if using BYOL controller.
+
+- **deploy_windows**
+
+Whether to launch Windows instance as part of regression testbed.
 
 - **windows_vpc_cidr**
 

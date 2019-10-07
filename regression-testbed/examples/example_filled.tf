@@ -89,6 +89,7 @@ module "regression-testbed" {
 	customer_id                 = ""
 
 	# Windows instance
+  deploy_windows              = true
   windows_region              = "us-east-1"
   windows_vpc_cidr            = "20.5.0.0/16"
   windows_subnet_cidr         = "20.5.1.0/24"
