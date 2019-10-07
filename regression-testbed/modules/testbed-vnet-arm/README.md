@@ -12,6 +12,7 @@ provider "azurerm" {
 
 module "arm-vnet" {
   source          	    = "./modules/testbed-vnet-arm"
+  resource_name_label   = "<<insert label>>" 
   region                = "<<insert arm region>>"
   vnet_count	  	      = <<insert amount of vnets>> ie: 2
   resource_name_label	  = "<<insert label name>>"

@@ -16,11 +16,12 @@ To create a Windows instance:
 ```
 module "windows-instance" {
   source  	= "./modules/testbed-windows-instance"
-  vpc_cidr	  	= "<<insert cidr>> ie: 10.0.0.0/16"
-  subnet_cidr  	= "<<insert cidr>> ie: 10.0.0.0/24"
-  sg_source_ip	= ["<<insert source ip(s) to allow rdp>>]
-  ami	          = "<<insert ami for instance>> ie: ami-0acfa9d37b413b160"
-  public_key 	  = "<<insert public key contents>>"
+  resource_name_label    = "<<insert label>>"
+  vpc_cidr	  	         = "<<insert cidr>> ie: 10.0.0.0/16"
+  subnet_cidr  	         = "<<insert cidr>> ie: 10.0.0.0/24"
+  sg_source_ip	         = ["<<insert source ip(s) to allow rdp>>]
+  ami	                   = "<<insert ami for instance>> ie: ami-0acfa9d37b413b160"
+  public_key 	           = "<<insert public key contents>>"
   termination_protection = <<true/false>>
 }
 ```
