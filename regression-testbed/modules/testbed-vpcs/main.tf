@@ -6,13 +6,15 @@
 #						temination protection enabled
 #						ssh and icmp open to 0.0.0.0/0
 
-data "aws_region" "current" {}
+data "aws_region" "current" {
+	count = var.vpc_count != 0 ? 1 : 0
+}
 
 resource "aws_vpc" "vpc" {
 	count				= var.vpc_count
 	cidr_block	= var.vpc_cidr[count.index]
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -21,7 +23,7 @@ resource "aws_subnet" "public_subnet1" {
 	vpc_id			= aws_vpc.vpc[count.index].id
 	cidr_block	= var.pub_subnet1_cidr[count.index]
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_public1_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_public1_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -30,7 +32,7 @@ resource "aws_subnet" "public_subnet2" {
 	vpc_id			= aws_vpc.vpc[count.index].id
 	cidr_block	=	var.pub_subnet2_cidr[count.index]
 	tags	= {
-		Name			=	"${var.resource_name_label}_vpc${count.index}_public2_${data.aws_region.current.name}"
+		Name			=	"${var.resource_name_label}_vpc${count.index}_public2_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -39,7 +41,7 @@ resource "aws_subnet" "private_subnet" {
 	vpc_id			= aws_vpc.vpc[count.index].id
 	cidr_block	= var.pri_subnet_cidr[count.index]
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_private_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_private_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -47,7 +49,7 @@ resource "aws_internet_gateway" "igw" {
 	count				= var.vpc_count
 	vpc_id			= aws_vpc.vpc[count.index].id
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_igw_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_igw_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -59,7 +61,7 @@ resource "aws_route_table" "public_rtb" {
 		gateway_id	= aws_internet_gateway.igw[count.index].id
 	}
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_public-rtb_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_public-rtb_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -67,7 +69,7 @@ resource "aws_route_table" "private_rtb" {
 	count				= var.vpc_count
 	vpc_id			=	aws_vpc.vpc[count.index].id
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_private-rtb_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_private-rtb_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -89,12 +91,14 @@ resource "aws_route_table_association" "private_rtb_associate" {
 }
 
 resource "random_id" "key_id" {
+	count 			= var.vpc_count != 0 ? 1 : 0
 	byte_length = 4
 }
 
 # Key pair is used for all ubuntu instances
 resource "aws_key_pair" "key_pair" {
-	key_name				= "testbed_ubuntu_key-${random_id.key_id.dec}"
+	count 					= var.vpc_count != 0 ? 1 : 0
+	key_name				= "testbed_ubuntu_key-${random_id.key_id[0].dec}"
 	public_key			= var.public_key
 }
 
@@ -108,9 +112,9 @@ resource "aws_instance" "public_instance" {
 	subnet_id										= aws_subnet.public_subnet1[count.index].id
 	private_ip									= cidrhost(aws_subnet.public_subnet1[count.index].cidr_block, var.pub_hostnum)
 	vpc_security_group_ids			= [aws_security_group.sg[count.index].id]
-	key_name										= aws_key_pair.key_pair.key_name
+	key_name										= aws_key_pair.key_pair[0].key_name
 	tags	= {
-		Name				= "${var.resource_name_label}_public-ubuntu${count.index}_${data.aws_region.current.name}"
+		Name				= "${var.resource_name_label}_public-ubuntu${count.index}_${data.aws_region.current[0].name}"
 	}
 }
 
@@ -123,9 +127,9 @@ resource "aws_instance" "private_instance" {
   subnet_id                   = aws_subnet.private_subnet[count.index].id
 	private_ip									= cidrhost(aws_subnet.private_subnet[count.index].cidr_block, var.pri_hostnum)
 	vpc_security_group_ids			= [aws_security_group.sg[count.index].id]
-	key_name										= aws_key_pair.key_pair.key_name
+	key_name										= aws_key_pair.key_pair[0].key_name
   tags  = {
-    Name        = "${var.resource_name_label}_private-ubuntu${count.index}_${data.aws_region.current.name}"
+    Name        = "${var.resource_name_label}_private-ubuntu${count.index}_${data.aws_region.current[0].name}"
   }
 }
 
@@ -151,7 +155,7 @@ resource "aws_security_group" "sg" {
 	cidr_blocks = ["0.0.0.0/0"]
 	}
 	tags	= {
-		Name			= "${var.resource_name_label}_security-group${count.index}_${data.aws_region.current.name}"
+		Name			= "${var.resource_name_label}_security-group${count.index}_${data.aws_region.current[0].name}"
 	}
 
 	egress {
@@ -168,6 +172,6 @@ resource "aws_eip" "eip" {
 	instance	= aws_instance.public_instance[count.index].id
 	vpc				= true
 	tags	= {
-		Name		= "${var.resource_name_label}_public-instance-eip${count.index}_${data.aws_region.current.name}"
+		Name		= "${var.resource_name_label}_public-instance-eip${count.index}_${data.aws_region.current[0].name}"
 	}
 }
