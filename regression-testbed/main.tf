@@ -147,14 +147,15 @@ module "aviatrix-controller" {
   providers = {
     aws = aws.controller
   }
-  vpc_cidr        = var.controller_vpc_cidr
-  subnet_cidr     = var.controller_subnet_cidr
-  sg_source_ip    = var.controller_sg_source_ip
-  public_key      = var.controller_public_key
-  admin_email     = var.admin_email
-  admin_password  = var.admin_password
-  access_account  = var.access_account
-  customer_id     = var.customer_id
+	deploy_controller 		 = var.deploy_controller
+  vpc_cidr       				 = var.controller_vpc_cidr
+  subnet_cidr    				 = var.controller_subnet_cidr
+  sg_source_ip   				 = var.controller_sg_source_ip
+  public_key     				 = var.controller_public_key
+  admin_email    				 = var.admin_email
+  admin_password 				 = var.admin_password
+  access_account 				 = var.access_account
+  customer_id    				 = var.customer_id
 	termination_protection = var.termination_protection
 	resource_name_label		 = var.resource_name_label
 }

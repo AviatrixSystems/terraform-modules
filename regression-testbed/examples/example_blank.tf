@@ -74,6 +74,7 @@ module "regression-testbed" {
   pri_subnet_cidr_arm          = [<<insert cidrs>>]
 
   # AWS VPC for controller
+  deploy_controller           = <<true/false>>
   controller_region           = "<<insert region to launch controller>>"
   controller_vpc_cidr         = "<<insert vpc cidr for controller>>"
   controller_subnet_cidr      = "<<insert subnet cidr for controller>>"

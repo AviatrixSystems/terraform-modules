@@ -12,6 +12,7 @@ To create an Aviatrix controller:
 ```
 module "aviatrix-controller" {
   source                 = "./modules/testbed-aviatrix-controller"
+  deploy_controller      = <<true/false>>
   resource_name_label    = "<<insert resource_name_label>>"
   vpc_cidr               = "<<insert vpc cidr here>> ie: 10.10.0.0/16"
   subnet_cidr            = "<<insert subnet cidr>> ie: 10.10.5.0/24"
@@ -26,6 +27,10 @@ module "aviatrix-controller" {
 ```
 
 ### Variables
+
+- **deploy_controller**
+
+Whether to launch Aviatrix controller as part of regression testbed.
 
 - **vpc_cidr**
 

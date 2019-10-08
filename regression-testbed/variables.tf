@@ -214,6 +214,10 @@ variable "pri_subnet_cidr_arm" {
 }
 
 # Aviatrix Controller
+variable "deploy_controller" {
+  type        = bool
+  description = "Whether to launch Aviatrix controller as part of the regression testbed."
+}
 variable "controller_region" {
 	type				= string
 	description	= "Region to launch Aviatrix controller."
