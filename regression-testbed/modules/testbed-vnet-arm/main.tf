@@ -2,11 +2,12 @@
 
 # ARM Resource group
 resource "azurerm_resource_group" "rg" {
-	name			= "${var.resource_name_label}-testbed"
+	count 		= var.vnet_count != 0 ? 1 : 0
+	name			= "${var.resource_name_label}-testbed${count.index}"
 	location	= var.region
 
 	tags	= {
-		environment	= "${var.resource_name_label}-Testbed"
+		environment	= "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
@@ -14,20 +15,21 @@ resource "azurerm_resource_group" "rg" {
 resource "azurerm_virtual_network" "vnet" {
 	count								= var.vnet_count
 	name								= "${var.resource_name_label}-vnet${count.index}"
-	resource_group_name	= azurerm_resource_group.rg.name
-	location						= azurerm_resource_group.rg.location
+	resource_group_name	= azurerm_resource_group.rg[count.index].name
+	location						= azurerm_resource_group.rg[count.index].location
 	address_space				= [var.vnet_cidr[count.index]]
 
 	tags	= {
-		environment	= "${var.resource_name_label}-Testbed"
+		environment	= "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
 # ARM Private route table
 resource "azurerm_route_table" "private_rtb" {
+	count 												= var.vnet_count != 0 ? 1 : 0
 	name 													= "${var.resource_name_label}-pri-rtb"
-	location 											= azurerm_resource_group.rg.location
-	resource_group_name         	= azurerm_resource_group.rg.name
+	location 											= azurerm_resource_group.rg[count.index].location
+	resource_group_name         	= azurerm_resource_group.rg[count.index].name
 	disable_bgp_route_propagation	= false
 
 	route {
@@ -37,21 +39,21 @@ resource "azurerm_route_table" "private_rtb" {
 	}
 
 	tags = {
-		environment 	 = "${var.resource_name_label}-Testbed"
+		environment 	 = "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
 resource "azurerm_subnet_route_table_association" "rtb_associate" {
 	count 				 = var.vnet_count
 	subnet_id 		 = azurerm_subnet.private_subnet[count.index].id
-	route_table_id = azurerm_route_table.private_rtb.id
+	route_table_id = azurerm_route_table.private_rtb[count.index].id
 }
 
 # ARM subnet
 resource "azurerm_subnet" "public_subnet" {
 	count									= var.vnet_count
 	name									= "${var.resource_name_label}-pub-subnet${count.index}"
-	resource_group_name		= azurerm_resource_group.rg.name
+	resource_group_name		= azurerm_resource_group.rg[count.index].name
 	virtual_network_name	= azurerm_virtual_network.vnet[count.index].name
 	address_prefix				= var.pub_subnet_cidr[count.index]
 }
@@ -59,16 +61,17 @@ resource "azurerm_subnet" "public_subnet" {
 resource "azurerm_subnet" "private_subnet" {
 	count									= var.vnet_count
 	name									= "${var.resource_name_label}-pri-subnet${count.index}"
-	resource_group_name		= azurerm_resource_group.rg.name
+	resource_group_name		= azurerm_resource_group.rg[count.index].name
 	virtual_network_name	=	azurerm_virtual_network.vnet[count.index].name
 	address_prefix				=	var.pri_subnet_cidr[count.index]
 }
 
 # ARM Network SG
 resource "azurerm_network_security_group" "network_sg" {
+	count 							= var.vnet_count
 	name								= "${var.resource_name_label}-pub-network-sg"
-	resource_group_name	= azurerm_resource_group.rg.name
-	location						= azurerm_resource_group.rg.location
+	resource_group_name	= azurerm_resource_group.rg[count.index].name
+	location						= azurerm_resource_group.rg[count.index].location
 
 	security_rule {
     name                       = "AllowSSHInbound"
@@ -83,7 +86,7 @@ resource "azurerm_network_security_group" "network_sg" {
 	}
 
 	tags = {
-		environment	= "${var.resource_name_label}-Testbed"
+		environment	= "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
@@ -91,9 +94,9 @@ resource "azurerm_network_security_group" "network_sg" {
 resource "azurerm_network_interface" "network_interface1" {
 	count											= var.vnet_count
 	name											= "${var.resource_name_label}-public-network-interface${count.index}"
-	location									= azurerm_resource_group.rg.location
-	resource_group_name				= azurerm_resource_group.rg.name
-	network_security_group_id	= azurerm_network_security_group.network_sg.id
+	location									= azurerm_resource_group.rg[count.index].location
+	resource_group_name				= azurerm_resource_group.rg[count.index].name
+	network_security_group_id	= azurerm_network_security_group.network_sg[count.index].id
 
 	ip_configuration {
 		name													= "${var.resource_name_label}-public-instance-ip-config"
@@ -104,16 +107,16 @@ resource "azurerm_network_interface" "network_interface1" {
 	}
 
 	tags = {
-		environment	= "${var.resource_name_label}-Testbed"
+		environment	= "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
 resource "azurerm_network_interface" "network_interface2" {
 	count											= var.vnet_count
 	name											= "${var.resource_name_label}-private-network-interface${count.index}"
-	location									= azurerm_resource_group.rg.location
-	resource_group_name				= azurerm_resource_group.rg.name
-	network_security_group_id	= azurerm_network_security_group.network_sg.id
+	location									= azurerm_resource_group.rg[count.index].location
+	resource_group_name				= azurerm_resource_group.rg[count.index].name
+	network_security_group_id	= azurerm_network_security_group.network_sg[count.index].id
 
 	ip_configuration {
 		name													= "${var.resource_name_label}-private-instance-ip-config"
@@ -123,7 +126,7 @@ resource "azurerm_network_interface" "network_interface2" {
 	}
 
 	tags = {
-		environment	= "${var.resource_name_label}-Testbed"
+		environment	= "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
@@ -131,27 +134,27 @@ resource "azurerm_network_interface" "network_interface2" {
 resource "azurerm_public_ip" "public_ip" {
 	count								= var.vnet_count
 	name								= "${var.resource_name_label}-public-ip${count.index}"
-	location						= azurerm_resource_group.rg.location
-	resource_group_name	= azurerm_resource_group.rg.name
+	location						= azurerm_resource_group.rg[count.index].location
+	resource_group_name	= azurerm_resource_group.rg[count.index].name
 	allocation_method		= "Dynamic"
 
 	tags	= {
-		environment	= "${var.resource_name_label}-Testbed"
+		environment	= "${var.resource_name_label}-Testbed-${count.index}"
 	}
 }
 
 data "azurerm_public_ip" "public_ip" {
 	count 							= var.vnet_count
 	name 								= azurerm_public_ip.public_ip[count.index].name
-	resource_group_name = azurerm_resource_group.rg.name
+	resource_group_name = azurerm_resource_group.rg[count.index].name
 }
 
 # ARM public instance
 resource "azurerm_virtual_machine" "ubuntu_public" {
 		count									= var.vnet_count
     name                  = "${var.resource_name_label}-ubuntu-public${count.index}"
-    location              = azurerm_resource_group.rg.location
-    resource_group_name   = azurerm_resource_group.rg.name
+    location              = azurerm_resource_group.rg[count.index].location
+    resource_group_name   = azurerm_resource_group.rg[count.index].name
     network_interface_ids = [azurerm_network_interface.network_interface1[count.index].id]
     vm_size               = "Standard_B1ls"
 
@@ -183,7 +186,7 @@ resource "azurerm_virtual_machine" "ubuntu_public" {
     }
 
     tags = {
-        environment = "${var.resource_name_label}-Testbed"
+        environment = "${var.resource_name_label}-Testbed-${count.index}"
     }
 }
 
@@ -191,8 +194,8 @@ resource "azurerm_virtual_machine" "ubuntu_public" {
 resource "azurerm_virtual_machine" "ubuntu_private" {
 		count									= var.vnet_count
 		name									= "${var.resource_name_label}-ubuntu-private${count.index}"
-		location							=	azurerm_resource_group.rg.location
-		resource_group_name		= azurerm_resource_group.rg.name
+		location							=	azurerm_resource_group.rg[count.index].location
+		resource_group_name		= azurerm_resource_group.rg[count.index].name
 		network_interface_ids	= [azurerm_network_interface.network_interface2[count.index].id]
 		vm_size								= "Standard_B1ls"
 
@@ -224,6 +227,6 @@ resource "azurerm_virtual_machine" "ubuntu_private" {
    }
 
    tags = {
-       environment = "${var.resource_name_label}-Testbed"
+       environment = "${var.resource_name_label}-Testbed-${count.index}"
    }
 }
