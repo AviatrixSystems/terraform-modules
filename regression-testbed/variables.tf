@@ -1,14 +1,39 @@
 # Variables for Terraform Regression Testbed setup
 
+# Providers
 variable "aws_primary_acct_access_key" {
   type        = string
   description = "AWS primary account's access key."
 }
-
 variable "aws_primary_acct_secret_key" {
   type        = string
   description = "AWS primary account's secret key."
 }
+variable "cross_aws_acct_access_key" {
+  type        = string
+  description = "Access key of AWS Cross Account."
+}
+variable "cross_aws_acct_secret_key" {
+  type        = string
+  description = "Secret key of AWS Cross Account."
+}
+variable "arm_subscription_id" {
+  type        = string
+  description = "Subscription ID of Azure RM."
+}
+variable "arm_tenant_id" {
+  type        = string
+  description = "Tenant ID of Azure RM."
+}
+variable "arm_client_id" {
+  type        = string
+  description = "Client ID of Azure RM."
+}
+variable "arm_client_secret" {
+  type        = string
+  description = "Client secret of Azure RM."
+}
+
 variable "termination_protection" {
 	type				= bool
 	description = "Whether to enable termination protection for ec2 instances."
@@ -136,7 +161,63 @@ variable "ubuntu_ami_east2" {
   description = "AMI of the ubuntu instances"
 }
 
+# AWS Cross Account
+variable "cross_aws_region" {
+  type        = string
+  description = "Region to launch AWS Cross account vpc."
+}
+variable "vpc_count_cross_aws" {
+  type        = number
+  description = "The number of vpcs to create in the given aws region."
+}
+variable "vpc_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for a vpc."
+}
+variable "pub_subnet1_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for public subnet 1."
+}
+variable "pub_subnet2_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for public subnet 2."
+}
+variable "pri_subnet_cidr_cross_aws" {
+  type        = list(string)
+  description = "The cidr for a private subnet."
+}
+variable "ubuntu_ami_cross_aws" {
+  type        = string
+  description = "AMI of the ubuntu instances"
+}
+
+# ARM VNET
+variable "arm_region" {
+  type        = string
+  description = "Region to launch AWS Cross account vpc."
+}
+variable "vnet_count_arm" {
+  type        = number
+  description = "The number of vnets to create in the given arm region."
+}
+variable "vnet_cidr_arm" {
+  type        = list(string)
+  description = "The cidr for a vnet."
+}
+variable "pub_subnet_cidr_arm" {
+  type        = list(string)
+  description = "The cidr for public subnet."
+}
+variable "pri_subnet_cidr_arm" {
+  type        = list(string)
+  description = "The cidr for a private subnet."
+}
+
 # Aviatrix Controller
+variable "deploy_controller" {
+  type        = bool
+  description = "Whether to launch Aviatrix controller as part of the regression testbed."
+}
 variable "controller_region" {
 	type				= string
 	description	= "Region to launch Aviatrix controller."
@@ -154,8 +235,8 @@ variable "controller_public_key" {
   description   = "Public key to create a new key pair for the controller."
 }
 variable "controller_sg_source_ip" {
-  type          = string
-  description   = "Source IP that AWS security group will allow for controller."
+  type          = list(string)
+  description   = "Source IP's that AWS security group will allow for controller."
 }
 variable "admin_email" {
   type          = string
@@ -175,6 +256,10 @@ variable "customer_id" {
 }
 
 # Windows instance
+variable "deploy_windows" {
+  type        = bool
+  description = "Whether to launch Windows instance as part of regression testbed."
+}
 variable "windows_region" {
 	type				= string
 	description	= "Region to launch Windows instance."
@@ -192,8 +277,8 @@ variable "windows_public_key" {
   description   = "Public key to create a new key pair for the Windows instance."
 }
 variable "windows_sg_source_ip" {
-  type          = string
-  description   = "Source IP that Windows instance security group will allow."
+  type          = list(string)
+  description   = "Source IP's that Windows instance security group will allow."
 }
 variable "windows_ami" {
   type          = string

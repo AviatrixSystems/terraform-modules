@@ -12,32 +12,32 @@ Aviatrix Controller
 To create Aviatrix access accounts for GCP, ARM, and AWS
 ```
 module "aviatrix-access-accounts" {
-  source                = "./modules/testbed-aviatrix-accounts"
-  aws_acc_number	= "<<insert aws acc number>>"
-  aws_acc_access_key	= "<<insert access key>>"
-  aws_acc_secret_key	= "<<insert secret key>>"
-  arm_subscription_id	= "<<insert subscription id>>"
-  arm_directory_id	= "<<insert directory id>>"
-  arm_application_id	= "<<insert application id>>"
-  arm_application_key	= "<<insert application key>"
-  gcp_id		= "<<insert gcp id>>"
-  gcp_credentials_filepath = "<<insert gcp credentials filepath>>"
+  source                    = "./modules/testbed-aviatrix-accounts"
+  cross_aws_acc_number	    = "<<insert aws acc number>>"
+  cross_aws_acc_access_key	= "<<insert access key>>"
+  cross_aws_acc_secret_key	= "<<insert secret key>>"
+  arm_subscription_id	      = "<<insert subscription id>>"
+  arm_directory_id	        = "<<insert directory id>>"
+  arm_application_id	      = "<<insert application id>>"
+  arm_application_key	      = "<<insert application key>"
+  gcp_id                    = "<<insert gcp id>>"
+  gcp_credentials_filepath  = "<<insert gcp credentials filepath>>"
 }
 ```
 
 ### Variables
 
-- **aws_acc_number**
+- **cross_aws_acc_number**
 
-AWS Account number.
+Cross AWS Account number.
 
-- **aws_acc_access_key**
+- **cross_aws_acc_access_key**
 
-AWS access key.
+Cross AWS access key.
 
-- **aws_acc_secret_key**
+- **cross_aws_acc_secret_key**
 
-AWS secret key.
+Cross AWS secret key.
 
 - **arm_subscription_id**
 
@@ -57,7 +57,7 @@ ARM application key.
 
 - **gcp_id**
 
-GCP id.
+GCloud Project ID.
 
 - **gcp_credentials_filepath**
 

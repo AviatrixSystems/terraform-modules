@@ -11,20 +11,26 @@ IAM Roles created.
 To create an Aviatrix controller:
 ```
 module "aviatrix-controller" {
-  source          = "./modules/testbed-aviatrix-controller"
-  vpc_cidr        = "<<insert vpc cidr here>> ie: 10.10.0.0/16"
-  subnet_cidr     = "<<insert subnet cidr>> ie: 10.10.5.0/24"
-  sg_source_ip    = "<<insert source ip to allow ssh and https>> ie: 10.10.5.0"
-  public_key      = "<<insert public key contents>>"
-  admin_email     = "<<insert admin email>> ie: user@aviatrix.com"
-  admin_password  = "<<insert admin password>> ie: aviatrix123!"
-  access_account  = "<<insert access account name>> ie: regression-admin"
-  customer_id     = "<<insert customer license id>> ie: user-12345678910.12"
+  source                 = "./modules/testbed-aviatrix-controller"
+  deploy_controller      = <<true/false>>
+  resource_name_label    = "<<insert resource_name_label>>"
+  vpc_cidr               = "<<insert vpc cidr here>> ie: 10.10.0.0/16"
+  subnet_cidr            = "<<insert subnet cidr>> ie: 10.10.5.0/24"
+  sg_source_ip           = ["<<insert source ip to allow ssh and https>>"]
+  public_key             = "<<insert public key contents>>"
+  admin_email            = "<<insert admin email>> ie: user@aviatrix.com"
+  admin_password         = "<<insert admin password>> ie: aviatrix123!"
+  access_account         = "<<insert access account name>> ie: regression-admin"
+  customer_id            = "<<insert customer license id>> ie: user-12345678910.12"
   termination_protection = <<true/false>>
 }
 ```
 
 ### Variables
+
+- **deploy_controller**
+
+Whether to launch Aviatrix controller as part of regression testbed.
 
 - **vpc_cidr**
 
@@ -36,7 +42,7 @@ Public subnet cidr to launch Aviatrix controller in.
 
 - **sg_source_ip**
 
-Source IP that Aviatrix controller will allow ssh for.
+Source IP's that Aviatrix controller will allow ssh and https for.
 
 - **public_key**
 

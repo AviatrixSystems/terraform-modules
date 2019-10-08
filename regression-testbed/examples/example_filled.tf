@@ -4,8 +4,19 @@ module "regression-testbed" {
   resource_name_label         = "regression"
 
   # Provider
+  # AWS Primary
   aws_primary_acct_access_key = ""
   aws_primary_acct_secret_key = ""
+
+  # AWS Cross
+  cross_aws_acct_access_key   = ""
+  cross_aws_acct_secret_key   = ""
+
+  # ARM
+  arm_subscription_id         = ""
+  arm_tenant_id              = ""
+  arm_client_id               = ""
+  arm_client_secret           = ""
 
   # AWS VPC setup
 	# example for 2 vpcs
@@ -48,7 +59,24 @@ module "regression-testbed" {
   pri_subnet_cidr_east2       = ["10.7.2.0/24", "10.8.2.0/24"]
   ubuntu_ami_east2            = "ami-09f0299359c12ab7c"
 
+  # AWS Cross Account
+  cross_aws_region            = "us-east-2"
+  vpc_count_cross_aws         = 2
+  vpc_cidr_cross_aws          = ["10.9.0.0/16", "10.10.0.0/16"]
+  pub_subnet1_cidr_cross_aws  = ["10.9.0.0/24", "10.10.3.0/24"]
+  pub_subnet2_cidr_cross_aws  = ["10.9.1.0/24", "10.10.4.0/24"]
+  pri_subnet_cidr_cross_aws   = ["10.9.2.0/24", "10.10.5.0/24"]
+  ubuntu_ami_cross_aws        = "ami-09f0299359c12ab7c"
+
+  # ARM VNET
+  arm_region                  = "East US"
+  vnet_count_arm              = 2
+  vnet_cidr_arm               = ["10.20.0.0/16", "10.30.0.0/16"]
+  pub_subnet_cidr_arm         = ["10.20.1.0/24", "10.30.3.0/24"]
+  pri_subnet_cidr_arm         = ["10.20.2.0/24", "10.30.4.0/24"]
+
 	# AWS VPC for controller
+  deploy_controller           = <<true/false>>
 	controller_region           = "us-west-1"
 	controller_vpc_cidr         = "10.22.0.0/16"
 	controller_subnet_cidr			= "10.22.23.0/24"
@@ -62,13 +90,14 @@ module "regression-testbed" {
 	customer_id                 = ""
 
 	# Windows instance
+  deploy_windows              = true
   windows_region              = "us-east-1"
   windows_vpc_cidr            = "20.5.0.0/16"
   windows_subnet_cidr         = "20.5.1.0/24"
   windows_public_key          = ""
   windows_ami                 = "ami-0069635df219ce9e5"
 	windows_sg_source_ip        = "0.0.0.0/0"
-}
+
 
 ## Leave following provider/module commented before initial terraform apply
 ## After successful terraform apply, uncomment:
@@ -82,12 +111,13 @@ module "regression-testbed" {
 #}
 #module "aviatrix-access-accounts" {
 #  source                = "./regression-testbed/modules/testbed-aviatrix-accounts"
-#  aws_acc_number        = ""
-#  aws_acc_access_key    = ""
-#  aws_acc_secret_key    = ""
+#  cross_aws_acc_number        = ""
+#  cross_aws_acc_access_key    = ""
+#  cross_aws_acc_secret_key    = ""
 #  arm_subscription_id   = ""
 #  arm_directory_id      = ""
 #  arm_application_id    = ""
 #  arm_application_key   = ""
+#  gcp_id                   =
 #  gcp_credentials_filepath = ""
 #}

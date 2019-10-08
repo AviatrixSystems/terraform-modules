@@ -1,5 +1,10 @@
 # Variable declarations for TF Regression Testbed Windows instance setup
 
+variable "deploy_windows" {
+	type 					= bool
+	description   = "Whether to launch windows instance."
+}
+
 variable "vpc_cidr" {
 	type					= string
 	description		= "VPC cidr."
@@ -11,8 +16,8 @@ variable "subnet_cidr" {
 }
 
 variable "sg_source_ip" {
-  type          = string
-  description   = "Source IP that Windows instance security group will allow."
+  type          = list(string)
+  description   = "Source IPs that Windows instance security group will allow."
 }
 
 variable "ami" {

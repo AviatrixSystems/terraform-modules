@@ -48,6 +48,22 @@ provider "aws" {
   secret_key    = var.aws_primary_acct_secret_key
 }
 
+provider "aws" {
+	alias					= "cross_aws_acc"
+  version       = "~> 2.7"
+  region        = var.cross_aws_region
+  access_key    = var.cross_aws_acct_access_key
+  secret_key    = var.cross_aws_acct_secret_key
+}
+
+provider "azurerm" {
+	version = "1.34"
+	subscription_id = var.arm_subscription_id
+	tenant_id 			= var.arm_tenant_id
+	client_id 			= var.arm_client_id
+	client_secret   = var.arm_client_secret
+}
+
 provider "aviatrix" {
   username      = "admin"
   password      = module.aviatrix-controller.private_ip
@@ -131,14 +147,15 @@ module "aviatrix-controller" {
   providers = {
     aws = aws.controller
   }
-  vpc_cidr        = var.controller_vpc_cidr
-  subnet_cidr     = var.controller_subnet_cidr
-  sg_source_ip    = var.controller_sg_source_ip
-  public_key      = var.controller_public_key
-  admin_email     = var.admin_email
-  admin_password  = var.admin_password
-  access_account  = var.access_account
-  customer_id     = var.customer_id
+	deploy_controller 		 = var.deploy_controller
+  vpc_cidr       				 = var.controller_vpc_cidr
+  subnet_cidr    				 = var.controller_subnet_cidr
+  sg_source_ip   				 = var.controller_sg_source_ip
+  public_key     				 = var.controller_public_key
+  admin_email    				 = var.admin_email
+  admin_password 				 = var.admin_password
+  access_account 				 = var.access_account
+  customer_id    				 = var.customer_id
 	termination_protection = var.termination_protection
 	resource_name_label		 = var.resource_name_label
 }
@@ -148,6 +165,7 @@ module "windows-instance" {
   providers = {
     aws = aws.windows
   }
+	deploy_windows  = var.deploy_windows
   vpc_cidr       	= var.windows_vpc_cidr
   subnet_cidr     = var.windows_subnet_cidr
   public_key      = var.windows_public_key
@@ -155,4 +173,35 @@ module "windows-instance" {
   ami   					= var.windows_ami
   termination_protection = var.termination_protection
 	resource_name_label		 = var.resource_name_label
+}
+
+module "aws-cross-acct" {
+  source                = "./modules/testbed-vpcs"
+  providers = {
+    aws = aws.cross_aws_acc
+  }
+  vpc_count             = var.vpc_count_cross_aws
+  resource_name_label   = var.resource_name_label
+	pub_hostnum						= var.pub_hostnum
+  pri_hostnum           = var.pri_hostnum
+  vpc_cidr              = var.vpc_cidr_cross_aws
+  pub_subnet1_cidr      = var.pub_subnet1_cidr_cross_aws
+  pub_subnet2_cidr      = var.pub_subnet2_cidr_cross_aws
+  pri_subnet_cidr       = var.pri_subnet_cidr_cross_aws
+  ubuntu_ami            = var.ubuntu_ami_cross_aws
+  public_key            = var.vpc_public_key
+	termination_protection = var.termination_protection
+}
+
+module "arm-vnet" {
+	source 								= "./modules/testbed-vnet-arm"
+	region 			 					= var.arm_region
+	vnet_count 						= var.vnet_count_arm
+	resource_name_label 	= var.resource_name_label
+  pub_hostnum						= var.pub_hostnum
+  pri_hostnum           = var.pri_hostnum
+  vnet_cidr             = var.vnet_cidr_arm
+  pub_subnet_cidr       = var.pub_subnet_cidr_arm
+  pri_subnet_cidr       = var.pri_subnet_cidr_arm
+	public_key 						= var.vpc_public_key
 }

@@ -1,16 +1,16 @@
 # Variable declarations for TF Regression Testbed Aviatrix access account setup
 
-variable "aws_acc_number" {
+variable "cross_aws_acc_number" {
   type          = string
-  description   = "AWS Account number."
+  description   = "Cross AWS Account number."
 }
-variable "aws_acc_access_key" {
+variable "cross_aws_acc_access_key" {
   type          = string
-  description   = "AWS access key."
+  description   = "Cross AWS access key."
 }
-variable "aws_acc_secret_key" {
+variable "cross_aws_acc_secret_key" {
   type          = string
-  description   = "AWS secret key."
+  description   = "Cross AWS secret key."
 }
 
 variable "arm_subscription_id" {
@@ -29,7 +29,12 @@ variable "arm_application_key" {
   type          = string
   description   = "ARM application key."
 }
+
+variable "gcp_id" {
+  type          = string
+  description   = "GCloud Project ID."
+}
 variable "gcp_credentials_filepath" {
   type          = string
-  description   = "GCP credentials filepath in local machine."
+  description   = "GCloud Project credentials filepath in local machine."
 }

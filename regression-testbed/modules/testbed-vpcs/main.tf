@@ -88,9 +88,13 @@ resource "aws_route_table_association" "private_rtb_associate" {
 	route_table_id  = aws_route_table.private_rtb[count.index].id
 }
 
+resource "random_id" "key_id" {
+	byte_length = 4
+}
+
 # Key pair is used for all ubuntu instances
 resource "aws_key_pair" "key_pair" {
-	key_name				= "testbed_ubuntu_key"
+	key_name				= "testbed_ubuntu_key-${random_id.key_id.dec}"
 	public_key			= var.public_key
 }
 
@@ -98,7 +102,7 @@ resource "aws_instance" "public_instance" {
 	# Ubuntu
 	count												= var.vpc_count
 	ami													= var.ubuntu_ami
-	instance_type								= "t3.micro"
+	instance_type								= "t2.micro"
 	disable_api_termination			= var.termination_protection
 	associate_public_ip_address = true
 	subnet_id										= aws_subnet.public_subnet1[count.index].id
@@ -114,7 +118,7 @@ resource "aws_instance" "private_instance" {
 	# Ubuntu
   count                       = var.vpc_count
   ami                         = var.ubuntu_ami
-  instance_type               = "t3.micro"
+  instance_type               = "t2.micro"
 	disable_api_termination     = var.termination_protection
   subnet_id                   = aws_subnet.private_subnet[count.index].id
 	private_ip									= cidrhost(aws_subnet.private_subnet[count.index].cidr_block, var.pri_hostnum)
@@ -136,7 +140,7 @@ resource "aws_security_group" "sg" {
 	from_port		= 22
 	to_port			= 22
 	protocol		= "tcp"
-	cidr_blocks = ["0.0.0.0/0", aws_subnet.public_subnet1[count.index].cidr_block]
+	cidr_blocks = ["0.0.0.0/0"]
 	}
 
 	ingress {
@@ -151,11 +155,11 @@ resource "aws_security_group" "sg" {
 	}
 
 	egress {
-	# SSH
-	from_port		= 22
-	to_port			= 22
-	protocol		= "tcp"
-	cidr_blocks	= [aws_subnet.private_subnet[count.index].cidr_block]
+	# Allow all
+	from_port 	= 0
+	to_port 		= 0
+	protocol 		= "-1"
+	cidr_blocks = ["0.0.0.0/0"]
 	}
 }
 

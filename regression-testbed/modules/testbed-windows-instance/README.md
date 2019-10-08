@@ -16,16 +16,22 @@ To create a Windows instance:
 ```
 module "windows-instance" {
   source  	= "./modules/testbed-windows-instance"
-  vpc_cidr	  	= "<<insert cidr>> ie: 10.0.0.0/16"
-  subnet_cidr  	= "<<insert cidr>> ie: 10.0.0.0/24"
-  sg_source_ip	= "<<insert source ip to allow rdp>> ie: 10.10.1.0"
-  ami	          = "<<insert ami for instance>> ie: ami-0acfa9d37b413b160"
-  public_key 	  = "<<insert public key contents>>"
+  deploy_windows         = <<true/false>>
+  resource_name_label    = "<<insert label>>"
+  vpc_cidr	  	         = "<<insert cidr>> ie: 10.0.0.0/16"
+  subnet_cidr  	         = "<<insert cidr>> ie: 10.0.0.0/24"
+  sg_source_ip	         = ["<<insert source ip(s) to allow rdp>>]
+  ami	                   = "<<insert ami for instance>> ie: ami-0acfa9d37b413b160"
+  public_key 	           = "<<insert public key contents>>"
   termination_protection = <<true/false>>
 }
 ```
 
 ### Variables
+
+- **deploy_windows**
+
+Whether to launch windows instance as part of regression testbed.
 
 - **vpc_cidr**
 
@@ -41,7 +47,7 @@ Public key to create a new key pair for the controller.
 
 - **sg_source_ip**
 
-Source IP that Windows instance security group will allow for ingress RDP rule.
+Source IP's that Windows instance security group will allow for ingress RDP rule.
 
 - **ami**
 
