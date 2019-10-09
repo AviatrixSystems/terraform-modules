@@ -51,7 +51,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_west1      = [<<insert cidrs>>]
   pub_subnet2_cidr_west1      = [<<insert cidrs>>]
   pri_subnet_cidr_west1       = [<<insert cidrs>>]
-  pri_subnet_cidr_west1       = [<<insert cidrs>>]
+  pub_subnet1_az_west1        = [<<insert az's>>]
+  pub_subnet2_az_west1        = [<<insert az's>>]
+  pri_subnet_az_west1         = [<<insert az's>>]
   ubuntu_ami_west1            = "<<insert ami>>"
 
   # US West 2
@@ -60,6 +62,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_west2      = [<<insert cidrs>>]
   pub_subnet2_cidr_west2      = [<<insert cidrs>>]
   pri_subnet_cidr_west2       = [<<insert cidrs>>]
+  pub_subnet1_az_west2        = [<<insert az's>>]
+  pub_subnet2_az_west2        = [<<insert az's>>]
+  pri_subnet_az_west2         = [<<insert az's>>]
   ubuntu_ami_west2            = "<<insert ami>>"
 
   # US East 1
@@ -68,6 +73,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_east1      = [<<insert cidrs>>]
   pub_subnet2_cidr_east1      = [<<insert cidrs>>]
   pri_subnet_cidr_east1       = [<<insert cidrs>>]
+  pub_subnet1_az_east1        = [<<insert az's>>]
+  pub_subnet2_az_east1        = [<<insert az's>>]
+  pri_subnet_az_east1         = [<<insert az's>>]
   ubuntu_ami_east1            = "<<insert ami>>"
 
   # US East 2
@@ -76,6 +84,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_east2      = [<<insert cidrs>>]
   pub_subnet2_cidr_east2      = [<<insert cidrs>>]
   pri_subnet_cidr_east2       = [<<insert cidrs>>]
+  pub_subnet1_az_east2        = [<<insert az's>>]
+  pub_subnet2_az_east2        = [<<insert az's>>]
+  pri_subnet_az_east2         = [<<insert az's>>]
   ubuntu_ami_east2            = "<<insert ami>>"
 
   # AWS Cross Account
@@ -85,6 +96,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_cross_aws      = [<<insert cidrs>>]
   pub_subnet2_cidr_cross_aws      = [<<insert cidrs>>]
   pri_subnet_cidr_cross_aws       = [<<insert cidrs>>]
+  pub_subnet1_az_cross_aws        = [<<insert az's>>]
+  pub_subnet2_az_cross_aws        = [<<insert az's>>]
+  pri_subnet_az_cross_aws         = [<<insert az's>>]
   ubuntu_ami_cross_aws            = "<<insert ami>>"
 
   #ARM VNET
@@ -317,6 +331,31 @@ The cidr for a public subnet of a given region. List of strings.
 - **pri_subnet_cidr_arm**
 
 The cidr for a private subnet of a given region. List of strings.
+
+- **pub_subnet1_az_west1**
+- **pub_subnet1_az_west2**
+- **pub_subnet1_az_east1**
+- **pub_subnet1_az_east2**
+- **pub_subnet1_az_cross_aws**
+
+The availability zone for public subnet 1 of a given region. List of strings.
+
+- **pub_subnet2_az_west1**
+- **pub_subnet2_az_west2**
+- **pub_subnet2_az_east1**
+- **pub_subnet2_az_east2**
+- **pub_subnet2_az_cross_aws**
+
+The availability zone for public subnet 2 of a given region. List of strings.
+
+- **pri_subnet_az_west1**
+- **pri_subnet_az_west2**
+- **pri_subnet_az_east1**
+- **pri_subnet_az_east2**
+- **pri_subnet_az_cross_aws**
+- **pri_subnet_az_arm**
+
+The availability zone for a private subnet of a given region. List of strings.
 
 - **ubuntu_ami_west1**
 - **ubuntu_ami_west2**

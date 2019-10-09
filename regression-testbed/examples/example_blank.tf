@@ -31,6 +31,9 @@ module "regression-testbed" {
   pub_subnet2_cidr_west1      = [<<insert cidrs>>]
   pri_subnet_cidr_west1       = [<<insert cidrs>>]
   pri_subnet_cidr_west1       = [<<insert cidrs>>]
+  pub_subnet1_az_west1        = [<<insert az's>>]
+  pub_subnet2_az_west1        = [<<insert az's>>]
+  pri_subnet_az_west1         = [<<insert az's>>]
   ubuntu_ami_west1            = "<<insert ami>>"
 
   # US West 2
@@ -39,6 +42,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_west2      = [<<insert cidrs>>]
   pub_subnet2_cidr_west2      = [<<insert cidrs>>]
   pri_subnet_cidr_west2       = [<<insert cidrs>>]
+  pub_subnet1_az_west2        = [<<insert az's>>]
+  pub_subnet2_az_west2        = [<<insert az's>>]
+  pri_subnet_az_west2         = [<<insert az's>>]
   ubuntu_ami_west2            = "<<insert ami>>"
 
   # US East 1
@@ -47,6 +53,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_east1      = [<<insert cidrs>>]
   pub_subnet2_cidr_east1      = [<<insert cidrs>>]
   pri_subnet_cidr_east1       = [<<insert cidrs>>]
+  pub_subnet1_az_east1        = [<<insert az's>>]
+  pub_subnet2_az_east1        = [<<insert az's>>]
+  pri_subnet_az_east1         = [<<insert az's>>]
   ubuntu_ami_east1            = "<<insert ami>>"
 
   # US East 2
@@ -55,6 +64,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_east2      = [<<insert cidrs>>]
   pub_subnet2_cidr_east2      = [<<insert cidrs>>]
   pri_subnet_cidr_east2       = [<<insert cidrs>>]
+  pub_subnet1_az_east2        = [<<insert az's>>]
+  pub_subnet2_az_east2        = [<<insert az's>>]
+  pri_subnet_az_east2         = [<<insert az's>>]
   ubuntu_ami_east2            = "<<insert ami>>"
 
   # AWS Cross Account
@@ -64,6 +76,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_cross_aws      = [<<insert cidrs>>]
   pub_subnet2_cidr_cross_aws      = [<<insert cidrs>>]
   pri_subnet_cidr_cross_aws       = [<<insert cidrs>>]
+  pub_subnet1_az_cross_aws        = [<<insert az's>>]
+  pub_subnet2_az_cross_aws        = [<<insert az's>>]
+  pri_subnet_az_cross_aws         = [<<insert az's>>]
   ubuntu_ami_cross_aws            = "<<insert ami>>"
 
   # ARM VNET

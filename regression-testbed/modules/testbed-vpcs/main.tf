@@ -19,29 +19,32 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_subnet" "public_subnet1" {
-	count				= var.vpc_count
-	vpc_id			= aws_vpc.vpc[count.index].id
-	cidr_block	= var.pub_subnet1_cidr[count.index]
+	count							= var.vpc_count
+	vpc_id						= aws_vpc.vpc[count.index].id
+	cidr_block				= var.pub_subnet1_cidr[count.index]
+	availability_zone = var.pub_subnet1_az[count.index]
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_public1_${data.aws_region.current[0].name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_public1_${var.pub_subnet1_az[count.index]}"
 	}
 }
 
 resource "aws_subnet" "public_subnet2" {
-	count				= var.vpc_count
-	vpc_id			= aws_vpc.vpc[count.index].id
-	cidr_block	=	var.pub_subnet2_cidr[count.index]
+	count							= var.vpc_count
+	vpc_id						= aws_vpc.vpc[count.index].id
+	cidr_block				=	var.pub_subnet2_cidr[count.index]
+	availability_zone = var.pub_subnet2_az[count.index]
 	tags	= {
-		Name			=	"${var.resource_name_label}_vpc${count.index}_public2_${data.aws_region.current[0].name}"
+		Name			=	"${var.resource_name_label}_vpc${count.index}_public2_${var.pub_subnet2_az[count.index]}"
 	}
 }
 
 resource "aws_subnet" "private_subnet" {
-	count				= var.vpc_count
-	vpc_id			= aws_vpc.vpc[count.index].id
-	cidr_block	= var.pri_subnet_cidr[count.index]
+	count							= var.vpc_count
+	vpc_id						= aws_vpc.vpc[count.index].id
+	cidr_block				= var.pri_subnet_cidr[count.index]
+	availability_zone = var.pri_subnet_az[count.index]
 	tags	= {
-		Name			= "${var.resource_name_label}_vpc${count.index}_private_${data.aws_region.current[0].name}"
+		Name			= "${var.resource_name_label}_vpc${count.index}_private_${var.pri_subnet_az[count.index]}"
 	}
 }
 
@@ -114,7 +117,7 @@ resource "aws_instance" "public_instance" {
 	vpc_security_group_ids			= [aws_security_group.sg[count.index].id]
 	key_name										= aws_key_pair.key_pair[0].key_name
 	tags	= {
-		Name				= "${var.resource_name_label}_public-ubuntu${count.index}_${data.aws_region.current[0].name}"
+		Name				= "${var.resource_name_label}_public-ubuntu${count.index}_${aws_subnet.public_subnet1[count.index].availability_zone}"
 	}
 }
 
@@ -129,7 +132,7 @@ resource "aws_instance" "private_instance" {
 	vpc_security_group_ids			= [aws_security_group.sg[count.index].id]
 	key_name										= aws_key_pair.key_pair[0].key_name
   tags  = {
-    Name        = "${var.resource_name_label}_private-ubuntu${count.index}_${data.aws_region.current[0].name}"
+    Name        = "${var.resource_name_label}_private-ubuntu${count.index}_${aws_subnet.private_subnet[count.index].availability_zone}"
   }
 }
 
