@@ -78,6 +78,18 @@ variable "pri_subnet_cidr_west1" {
   type        = list(string)
   description = "The cidr for a private subnet."
 }
+variable "pub_subnet1_az_west1" {
+  type        = list(string)
+  description = "The availability zone for public subnet 1."
+}
+variable "pub_subnet2_az_west1" {
+  type        = list(string)
+  description = "The availability zone for public subnet 2."
+}
+variable "pri_subnet_az_west1" {
+  type        = list(string)
+  description = "The availability zone for a private subnet."
+}
 variable "ubuntu_ami_west1" {
   type        = string
   description = "AMI of the ubuntu instances"
@@ -104,6 +116,17 @@ variable "pri_subnet_cidr_west2" {
   type        = list(string)
   description = "The cidr for a private subnet."
 }
+variable "pub_subnet1_az_west2" {
+  type        = list(string)
+  description = "The availability zone for public subnet 1."
+}
+variable "pub_subnet2_az_west2" {
+  type        = list(string)
+  description = "The availability zone for public subnet 2."
+}
+variable "pri_subnet_az_west2" {
+  type        = list(string)
+  description = "The availability zone for a private subnet."
 variable "ubuntu_ami_west2" {
   type        = string
   description = "AMI of the ubuntu instances"
@@ -130,6 +153,18 @@ variable "pri_subnet_cidr_east1" {
   type        = list(string)
   description = "The cidr for a private subnet."
 }
+variable "pub_subnet1_az_east1" {
+  type        = list(string)
+  description = "The availability zone for public subnet 1."
+}
+variable "pub_subnet2_az_east1" {
+  type        = list(string)
+  description = "The availability zone for public subnet 2."
+}
+variable "pri_subnet_az_east1" {
+  type        = list(string)
+  description = "The availability zone for a private subnet."
+}
 variable "ubuntu_ami_east1" {
   type        = string
   description = "AMI of the ubuntu instances"
@@ -155,6 +190,18 @@ variable "pub_subnet2_cidr_east2" {
 variable "pri_subnet_cidr_east2" {
   type        = list(string)
   description = "The cidr for a private subnet."
+}
+variable "pub_subnet1_az_east2" {
+  type        = list(string)
+  description = "The availability zone for public subnet 1."
+}
+variable "pub_subnet2_az_east2" {
+  type        = list(string)
+  description = "The availability zone for public subnet 2."
+}
+variable "pri_subnet_az_east2" {
+  type        = list(string)
+  description = "The availability zone for a private subnet."
 }
 variable "ubuntu_ami_east2" {
   type        = string
@@ -185,6 +232,18 @@ variable "pub_subnet2_cidr_cross_aws" {
 variable "pri_subnet_cidr_cross_aws" {
   type        = list(string)
   description = "The cidr for a private subnet."
+}
+variable "pub_subnet1_az_cross_aws" {
+  type        = list(string)
+  description = "The availability zone for public subnet 1."
+}
+variable "pub_subnet2_az_cross_aws" {
+  type        = list(string)
+  description = "The availability zone for public subnet 2."
+}
+variable "pri_subnet_az_cross_aws" {
+  type        = list(string)
+  description = "The availability zone for a private subnet."
 }
 variable "ubuntu_ami_cross_aws" {
   type        = string

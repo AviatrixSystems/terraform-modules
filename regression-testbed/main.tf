@@ -83,6 +83,9 @@ module "aws-vpc-west1" {
   pub_subnet1_cidr      = var.pub_subnet1_cidr_west1
   pub_subnet2_cidr      = var.pub_subnet2_cidr_west1
   pri_subnet_cidr       = var.pri_subnet_cidr_west1
+  pub_subnet1_az      	= var.pub_subnet1_az_west1
+  pub_subnet2_az      	= var.pub_subnet2_az_west1
+  pri_subnet_az       	= var.pri_subnet_az_west1
   ubuntu_ami            = var.ubuntu_ami_west1
   public_key            = var.vpc_public_key
 	termination_protection = var.termination_protection
@@ -101,6 +104,9 @@ module "aws-vpc-west2" {
   pub_subnet1_cidr      = var.pub_subnet1_cidr_west2
   pub_subnet2_cidr      = var.pub_subnet2_cidr_west2
   pri_subnet_cidr       = var.pri_subnet_cidr_west2
+  pub_subnet1_az      	= var.pub_subnet1_az_west2
+  pub_subnet2_az      	= var.pub_subnet2_az_west2
+  pri_subnet_az       	= var.pri_subnet_az_west2
   ubuntu_ami            = var.ubuntu_ami_west2
   public_key            = var.vpc_public_key
 	termination_protection = var.termination_protection
@@ -119,6 +125,9 @@ module "aws-vpc-east1" {
   pub_subnet1_cidr      = var.pub_subnet1_cidr_east1
   pub_subnet2_cidr      = var.pub_subnet2_cidr_east1
   pri_subnet_cidr       = var.pri_subnet_cidr_east1
+  pub_subnet1_az      	= var.pub_subnet1_az_east1
+  pub_subnet2_az      	= var.pub_subnet2_az_east1
+  pri_subnet_az       	= var.pri_subnet_az_east1
   ubuntu_ami            = var.ubuntu_ami_east1
   public_key            = var.vpc_public_key
 	termination_protection = var.termination_protection
@@ -137,6 +146,9 @@ module "aws-vpc-east2" {
   pub_subnet1_cidr      = var.pub_subnet1_cidr_east2
   pub_subnet2_cidr      = var.pub_subnet2_cidr_east2
   pri_subnet_cidr       = var.pri_subnet_cidr_east2
+  pub_subnet1_az      	= var.pub_subnet1_az_east2
+  pub_subnet2_az      	= var.pub_subnet2_az_east2
+  pri_subnet_az       	= var.pri_subnet_az_east2
   ubuntu_ami            = var.ubuntu_ami_east2
   public_key            = var.vpc_public_key
 	termination_protection = var.termination_protection
@@ -188,6 +200,9 @@ module "aws-cross-acct" {
   pub_subnet1_cidr      = var.pub_subnet1_cidr_cross_aws
   pub_subnet2_cidr      = var.pub_subnet2_cidr_cross_aws
   pri_subnet_cidr       = var.pri_subnet_cidr_cross_aws
+  pub_subnet1_az      	= var.pub_subnet1_az_cross_aws
+  pub_subnet2_az      	= var.pub_subnet2_az_cross_aws
+  pri_subnet_az       	= var.pri_subnet_az_cross_aws
   ubuntu_ami            = var.ubuntu_ami_cross_aws
   public_key            = var.vpc_public_key
 	termination_protection = var.termination_protection
