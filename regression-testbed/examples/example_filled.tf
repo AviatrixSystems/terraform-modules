@@ -14,7 +14,7 @@ module "regression-testbed" {
 
   # ARM
   arm_subscription_id         = ""
-  arm_tenant_id              = ""
+  arm_tenant_id               = ""
   arm_client_id               = ""
   arm_client_secret           = ""
 
@@ -91,7 +91,7 @@ module "regression-testbed" {
   pri_subnet_cidr_arm         = ["10.20.2.0/24", "10.30.4.0/24"]
 
 	# AWS VPC for controller
-  deploy_controller           = <<true/false>>
+  deploy_controller           = true/false
 	controller_region           = "us-west-1"
 	controller_vpc_cidr         = "10.22.0.0/16"
 	controller_subnet_cidr			= "10.22.23.0/24"
