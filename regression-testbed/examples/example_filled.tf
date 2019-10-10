@@ -44,9 +44,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_west2      = ["10.3.1.0/24", "10.4.1.0/24"]
   pub_subnet2_cidr_west2      = ["10.3.10.0/24", "10.4.10.0/24"]
   pri_subnet_cidr_west2       = ["10.3.2.0/24", "10.4.2.0/24"]
-  pub_subnet1_az_west1        = ["us-west-2a", "us-west-2b"]
-  pub_subnet2_az_west1        = ["us-west-2a", "us-west-2b"]
-  pri_subnet_az_west1         = ["us-west-2a", "us-west-2b"]
+  pub_subnet1_az_west2        = ["us-west-2a", "us-west-2b"]
+  pub_subnet2_az_west2        = ["us-west-2a", "us-west-2b"]
+  pri_subnet_az_west2         = ["us-west-2a", "us-west-2b"]
   ubuntu_ami_west2            = "ami-0eaedb5f9e4e556f4"
 
   # US East 1
@@ -66,9 +66,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_east2      = ["10.7.1.0/24", "10.8.1.0/24"]
   pub_subnet2_cidr_east2      = ["10.7.10.0/24", "10.8.10.0/24"]
   pri_subnet_cidr_east2       = ["10.7.2.0/24", "10.8.2.0/24"]
-  pub_subnet1_az_west1        = ["us-east-2a", "us-east-2b"]
-  pub_subnet2_az_west1        = ["us-east-2a", "us-east-2b"]
-  pri_subnet_az_west1         = ["us-east-2a", "us-east-2b"]
+  pub_subnet1_az_east2        = ["us-east-2a", "us-east-2b"]
+  pub_subnet2_az_east2        = ["us-east-2a", "us-east-2b"]
+  pri_subnet_az_east2         = ["us-east-2a", "us-east-2b"]
   ubuntu_ami_east2            = "ami-09f0299359c12ab7c"
 
   # AWS Cross Account
@@ -78,9 +78,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_cross_aws  = ["10.9.0.0/24", "10.10.3.0/24"]
   pub_subnet2_cidr_cross_aws  = ["10.9.1.0/24", "10.10.4.0/24"]
   pri_subnet_cidr_cross_aws   = ["10.9.2.0/24", "10.10.5.0/24"]
-  pub_subnet1_az_east1        = ["us-east-2a", "us-east-2b"]
-  pub_subnet2_az_east1        = ["us-east-2a", "us-east-2b"]
-  pri_subnet_az_east1         = ["us-east-2a", "us-east-2b"]
+  pub_subnet1_az_cross_aws    = ["us-east-2a", "us-east-2b"]
+  pub_subnet2_az_cross_aws    = ["us-east-2a", "us-east-2b"]
+  pri_subnet_az_cross_aws     = ["us-east-2a", "us-east-2b"]
   ubuntu_ami_cross_aws        = "ami-09f0299359c12ab7c"
 
   # ARM VNET
@@ -112,7 +112,7 @@ module "regression-testbed" {
   windows_public_key          = ""
   windows_ami                 = "ami-0069635df219ce9e5"
 	windows_sg_source_ip        = "0.0.0.0/0"
-
+}2
 
 ## Leave following provider/module commented before initial terraform apply
 ## After successful terraform apply, uncomment:
