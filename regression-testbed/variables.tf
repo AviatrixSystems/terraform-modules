@@ -127,6 +127,7 @@ variable "pub_subnet2_az_west2" {
 variable "pri_subnet_az_west2" {
   type        = list(string)
   description = "The availability zone for a private subnet."
+}
 variable "ubuntu_ami_west2" {
   type        = string
   description = "AMI of the ubuntu instances"

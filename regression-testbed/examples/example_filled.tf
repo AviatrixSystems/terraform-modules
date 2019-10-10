@@ -33,9 +33,9 @@ module "regression-testbed" {
   pub_subnet1_cidr_west1      = ["10.1.1.0/24", "10.2.1.0/24"]
   pub_subnet2_cidr_west1      = ["10.1.10.0/24", "10.2.10.0/24"]
   pri_subnet_cidr_west1       = ["10.1.2.0/24", "10.2.2.0/24"]
-  pub_subnet1_az_west1        = ["us-west-1a", "us-west-1b"]
-  pub_subnet2_az_west1        = ["us-west-1a", "us-west-1b"]
-  pri_subnet_az_west1         = ["us-west-1a", "us-west-1b"]
+  pub_subnet1_az_west1        = ["us-west-1b", "us-west-1c"]
+  pub_subnet2_az_west1        = ["us-west-1b", "us-west-1c"]
+  pri_subnet_az_west1         = ["us-west-1b", "us-west-1c"]
   ubuntu_ami_west1            = "ami-0acfa9d37b413b160"
 
   # US West 2
