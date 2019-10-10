@@ -112,7 +112,7 @@ module "regression-testbed" {
   windows_public_key          = ""
   windows_ami                 = "ami-0069635df219ce9e5"
 	windows_sg_source_ip        = "0.0.0.0/0"
-}2
+}
 
 ## Leave following provider/module commented before initial terraform apply
 ## After successful terraform apply, uncomment:
