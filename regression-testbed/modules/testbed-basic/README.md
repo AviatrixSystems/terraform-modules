@@ -107,81 +107,91 @@ module "testbed-basic" {
 
 # AWS VPCs
 output "us-west-1" {
-  value = [module.regression-testbed.west1_vpc_info, module.regression-testbed.west1_subnet_info, module.regression-testbed.west1_ubuntu_info]
+  value = concat(
+    module.testbed-basic.west1_vpc_info,
+    module.testbed-basic.west1_subnet_info,
+    module.testbed-basic.west1_ubuntu_info
+  )
 }
 output "us-west-2" {
-  value = [module.regression-testbed.west2_vpc_info, module.regression-testbed.west2_subnet_info, module.regression-testbed.west2_ubuntu_info]
+  value = concat(
+    module.testbed-basic.west2_vpc_info,
+    module.testbed-basic.west2_subnet_info,
+    module.testbed-basic.west2_ubuntu_info
+  )
 }
 output "us-east-1" {
-  value = [module.regression-testbed.east1_vpc_info, module.regression-testbed.east1_subnet_info, module.regression-testbed.east1_ubuntu_info]
+  value = concat(
+    module.testbed-basic.east1_vpc_info,
+    module.testbed-basic.east1_subnet_info,
+    module.testbed-basic.east1_ubuntu_info
+  )
 }
 output "us-east-2" {
-  value = [module.regression-testbed.east2_vpc_info, module.regression-testbed.east2_subnet_info, module.regression-testbed.east2_ubuntu_info]
+  value = concat(
+    module.testbed-basic.east2_vpc_info,
+    module.testbed-basic.east2_subnet_info,
+    module.testbed-basic.east2_ubuntu_info
+  )
 }
 
-# Aviatrix controller
+# Aviatrix Controller
 output "controller_public_ip" {
- value = module.regression-testbed.controller_public_ip
+ value = module.testbed-basic.controller_public_ip
 }
 output "controller_key" {
- value = module.regression-testbed.controller_key
+ value = module.testbed-basic.controller_key
 }
 output "controller_username_password" {
- value = module.regression-testbed.controller_username_password
+ value = module.testbed-basic.controller_username_password
 }
 
 # Windows instance
 output "windows_public_ip" {
- value = module.regression-testbed.windows_public_ip
+ value = module.testbed-basic.windows_public_ip
 }
 output "windows_key" {
-  value = module.regression-testbed.windows_key
+ value = module.testbed-basic.windows_key
 }
 ```
 
-2. ```terraform init``` to initialize the workspace with .tf files
+2. `terraform init` to initialize the workspace with .tf files
 
-3. Initial ```terraform apply```
+3. Initial `terraform apply`
 
-4. To output into file, ```terraform output > <<FILENAME>>```.
+4. To output into file, `terraform output > <<FILENAME>>`.
   - By default, all output from a terraform root module will be displayed on the CLI.
 
 ### Output format
 
 ```
 <<region>> = [
+#vpc info
   [
-    #vpc info
-    [
-      <<vpc name>>
-    ],
-    [
-      <<vpc id>>
-    ],
+    <<vpc name>>
   ],
   [
-    #subnet info
-    [
-      <<subnet name>>
-    ],
-    [
-      <<subnet cidr>>
-    ],
+    <<vpc id>>
+  ],
+#subnet info
+  [
+    <<subnet name>>
   ],
   [
-    #ubuntu instance info
-    [
-      <<ubuntu instance name>>
-    ],
-    [
-      <<instance id>>
-    ],
-    [
-      <<public ip>>
-    ],
-    [
-      <<private ip>>
-    ],
+    <<subnet cidr>>
+  ],
+#ubuntu instance info
+  [
+    <<ubuntu instance name>>
+  ],
+  [
+    <<instance id>>
+  ],
+  [
+    <<public ip>>
+  ],
+  [
+    <<private ip>>
   ],
 ]
 ```
@@ -400,6 +410,10 @@ Outputs the Aviatrix controller's key pair name.
 
 Outputs the login information for the Aviatrix controller.
 
+- **primary_access_account**
+
+Name of primary access account in Aviatrix controller.
+
 - **windows_public_ip**
 
 Outputs the public IP of the Windows instance.
@@ -407,25 +421,3 @@ Outputs the public IP of the Windows instance.
 - **windows_key**
 
 Outputs the Windows instance key pair name.
-
-### Notes
-
-#### SSH into private ubuntu instance
-- Need to ssh into public instances first, then from public instance, ssh into private ubuntu instances.
-- Terraform doesn't add the private key used for ssh into the public instances.
-  - Prepare an ubuntu instance that already contains the private key. Create a snapshot (ami) of the VM to be used when Terraform creates the testbed.
-  - copy AMI to the other Regions and use AMI for the ubuntu_ami variable
-
-#### Setting up Aviatrix access accounts
-For GCP access account, you will need to provide an absolute filepath to the gcp credentials file stored on your local machine.
-
-#### Accessing Aviatrix controller
-- Login to controller using:
-  - username: "admin"
-  - password: admin_password
-
-#### Destroying Environment
-1. Change ```termination_protection``` to be false.
-  - Terraform won't automatically remove termination protection.
-
-2. ```terraform destroy```, to destroy the rest of the resources.

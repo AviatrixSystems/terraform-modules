@@ -20,13 +20,18 @@ There are 3 Phases:
  - Aviatrix Controller (optional)
  - Windows instance (optionl)
  - Read the testbed-basic README.md for more information
+ - **initial terraform apply**
 
 2. Add Cross AWS/Azure RM vpcs.
- - optional
+ - **optional, uncomment  cross aws/arm modules and outputs to use**
 
 3. Aviatrix tests
  - Add Aviatrix access accounts to Aviatrix controller
  - Aviatrix onprem simulation
+ - **uncomment Aviatrix modules and outputs**
+ - **terraform init**
+ - **2nd terraform apply**
+
 
 ### Notes
 
@@ -64,12 +69,12 @@ For GCP access account, you will need to provide an absolute filepath to the gcp
   - password: admin_password
 
 #### Destroying Environment
-1. Change ```termination_protection``` to be false.
+1. Change `termination_protection` to be false.
   - Terraform won't automatically remove termination protection.
 
 2. Destroy Aviatrix modules and resources first.
   - Not destroying the access accounts first will end up with a dependency error. Currently Terraform doesn't support module to module dependency.
-  - ```terraform destroy -target <<module name>>```, to destroy targeted Aviatrix modules.
+  - `terraform destroy -target <<module name>>`, to destroy targeted Aviatrix modules.
 
 3. Comment out after successfully destroying Aviatrix modules and resources
 ```
@@ -82,4 +87,4 @@ module "testbed-aviatrix-accounts" {
 module "testbed-onprem"
 ```
 
-4. ```terraform destroy```, to destroy the rest of the resources.
+4. `terraform destroy`, to destroy the rest of the resources.
