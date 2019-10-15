@@ -1,4 +1,4 @@
-# Main terraform configuration file for setting up Terraform regression testbed
+# Main terraform configuration file for Terraform Regression testbed-basic module
 
 provider "aws" {
 	alias					= "west1"
@@ -48,22 +48,6 @@ provider "aws" {
   secret_key    = var.aws_primary_acct_secret_key
 }
 
-provider "aws" {
-	alias					= "cross_aws_acc"
-  version       = "~> 2.7"
-  region        = var.cross_aws_region
-  access_key    = var.cross_aws_acct_access_key
-  secret_key    = var.cross_aws_acct_secret_key
-}
-
-provider "azurerm" {
-	version = "1.34"
-	subscription_id = var.arm_subscription_id
-	tenant_id 			= var.arm_tenant_id
-	client_id 			= var.arm_client_id
-	client_secret   = var.arm_client_secret
-}
-
 provider "aviatrix" {
   username      = "admin"
   password      = module.aviatrix-controller.private_ip
@@ -71,7 +55,7 @@ provider "aviatrix" {
 }
 
 module "aws-vpc-west1" {
-  source                = "./modules/testbed-vpcs"
+  source                = "../testbed-vpcs"
   providers = {
     aws = aws.west1
   }
@@ -92,7 +76,7 @@ module "aws-vpc-west1" {
 }
 
 module "aws-vpc-west2" {
-  source                = "./modules/testbed-vpcs"
+  source                = "../testbed-vpcs"
   providers = {
     aws = aws.west2
   }
@@ -113,7 +97,7 @@ module "aws-vpc-west2" {
 }
 
 module "aws-vpc-east1" {
-  source                = "./modules/testbed-vpcs"
+  source                = "../testbed-vpcs"
   providers = {
     aws = aws.east1
   }
@@ -134,7 +118,7 @@ module "aws-vpc-east1" {
 }
 
 module "aws-vpc-east2" {
-  source                = "./modules/testbed-vpcs"
+  source                = "../testbed-vpcs"
   providers = {
     aws = aws.east2
   }
@@ -155,7 +139,7 @@ module "aws-vpc-east2" {
 }
 
 module "aviatrix-controller" {
-  source          = "./modules/testbed-aviatrix-controller"
+  source          = "../testbed-aviatrix-controller"
   providers = {
     aws = aws.controller
   }
@@ -173,7 +157,7 @@ module "aviatrix-controller" {
 }
 
 module "windows-instance" {
-  source        = "./modules/testbed-windows-instance"
+  source        = "../testbed-windows-instance"
   providers = {
     aws = aws.windows
   }
@@ -185,38 +169,4 @@ module "windows-instance" {
   ami   					= var.windows_ami
   termination_protection = var.termination_protection
 	resource_name_label		 = var.resource_name_label
-}
-
-module "aws-cross-acct" {
-  source                = "./modules/testbed-vpcs"
-  providers = {
-    aws = aws.cross_aws_acc
-  }
-  vpc_count             = var.vpc_count_cross_aws
-  resource_name_label   = var.resource_name_label
-	pub_hostnum						= var.pub_hostnum
-  pri_hostnum           = var.pri_hostnum
-  vpc_cidr              = var.vpc_cidr_cross_aws
-  pub_subnet1_cidr      = var.pub_subnet1_cidr_cross_aws
-  pub_subnet2_cidr      = var.pub_subnet2_cidr_cross_aws
-  pri_subnet_cidr       = var.pri_subnet_cidr_cross_aws
-  pub_subnet1_az      	= var.pub_subnet1_az_cross_aws
-  pub_subnet2_az      	= var.pub_subnet2_az_cross_aws
-  pri_subnet_az       	= var.pri_subnet_az_cross_aws
-  ubuntu_ami            = var.ubuntu_ami_cross_aws
-  public_key            = var.vpc_public_key
-	termination_protection = var.termination_protection
-}
-
-module "arm-vnet" {
-	source 								= "./modules/testbed-vnet-arm"
-	region 			 					= var.arm_region
-	vnet_count 						= var.vnet_count_arm
-	resource_name_label 	= var.resource_name_label
-  pub_hostnum						= var.pub_hostnum
-  pri_hostnum           = var.pri_hostnum
-  vnet_cidr             = var.vnet_cidr_arm
-  pub_subnet_cidr       = var.pub_subnet_cidr_arm
-  pri_subnet_cidr       = var.pri_subnet_cidr_arm
-	public_key 						= var.vpc_public_key
 }

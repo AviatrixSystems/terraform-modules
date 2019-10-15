@@ -1,4 +1,4 @@
-#Output values for Terraform Regression Testbed root module
+#Output values for Terraform Regression testbed-basic module
 
 # AWS VPC environment
 # US West 1
@@ -44,28 +44,6 @@ output "east2_subnet_info" {
 }
 output "east2_ubuntu_info" {
 	value = [module.aws-vpc-east2.ubuntu_name, module.aws-vpc-east2.ubuntu_id, module.aws-vpc-east2.ubuntu_public_ip, module.aws-vpc-east2.ubuntu_private_ip]
-}
-
-# AWS CROSS
-output "cross_aws_vpc_info" {
-	value = [module.aws-cross-acct.vpc_name, module.aws-cross-acct.vpc_id]
-}
-output "cross_aws_subnet_info" {
-	value = [module.aws-cross-acct.subnet_name, module.aws-cross-acct.subnet_cidr]
-}
-output "cross_aws_ubuntu_info" {
-	value = [module.aws-cross-acct.ubuntu_name, module.aws-cross-acct.ubuntu_id, module.aws-cross-acct.ubuntu_public_ip, module.aws-cross-acct.ubuntu_private_ip]
-}
-
-# ARM VNET
-output "arm_vnet_info" {
-	value = [module.arm-vnet.vnet_name, module.arm-vnet.vnet_id]
-}
-output "arm_subnet_info" {
-	value = [module.arm-vnet.subnet_name, module.arm-vnet.subnet_cidr]
-}
-output "arm_ubuntu_info" {
-	value = [module.arm-vnet.ubuntu_name, module.arm-vnet.ubuntu_id, module.arm-vnet.ubuntu_public_ip, module.arm-vnet.ubuntu_private_ip]
 }
 
 # Aviatrix Controller
