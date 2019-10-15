@@ -4,46 +4,90 @@
 # US West 1
 
 output "west1_vpc_info" {
-	value = [module.aws-vpc-west1.vpc_name, module.aws-vpc-west1.vpc_id]
+	value = [
+		module.aws-vpc-west1.vpc_name,
+		module.aws-vpc-west1.vpc_id
+	]
 }
 output "west1_subnet_info" {
-	value = [module.aws-vpc-west1.subnet_name, module.aws-vpc-west1.subnet_cidr]
+	value = [
+		module.aws-vpc-west1.subnet_name,
+		module.aws-vpc-west1.subnet_cidr
+	]
 }
 output "west1_ubuntu_info" {
-	value = [module.aws-vpc-west1.ubuntu_name, module.aws-vpc-west1.ubuntu_id, module.aws-vpc-west1.ubuntu_public_ip, module.aws-vpc-west1.ubuntu_private_ip]
+	value = [
+		module.aws-vpc-west1.ubuntu_name,
+		module.aws-vpc-west1.ubuntu_id,
+		module.aws-vpc-west1.ubuntu_public_ip,
+		module.aws-vpc-west1.ubuntu_private_ip
+	]
 }
 
 # US West 2
 output "west2_vpc_info" {
-	value = [module.aws-vpc-west2.vpc_name, module.aws-vpc-west2.vpc_id]
+	value = [
+		module.aws-vpc-west2.vpc_name,
+		module.aws-vpc-west2.vpc_id
+	]
 }
 output "west2_subnet_info" {
-	value = [module.aws-vpc-west2.subnet_name, module.aws-vpc-west2.subnet_cidr]
+	value = [
+		module.aws-vpc-west2.subnet_name,
+		module.aws-vpc-west2.subnet_cidr
+	]
 }
 output "west2_ubuntu_info" {
-	value = [module.aws-vpc-west2.ubuntu_name, module.aws-vpc-west2.ubuntu_id, module.aws-vpc-west2.ubuntu_public_ip, module.aws-vpc-west2.ubuntu_private_ip]
+	value = [
+		module.aws-vpc-west2.ubuntu_name,
+		module.aws-vpc-west2.ubuntu_id,
+		module.aws-vpc-west2.ubuntu_public_ip,
+		module.aws-vpc-west2.ubuntu_private_ip
+	]
 }
 
 # US East 1
 output "east1_vpc_info" {
-	value = [module.aws-vpc-east1.vpc_name, module.aws-vpc-east1.vpc_id]
+	value = [
+		module.aws-vpc-east1.vpc_name,
+		module.aws-vpc-east1.vpc_id
+	]
 }
 output "east1_subnet_info" {
-	value = [module.aws-vpc-east1.subnet_name, module.aws-vpc-east1.subnet_cidr]
+	value = [
+		module.aws-vpc-east1.subnet_name,
+		module.aws-vpc-east1.subnet_cidr
+	]
 }
 output "east1_ubuntu_info" {
-	value = [module.aws-vpc-east1.ubuntu_name, module.aws-vpc-east1.ubuntu_id, module.aws-vpc-east1.ubuntu_public_ip, module.aws-vpc-east1.ubuntu_private_ip]
+	value = [
+		module.aws-vpc-east1.ubuntu_name,
+		module.aws-vpc-east1.ubuntu_id,
+		module.aws-vpc-east1.ubuntu_public_ip,
+		module.aws-vpc-east1.ubuntu_private_ip
+	]
 }
 
 # US East 2
 output "east2_vpc_info" {
-	value = [module.aws-vpc-east2.vpc_name, module.aws-vpc-east2.vpc_id]
+	value = [
+		module.aws-vpc-east2.vpc_name,
+		module.aws-vpc-east2.vpc_id
+	]
 }
 output "east2_subnet_info" {
-	value = [module.aws-vpc-east2.subnet_name, module.aws-vpc-east2.subnet_cidr]
+	value = [
+		module.aws-vpc-east2.subnet_name,
+		module.aws-vpc-east2.subnet_cidr
+	]
 }
 output "east2_ubuntu_info" {
-	value = [module.aws-vpc-east2.ubuntu_name, module.aws-vpc-east2.ubuntu_id, module.aws-vpc-east2.ubuntu_public_ip, module.aws-vpc-east2.ubuntu_private_ip]
+	value = [
+		module.aws-vpc-east2.ubuntu_name,
+		module.aws-vpc-east2.ubuntu_id,
+		module.aws-vpc-east2.ubuntu_public_ip,
+		module.aws-vpc-east2.ubuntu_private_ip
+	]
 }
 
 # Aviatrix Controller

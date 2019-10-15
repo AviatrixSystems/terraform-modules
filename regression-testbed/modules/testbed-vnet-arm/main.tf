@@ -143,12 +143,6 @@ resource "azurerm_public_ip" "public_ip" {
 	}
 }
 
-data "azurerm_public_ip" "public_ip" {
-	count 							= var.vnet_count
-	name 								= azurerm_public_ip.public_ip[count.index].name
-	resource_group_name = azurerm_resource_group.rg[count.index].name
-}
-
 # ARM public instance
 resource "azurerm_virtual_machine" "ubuntu_public" {
 		count									= var.vnet_count
