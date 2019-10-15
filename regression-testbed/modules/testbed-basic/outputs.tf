@@ -56,6 +56,9 @@ output "controller_key" {
 output "controller_username_password" {
 	value = module.aviatrix-controller.username_password
 }
+output "primary_access_account" {
+	value = var.access_account
+}
 
 # Windows instance
 output "windows_public_ip" {
