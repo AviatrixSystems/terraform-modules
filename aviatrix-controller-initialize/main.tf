@@ -42,20 +42,21 @@ data "aws_lambda_invocation" "example" {
   input = <<JSON
 { "ResourceProperties":
 {
-  "PrefixStringParam"                : "avx",
-  "LambdaInvokerTypeParam"           : "terraform",
-  "AWS_Account_ID"                   : "${var.aws_account_id}",
-  "KeywordForCloudWatchLogParam"     : "avx-log",
-  "DelimiterForCloudWatchLogParam"   : "---",
-  "ControllerPublicIpParam"          : "${var.public_ip}",
-  "AviatrixApiVersionParam"          : "v1",
-  "AviatrixApiRouteParam"            : "api/",
-  "ControllerPrivateIpParam"         : "${var.private_ip}",
-  "ControllerAdminPasswordParam"     : "${var.admin_password}",
-  "ControllerAdminEmailParam"        : "${var.admin_email}",
-  "ControllerVersionParam"           : "latest",
-  "ControllerAccessAccountNameParam" : "${var.access_account_name}",
-  "AviatrixCustomerLicenseIdParam"   : "${var.customer_license_id}"
+  "PrefixStringParam"                  : "avx",
+  "LambdaInvokerTypeParam"             : "terraform",
+  "AWS_Account_ID"                     : "${var.aws_account_id}",
+  "KeywordForCloudWatchLogParam"       : "avx-log",
+  "DelimiterForCloudWatchLogParam"     : "---",
+  "ControllerPublicIpParam"            : "${var.public_ip}",
+  "AviatrixApiVersionParam"            : "v1",
+  "AviatrixApiRouteParam"              : "api/",
+  "ControllerPrivateIpParam"           : "${var.private_ip}",
+  "ControllerAdminPasswordParam"       : "${var.admin_password}",
+  "ControllerAdminEmailParam"          : "${var.admin_email}",
+  "ControllerVersionParam"             : "latest",
+  "ControllerAccessAccountNameParam"   : "${var.access_account_name}",
+  "AviatrixCustomerLicenseIdParam"     : "${var.customer_license_id}",
+  "_SecondsToWaitForApacheToBeUpParam" : "${var._SecondsToWaitForApacheToBeUpParam}"
 }
 }
 JSON

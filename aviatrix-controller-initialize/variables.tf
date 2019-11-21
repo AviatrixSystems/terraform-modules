@@ -22,3 +22,7 @@ variable "aws_account_id" {}
 variable "customer_license_id" {
   default = ""
 }
+
+variable "_SecondsToWaitForApacheToBeUpParam" {
+  default = 300
+}
