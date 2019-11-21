@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 locals {
-  other-account-id = "${data.aws_caller_identity.current.account_id}"
+  other-account-id = data.aws_caller_identity.current.account_id
   policy_primary = <<EOF
 {
     "Version": "2012-10-17",
