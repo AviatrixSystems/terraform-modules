@@ -58,7 +58,7 @@ output "lambda_result" {
   
 - **controller_launch_wait_time**
  
-  Time in second to wait for Apache to be up. Default value is 300.
+  Time in second to wait for controller to be up. Default value is 180.
 
 ### Outputs
 
