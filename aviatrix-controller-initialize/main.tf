@@ -56,7 +56,7 @@ data "aws_lambda_invocation" "example" {
   "ControllerVersionParam"             : "latest",
   "ControllerAccessAccountNameParam"   : "${var.access_account_name}",
   "AviatrixCustomerLicenseIdParam"     : "${var.customer_license_id}",
-  "_SecondsToWaitForApacheToBeUpParam" : "${var._SecondsToWaitForApacheToBeUpParam}"
+  "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}"
 }
 }
 JSON

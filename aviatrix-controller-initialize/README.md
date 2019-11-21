@@ -56,7 +56,7 @@ output "lambda_result" {
 
   The customer license ID, optional. Required if using a BYOL controller.
   
-- **_SecondsToWaitForApacheToBeUpParam**
+- **controller_launch_wait_time**
  
   Time in second to wait for Apache to be up. Default value is 300.
 
