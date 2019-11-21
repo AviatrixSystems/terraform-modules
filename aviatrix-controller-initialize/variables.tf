@@ -22,3 +22,7 @@ variable "aws_account_id" {}
 variable "customer_license_id" {
   default = ""
 }
+
+variable "controller_launch_wait_time" {
+  default = 300
+}
