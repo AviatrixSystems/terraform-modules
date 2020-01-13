@@ -55,7 +55,7 @@ module "aviatrixcontroller" {
 
 - **root_volume_type**
   
-  The type of the hard disk for the controller instance, Default value is "standard".
+  The type of the hard disk for the controller instance, Default value is "gp2".
 
 - **incoming_ssl_cidr**
   
