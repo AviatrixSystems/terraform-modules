@@ -24,7 +24,7 @@ variable "root_volume_size" {
 }
 
 variable "root_volume_type" {
-  default = "standard"
+  default = "gp2"
 }
 
 variable "incoming_ssl_cidr" {
