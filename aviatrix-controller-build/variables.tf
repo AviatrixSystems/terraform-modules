@@ -28,7 +28,7 @@ variable "root_volume_type" {
 }
 
 variable "incoming_ssl_cidr" {
-  type = "list"
+  type = list(string)
   default = ["0.0.0.0/0"]
 }
 
@@ -47,7 +47,7 @@ variable "type" {
 data "aws_region" "current" {}
 
 locals {
-  name_prefix    = "${var.name_prefix != "" ? "${var.name_prefix}-" : ""}"
+  name_prefix    = var.name_prefix != "" ? "${var.name_prefix}-" : ""
   images_metered = jsondecode(data.http.avx_iam_id.body).BYOL
   images_byol    = jsondecode(data.http.avx_iam_id.body).Metered
   ami_id         = "${var.type == "metered" ? local.images_metered[data.aws_region.current.name] : local.images_byol[data.aws_region.current.name]}"
