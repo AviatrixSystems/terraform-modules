@@ -1,5 +1,5 @@
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "${replace("iam_for_lambda_${var.public_ip}",".","-")}"
+  name = replace("iam_for_lambda_${var.public_ip}",".","-")
 
   assume_role_policy = <<EOF
 {
@@ -19,7 +19,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attach-policy" {
-  role       = "${aws_iam_role.iam_for_lambda.name}"
+  role       = aws_iam_role.iam_for_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
@@ -28,8 +28,8 @@ data "aws_region" "current" {}
 resource "aws_lambda_function" "lambda" {
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
   s3_key        = "run_controller_init_setup.zip"
-  function_name = "${replace("AvxLambda_${var.public_ip}",".","-")}"
-  role          = "${aws_iam_role.iam_for_lambda.arn}"
+  function_name = replace("AvxLambda_${var.public_ip}",".","-")
+  role          = aws_iam_role.iam_for_lambda.arn
   handler       = "run_controller_init_setup.lambda_handler"
   runtime       = "python3.7"
   description   = "MANAGED BY TERRAFORM"
@@ -37,7 +37,7 @@ resource "aws_lambda_function" "lambda" {
 }
 
 data "aws_lambda_invocation" "example" {
-  function_name = "${aws_lambda_function.lambda.function_name}"
+  function_name = aws_lambda_function.lambda.function_name
 
   input = <<JSON
 { "ResourceProperties":
