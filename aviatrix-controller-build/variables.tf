@@ -33,7 +33,7 @@ variable "incoming_ssl_cidr" {
 }
 
 variable "instance_type" {
-  default = "t2.large"
+  default = "t3.large"
 }
 
 variable "name_prefix" {
