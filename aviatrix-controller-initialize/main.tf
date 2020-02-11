@@ -23,6 +23,11 @@ resource "aws_iam_role_policy_attachment" "attach-policy" {
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
+resource "aws_iam_role_policy_attachment" "lamba_exec_role_eni" {
+  role       = aws_iam_role.iam_for_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
+
 data "aws_region" "current" {}
 
 resource "aws_lambda_function" "lambda" {
@@ -34,6 +39,12 @@ resource "aws_lambda_function" "lambda" {
   runtime       = "python3.7"
   description   = "MANAGED BY TERRAFORM"
   timeout       = 900
+  vpc_config      {
+    subnet_ids        = [var.subnet]
+    security_group_ids = [var.security_group_id]
+  }
+
+  depends_on = [aws_iam_role_policy_attachment.lamba_exec_role_eni]
 }
 
 data "aws_lambda_invocation" "example" {
@@ -47,7 +58,7 @@ data "aws_lambda_invocation" "example" {
   "AWS_Account_ID"                     : "${var.aws_account_id}",
   "KeywordForCloudWatchLogParam"       : "avx-log",
   "DelimiterForCloudWatchLogParam"     : "---",
-  "ControllerPublicIpParam"            : "${var.public_ip}",
+  "ControllerPublicIpParam"            : "${var.private_ip}",
   "AviatrixApiVersionParam"            : "v1",
   "AviatrixApiRouteParam"              : "api/",
   "ControllerPrivateIpParam"           : "${var.private_ip}",
