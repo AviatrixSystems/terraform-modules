@@ -41,4 +41,10 @@ resource "aws_instance" "aviatrixcontroller" {
     Name      = format("%s%s-%d", local.name_prefix, "AviatrixController", count.index)
     Createdby = "Terraform+Aviatrix"
   }
+
+  lifecycle {
+    ignore_changes = [
+      "ami"
+    ]
+  }
 }
