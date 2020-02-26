@@ -3,6 +3,8 @@
 ### Description
 These Terraform modules allow you to build Aviatrix Controllers and prepare accounts for connecting to an existing Aviatrix Controller.
 
+**NOTE:** It is ***highly*** recommended to have the following modules in a directory separate from the rest of your Terraform pipeline. These modules only need to be run once to build the Controller and dependent resources.
+
 ### Available Modules
 
 | Module  | Description | Prerequisites |
@@ -27,7 +29,7 @@ separated from building the Controller:
 
 #### 1. Create the IAM roles
 
-**creatIAM.tf**
+**createIAM.tf**
 
 ``` hcl
 
@@ -179,4 +181,3 @@ output "controller_public_ip" {
   value = module.aviatrix-controller-build.public_ip
 }
 ```
-
