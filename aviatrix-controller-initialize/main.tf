@@ -67,7 +67,7 @@ resource "aws_lambda_function" "lambda" {
   description   = "MANAGED BY TERRAFORM"
   timeout       = 900
   vpc_config      {
-    subnet_ids         = [var.subnet]
+    subnet_ids         = [var.subnet_id]
     security_group_ids = [aws_security_group.AviatrixLambdaSecurityGroup.id]
   }
 
