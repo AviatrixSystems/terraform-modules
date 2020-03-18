@@ -24,5 +24,9 @@ variable "customer_license_id" {
 }
 
 variable "controller_launch_wait_time" {
-  default = 180
+  default = 210
 }
+
+variable "vpc_id" {}
+
+variable "subnet_id" {}

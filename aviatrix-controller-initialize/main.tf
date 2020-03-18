@@ -1,3 +1,7 @@
+locals {
+  name_prefix = ""
+}
+
 resource "aws_iam_role" "iam_for_lambda" {
   name = replace("iam_for_lambda_${var.public_ip}",".","-")
 
@@ -18,9 +22,37 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
+resource "aws_iam_policy" "lambda-policy" {
+  name        = "${local.name_prefix}aviatrix-lambda-policy"
+  path        = "/"
+  description = "Policy for creating aviatrix-lambda-policy"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "ec2:CreateNetworkInterface",
+        "ec2:AttachNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DetachNetworkInterface",
+        "ec2:ModifyNetworkInterfaceAttribute",
+        "ec2:ResetNetworkInterfaceAttribute",
+        "autoscaling:CompleteLifecycleAction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_role_policy_attachment" "attach-policy" {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  policy_arn = aws_iam_policy.lambda-policy.arn
 }
 
 data "aws_region" "current" {}
@@ -34,11 +66,24 @@ resource "aws_lambda_function" "lambda" {
   runtime       = "python3.7"
   description   = "MANAGED BY TERRAFORM"
   timeout       = 900
+  vpc_config      {
+    subnet_ids         = [var.subnet_id]
+    security_group_ids = [aws_security_group.AviatrixLambdaSecurityGroup.id]
+  }
+
+  depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixLambdaSecurityGroup]
+}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 90"
+  }
+  depends_on = [aws_lambda_function.lambda]
 }
 
 data "aws_lambda_invocation" "example" {
   function_name = aws_lambda_function.lambda.function_name
-
+  depends_on    = [null_resource.delay]
   input = <<JSON
 { "ResourceProperties":
 {
@@ -47,7 +92,7 @@ data "aws_lambda_invocation" "example" {
   "AWS_Account_ID"                     : "${var.aws_account_id}",
   "KeywordForCloudWatchLogParam"       : "avx-log",
   "DelimiterForCloudWatchLogParam"     : "---",
-  "ControllerPublicIpParam"            : "${var.public_ip}",
+  "ControllerPublicIpParam"            : "${var.private_ip}",
   "AviatrixApiVersionParam"            : "v1",
   "AviatrixApiRouteParam"              : "api/",
   "ControllerPrivateIpParam"           : "${var.private_ip}",
