@@ -30,10 +30,3 @@ variable "controller_launch_wait_time" {
 variable "vpc" {}
 
 variable "subnet" {}
-
-variable "incoming_ssl_cidr" {
-  type    = list(string)
-  default = ["0.0.0.0/0"]
-}
-
-

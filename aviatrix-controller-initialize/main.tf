@@ -68,10 +68,10 @@ resource "aws_lambda_function" "lambda" {
   timeout       = 900
   vpc_config      {
     subnet_ids         = [var.subnet]
-    security_group_ids = [aws_security_group.AviatrixSecurityGroup2.id]
+    security_group_ids = [aws_security_group.AviatrixLambdaSecurityGroup.id]
   }
 
-  depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixSecurityGroup2]
+  depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixLambdaSecurityGroup]
 }
 
 resource "null_resource" "delay" {

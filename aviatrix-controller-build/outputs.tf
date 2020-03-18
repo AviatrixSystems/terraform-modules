@@ -6,11 +6,11 @@ output "public_ip" {
   value = "${aws_eip.controller_eip.*.public_ip[0]}"
 }
 
-output "vpc" {
+output "vpc_id" {
   value = var.vpc
 }
 
-output "subnet" {
+output "subnet_id" {
   value = var.subnet
 }
 
