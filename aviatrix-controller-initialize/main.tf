@@ -1,3 +1,7 @@
+locals {
+  name_prefix = ""
+}
+
 resource "aws_iam_role" "iam_for_lambda" {
   name = replace("iam_for_lambda_${var.public_ip}",".","-")
 
@@ -18,14 +22,37 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "attach-policy" {
-  role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+resource "aws_iam_policy" "lambda-policy" {
+  name        = "${local.name_prefix}aviatrix-lambda-policy"
+  path        = "/"
+  description = "Policy for creating aviatrix-lambda-policy"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeInstances",
+        "ec2:CreateNetworkInterface",
+        "ec2:AttachNetworkInterface",
+        "ec2:DescribeNetworkInterfaces",
+        "ec2:DeleteNetworkInterface",
+        "ec2:DetachNetworkInterface",
+        "ec2:ModifyNetworkInterfaceAttribute",
+        "ec2:ResetNetworkInterfaceAttribute",
+        "autoscaling:CompleteLifecycleAction"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
 }
 
-resource "aws_iam_role_policy_attachment" "lamba_exec_role_eni" {
+resource "aws_iam_role_policy_attachment" "attach-policy" {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+  policy_arn = aws_iam_policy.lambda-policy.arn
 }
 
 data "aws_region" "current" {}
@@ -40,16 +67,23 @@ resource "aws_lambda_function" "lambda" {
   description   = "MANAGED BY TERRAFORM"
   timeout       = 900
   vpc_config      {
-    subnet_ids        = [var.subnet]
-    security_group_ids = [var.security_group_id]
+    subnet_ids         = [var.subnet]
+    security_group_ids = [aws_security_group.AviatrixSecurityGroup2.id]
   }
 
-  depends_on = [aws_iam_role_policy_attachment.lamba_exec_role_eni]
+  depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixSecurityGroup2]
+}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 90"
+  }
+  depends_on = [aws_lambda_function.lambda]
 }
 
 data "aws_lambda_invocation" "example" {
   function_name = aws_lambda_function.lambda.function_name
-
+  depends_on    = [null_resource.delay]
   input = <<JSON
 { "ResourceProperties":
 {

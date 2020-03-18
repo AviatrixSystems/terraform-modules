@@ -31,6 +31,9 @@ variable "vpc" {}
 
 variable "subnet" {}
 
-variable "security_group_id" {}
+variable "incoming_ssl_cidr" {
+  type    = list(string)
+  default = ["0.0.0.0/0"]
+}
 
 
