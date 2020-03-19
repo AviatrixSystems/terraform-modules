@@ -112,6 +112,8 @@ module "aviatrix_controller_init" {
   public_ip           = var.controller_public_ip
   access_account_name = "<<< your account name mapping to your AWS account in the Aviatrix Controller >>>"
   aws_account_id      = "<<< your aws account id >>>"
+  vpc_id              = "<<< your vpc id here >>>"
+  subnet_id           = "<<< your public subnet id >>>"
   customer_license_id = "<<< your customer license id (optional) >>>"   
 }
 
@@ -167,6 +169,8 @@ module "aviatrix-controller-initialize" {
   public_ip           = module.aviatrix-controller-build.public_ip
   access_account_name = "<<< account name for this AWS account >>>"
   aws_account_id      = data.aws_caller_identity.current.account_id
+  vpc_id              = module.aviatrix-controller-build.vpc_id
+  subnet_id           = module.aviatrix-controller-build.subnet_id
 }
 
 output "result" {

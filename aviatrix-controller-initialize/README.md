@@ -15,6 +15,8 @@ module "aviatrix_controller_init" {
   public_ip           = "<<< enter the Aviatrix Controller's public IP address >>>"
   access_account_name = "<<< enter the account name mapping to your AWS account in the Aviatrix Controller >>>"
   aws_account_id      = "<<< enter the aws account id >>>"
+  vpc_id              = "<<< insert VPC here, ie. vpc-xxxxxx >>>"
+  subnet_id           = "<<< insert public subnet id, ie.: subnet-9x3237xx >>>"
   customer_license_id = "<<< enter the customer license id (optional) >>>" 
 }
 
@@ -51,6 +53,14 @@ output "lambda_result" {
 - **aws_account_id**
 
   The AWS account ID.
+  
+- **vpc_id**
+
+  The ID of the VPC where the Controller is launched.
+  
+- **subnet_id**
+
+  The ID of the subnet where the Controller instance resides.
 
 - **customer_license_id**
 
