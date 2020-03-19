@@ -24,10 +24,10 @@ To create an Aviatrix Controller:
 ```
 module "aviatrixcontroller" {
   source  = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.12"
-  vpc     = "<<insert VPC here> ie. vpc-xxxxxx>"
-  subnet  = "<<insert public subnet id ie.: subnet-9x3237xx>>"
-  keypair = "<<insert keypair name ie.: keypairname>>"
-  ec2role = "<<insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: ${module.aviatrix-iam-roles.aviatrix-role-ec2-name}"
+  vpc     = "<<< insert VPC here, ie. vpc-xxxxxx >>>"
+  subnet  = "<<< insert public subnet id, ie.: subnet-9x3237xx >>>"
+  keypair = "<<< insert keypair name ie.: keypairname >>>"
+  ec2role = "<<< insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: module.aviatrix-iam-roles.aviatrix-role-ec2-name >>>"
 }
 ```
 
@@ -35,11 +35,11 @@ module "aviatrixcontroller" {
 
 - **vpc**
 
-  The VPC ID where the Controller will be installed.
+  The ID of the VPC where the Controller is launched.
   
 - **subnet**
 
-  The subnet ID where the Controller instance will reside.  Note this must be a public subnet (i.e., be attached to an IGW).
+  The ID of the subnet where the Controller instance resides. Note this must be a public subnet (i.e., be attached to an IGW).
 
 - **keypair**
 

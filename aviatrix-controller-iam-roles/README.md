@@ -26,7 +26,7 @@ module "iam_roles" {
 # cross account 
 module "iam_roles" {
   source                         = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
-  external-controller-account-id = "<<insert AWS account ID of the controller here>>"
+  external-controller-account-id = "<<< insert AWS account ID of the controller here >>>"
 }
 ```
 
