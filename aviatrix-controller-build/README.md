@@ -63,7 +63,7 @@ module "aviatrixcontroller" {
 
 - **instance_type**
 
-  The instance size for the Aviatrix controller instance. Default value is "t2.large".
+  The instance size for the Aviatrix controller instance. Default value is "t3.large".
 
 - **name_prefix**
 
