@@ -38,6 +38,14 @@ module "iam_roles" {
   for the secondary account different from the account where controller was/will be launched. DO NOT use this parameter
   if this Terraform module is applied on the AWS account of your controller.
 
+- **name_prefix**
+
+  A prefix to be added the Aviatrix controller instance name. Default value is "".
+
+- **tags** 
+
+  Additional map of tags passed to mark resources create by module. Default value is {}.
+
 ### Outputs
 
 - **aws-account**
