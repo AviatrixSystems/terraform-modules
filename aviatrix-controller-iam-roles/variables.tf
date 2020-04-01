@@ -55,7 +55,7 @@ EOF
 
   common_tags = merge(
     var.tags, {
-      module    = "aviatrix-controller-build"
+      module    = "aviatrix-controller-iam-roles"
       Createdby = "Terraform+Aviatrix"
   })
 }

@@ -54,12 +54,12 @@ variable controller_launch_wait_time {
   default     = 210
 }
 
-variable vpc {
+variable vpc_id {
   type        = string
   description = "VPC in which you want launch Aviatrix controller"
 }
 
-variable subnet {
+variable subnet_id {
   type        = string
   description = "Subnet in which you want launch Aviatrix controller"
 }
@@ -67,7 +67,7 @@ variable subnet {
 locals {
   common_tags = merge(
     var.tags, {
-      module    = "aviatrix-controller-build"
+      module    = "aviatrix-controller-initialize"
       Createdby = "Terraform+Aviatrix"
   })
 }
