@@ -57,7 +57,15 @@ output "lambda_result" {
 - **vpc_id**
 
   The ID of the VPC where the Controller is launched.
-  
+
+- **name_prefix**
+
+  A prefix to be added the Aviatrix controller instance name. Default value is "".
+
+- **tags** 
+
+  Additional map of tags passed to mark resources create by module. Default value is {}.
+
 - **subnet_id**
 
   The ID of the subnet where the Controller instance resides.

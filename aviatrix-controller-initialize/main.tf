@@ -1,9 +1,5 @@
-locals {
-  name_prefix = ""
-}
-
-resource "aws_iam_role" "iam_for_lambda" {
-  name = replace("iam_for_lambda_${var.public_ip}",".","-")
+resource aws_iam_role iam_for_lambda {
+  name = replace("iam_for_lambda_${var.public_ip}", ".", "-")
 
   assume_role_policy = <<EOF
 {
@@ -22,7 +18,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 EOF
 }
 
-resource "aws_iam_policy" "lambda-policy" {
+resource aws_iam_policy lambda-policy {
   name        = "${local.name_prefix}aviatrix-lambda-policy"
   path        = "/"
   description = "Policy for creating aviatrix-lambda-policy"
@@ -50,41 +46,42 @@ resource "aws_iam_policy" "lambda-policy" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "attach-policy" {
+resource aws_iam_role_policy_attachment attach-policy {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.lambda-policy.arn
 }
 
-data "aws_region" "current" {}
+data aws_region current {}
 
-resource "aws_lambda_function" "lambda" {
+resource aws_lambda_function lambda {
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
   s3_key        = "run_controller_init_setup.zip"
-  function_name = replace("AvxLambda_${var.public_ip}",".","-")
+  function_name = replace("AvxLambda_${var.public_ip}", ".", "-")
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "run_controller_init_setup.lambda_handler"
   runtime       = "python3.7"
   description   = "MANAGED BY TERRAFORM"
   timeout       = 900
-  vpc_config      {
+  vpc_config {
     subnet_ids         = [var.subnet_id]
     security_group_ids = [aws_security_group.AviatrixLambdaSecurityGroup.id]
   }
 
+  tags       = local.common_tags
   depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixLambdaSecurityGroup]
 }
 
-resource "null_resource" "delay" {
-  provisioner "local-exec" {
+resource null_resource delay {
+  provisioner local-exec {
     command = "sleep 90"
   }
   depends_on = [aws_lambda_function.lambda]
 }
 
-data "aws_lambda_invocation" "example" {
+data aws_lambda_invocation example {
   function_name = aws_lambda_function.lambda.function_name
   depends_on    = [null_resource.delay]
-  input = <<JSON
+  input         = <<JSON
 { "ResourceProperties":
 {
   "PrefixStringParam"                  : "avx",

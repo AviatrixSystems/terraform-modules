@@ -1,17 +1,39 @@
-variable "num_controllers" {
-  default = 1
+variable num_controllers {
+  type        = number
+  description = "Number of controllers to build"
+  default     = 1
 }
 
-variable "vpc" {}
+variable vpc {
+  type        = string
+  description = "VPC in which you want launch Aviatrix controller"
+}
 
-variable "subnet" {}
+variable subnet {
+  type        = string
+  description = "Subnet in which you want launch Aviatrix controller"
+}
 
-variable "keypair" {}
+variable keypair {
+  type        = string
+  description = "Key pair which should be used by Aviatrix controller"
+}
 
-variable "ec2role" {}
+variable ec2role {
+  type        = string
+  description = "EC2 role for controller"
+}
 
-variable "termination_protection" {
-    default = true
+variable tags {
+  type        = map(string)
+  description = "Map of common tags which should be used for module resources"
+  default     = {}
+}
+
+variable termination_protection {
+  type        = bool
+  description = "Enable/disable switch for termination protection"
+  default     = true
 }
 
 #
@@ -19,42 +41,59 @@ variable "termination_protection" {
 #
 
 # This is the default root volume size as suggested by Aviatrix
-variable "root_volume_size" {
-  default = 32
+variable root_volume_size {
+  type        = number
+  description = "Root volume disk size for controller"
+  default     = 32
 }
 
-variable "root_volume_type" {
-  default = "gp2"
+variable root_volume_type {
+  type        = string
+  description = "Root volume type for controller"
+  default     = "gp2"
 }
 
-variable "incoming_ssl_cidr" {
-  type = list(string)
-  default = ["0.0.0.0/0"]
+variable incoming_ssl_cidr {
+  type        = list(string)
+  description = "Incoming cidr for security group used by controller"
+  default     = ["0.0.0.0/0"]
 }
 
-variable "instance_type" {
-  default = "t3.large"
+variable instance_type {
+  type        = string
+  description = "Controller instance size"
+  default     = "t3.large"
 }
 
-variable "name_prefix" {
-  default = ""
+variable name_prefix {
+  type        = string
+  description = "Additional name prefix for your environment resources"
+  default     = ""
 }
 
-variable "type" {
-  default = "metered"
+variable type {
+  default     = "metered"
+  type        = string
+  description = "Type of billing, can be metered or byol"
 }
 
-data "aws_region" "current" {}
+data aws_region current {}
 
 locals {
   name_prefix    = var.name_prefix != "" ? "${var.name_prefix}-" : ""
   images_metered = jsondecode(data.http.avx_iam_id.body).Metered
   images_byol    = jsondecode(data.http.avx_iam_id.body).BYOL
   ami_id         = "${var.type == "metered" ? local.images_metered[data.aws_region.current.name] : local.images_byol[data.aws_region.current.name]}"
+  common_tags = merge(
+    var.tags, {
+      module    = "aviatrix-controller-build"
+      Createdby = "Terraform+Aviatrix"
+  })
 }
 
-data "http" "avx_iam_id" {
-  url             = "https://s3-us-west-2.amazonaws.com/aviatrix-download/AMI_ID/ami_id.json"
+
+data http avx_iam_id {
+  url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/AMI_ID/ami_id.json"
   request_headers = {
     "Accept" = "application/json"
   }
