@@ -40,7 +40,7 @@ module "iam_roles" {
 
 - **name_prefix**
 
-  A prefix to be added the Aviatrix controller instance name. Default value is "".
+  A prefix to be added to the Aviatrix controller instance name. Default value is "".
 
 - **tags** 
 

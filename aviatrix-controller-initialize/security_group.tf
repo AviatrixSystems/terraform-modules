@@ -1,10 +1,10 @@
 resource aws_security_group AviatrixLambdaSecurityGroup {
-  name        = "${local.name_prefix}AviatrixLambdaSecurityGroup"
+  name        = "${var.name_prefix}AviatrixLambdaSecurityGroup"
   description = "Aviatrix - Lambda Security Group"
   vpc_id      = var.vpc_id
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}AviatrixLambdaSecurityGroup"
+    Name = "${var.name_prefix}AviatrixLambdaSecurityGroup"
   })
 }
 

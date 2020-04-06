@@ -13,3 +13,7 @@ output "aviatrix-role-app-name" {
   value       = aws_iam_role.aviatrix-role-app.name
   description = "Aviatrix role for application"
 }
+
+output "name_prefix" {
+  value = var.name_prefix
+}
