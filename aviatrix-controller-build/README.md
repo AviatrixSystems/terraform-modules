@@ -51,7 +51,7 @@ module "aviatrixcontroller" {
 
 - **root_volume_size**
   
-  The size of the hard disk for the controller instance, default value is 20, as suggested by Aviatrix.
+  The size of the hard disk for the controller instance. If not stated, will use default value (currently: 32) as suggested by Aviatrix.
 
 - **root_volume_type**
   
@@ -67,7 +67,7 @@ module "aviatrixcontroller" {
 
 - **name_prefix**
 
-  A prefix to be added the Aviatrix controller instance name. Default value is "".
+  A prefix to be added to the Aviatrix controller instance name. Default value is "".
 
 - **tags** 
 
