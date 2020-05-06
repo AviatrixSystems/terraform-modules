@@ -74,7 +74,7 @@ variable name_prefix {
 variable type {
   default     = "metered"
   type        = string
-  description = "Type of billing, can be 'metered', 'byol' or 'meteredplatinum'"
+  description = "Type of billing, can be 'metered', 'BYOL' or 'meteredplatinum'"
 }
 
 data aws_region current {}
