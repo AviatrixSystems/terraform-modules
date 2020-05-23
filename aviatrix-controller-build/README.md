@@ -75,7 +75,7 @@ module "aviatrixcontroller" {
 
 - **type**
 
-  The license type for the Aviatrix controller. Default value is "metered". Valid values are "metered", "BYOL", and "meteredplatinum".
+  The license type for the Aviatrix controller. Default value is "meteredplatinum". Valid values are "meteredplatinum" and "BYOL".
 
 - **termination_protection**
 
