@@ -23,6 +23,6 @@ output security_group_id {
   description = "Security group id used by Aviatrix controller"
 }
 
-output "name_prefix" {
+output name_prefix {
   value = var.name_prefix
 }
