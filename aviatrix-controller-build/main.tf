@@ -38,7 +38,7 @@ resource aws_instance aviatrixcontroller {
   }
 
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix} AviatrixController ${count.index}"
+    Name = "${local.name_prefix}AviatrixController-${count.index}"
   })
 
   lifecycle {
