@@ -1,10 +1,10 @@
 output private_ip {
-  value       = aws_instance.aviatrixcontroller.*.private_ip[0]
+  value       = aws_instance.aviatrixcontroller.*.private_ip[count.index]
   description = "List of private IPs for aviatrix conroller"
 }
 
 output public_ip {
-  value       = aws_eip.controller_eip.*.public_ip[0]
+  value       = aws_eip.controller_eip.*.public_ip[count.index]
   description = "List of public IPs for aviatrix conroller"
 }
 
