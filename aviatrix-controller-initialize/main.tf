@@ -95,7 +95,7 @@ data aws_lambda_invocation example {
   "ControllerPrivateIpParam"           : "${var.private_ip}",
   "ControllerAdminPasswordParam"       : "${var.admin_password}",
   "ControllerAdminEmailParam"          : "${var.admin_email}",
-  "ControllerVersionParam"             : "latest",
+  "ControllerVersionParam"             : "${var.controller_version}",
   "ControllerAccessAccountNameParam"   : "${var.access_account_name}",
   "AviatrixCustomerLicenseIdParam"     : "${var.customer_license_id}",
   "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}"
