@@ -77,6 +77,11 @@ variable type {
   description = "Type of billing, can be 'meteredplatinum' or 'BYOL'."
 }
 
+variable controller_name {
+  type        = string
+  description = "Name of controller that will be launched. If not set, default name will be used."
+}
+
 data aws_region current {}
 
 locals {
