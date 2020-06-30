@@ -64,6 +64,12 @@ variable subnet_id {
   description = "Subnet in which you want launch Aviatrix controller"
 }
 
+variable controller_version {
+  type        = string
+  default     = "latest"
+  description = "The version in which you want launch Aviatrix controller"
+}
+
 locals {
   common_tags = merge(
     var.tags, {
