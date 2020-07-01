@@ -56,6 +56,11 @@ resource aws_iam_role_policy_attachment attach-policy-1 {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
+resource aws_iam_role_policy_attachment attach-policy-2 {
+  role       = aws_iam_role.iam_for_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
 data aws_region current {}
 
 resource aws_lambda_function lambda {
