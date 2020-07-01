@@ -1,17 +1,5 @@
 data aws_caller_identity current {}
 
-variable tags {
-  type        = map(string)
-  description = "Map of common tags which should be used for module resources"
-  default     = {}
-}
-
-variable name_prefix {
-  type        = string
-  description = "Additional name prefix for your environment resources"
-  default     = ""
-}
-
 variable admin_email {
   type        = string
   description = "Aviatrix admin email address"
@@ -42,21 +30,21 @@ variable aws_account_id {
   description = "AWS account ID"
 }
 
-
-variable customer_license_id {
-  type        = string
-  description = "Customer license ID"
-  default     = ""
-}
-
-variable controller_launch_wait_time {
-  description = "Controller launch wait time"
-  default     = 210
-}
-
 variable vpc_id {
   type        = string
   description = "VPC in which you want launch Aviatrix controller"
+}
+
+variable name_prefix {
+  type        = string
+  description = "Additional name prefix for your environment resources"
+  default     = ""
+}
+
+variable tags {
+  type        = map(string)
+  description = "Map of common tags which should be used for module resources"
+  default     = {}
 }
 
 variable subnet_id {
@@ -64,10 +52,21 @@ variable subnet_id {
   description = "Subnet in which you want launch Aviatrix controller"
 }
 
+variable customer_license_id {
+  type        = string
+  description = "Customer license ID"
+  default     = ""
+}
+
 variable controller_version {
   type        = string
   default     = "latest"
   description = "The version in which you want launch Aviatrix controller"
+}
+
+variable controller_launch_wait_time {
+  description = "Controller launch wait time"
+  default     = 210
 }
 
 locals {
