@@ -33,6 +33,10 @@ module "aviatrixcontroller" {
 
 ### Variables
 
+- **num_controllers**
+
+  Number of controllers to build.
+  
 - **vpc**
 
   The ID of the VPC where the Controller is launched.
@@ -49,6 +53,14 @@ module "aviatrixcontroller" {
 
   The name of the aviatrix-ec2-role IAM role.
 
+- **tags** 
+
+  Additional map of tags passed to mark resources create by module. Default value is {}.
+  
+- **termination_protection**
+
+  Whether termination protection is enabled for the controller. Default value is true. Valid values are true/false.
+  
 - **root_volume_size**
   
   The size of the hard disk for the controller instance. If not stated, will use default value (currently: 32) as suggested by Aviatrix.
@@ -69,19 +81,17 @@ module "aviatrixcontroller" {
 
   A prefix to be added to the Aviatrix controller instance name. Default value is "".
 
-- **tags** 
-
-  Additional map of tags passed to mark resources create by module. Default value is {}.
-
 - **type**
 
   The license type for the Aviatrix controller. Default value is "meteredplatinum". Valid values are "meteredplatinum" and "BYOL".
-
-- **termination_protection**
-
-  Whether termination protection is enabled for the controller. Default value is true. Valid values are true/false.
-
+  
+- **controller_name**
+  
+  Name of controller that will be launched. If not set, default name will be used.
+  
+  
 ### Outputs
+
 - **aws-account**
 
   The AWS account ID where this controller was installed.

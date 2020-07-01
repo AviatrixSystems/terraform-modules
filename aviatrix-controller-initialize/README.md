@@ -74,6 +74,10 @@ output "lambda_result" {
 
   The customer license ID, optional. Required if using a BYOL controller.
   
+- **controller_version**
+  
+  The version to which you want initialize the Aviatrix controller.
+    
 - **controller_launch_wait_time**
  
   Time in second to wait for controller to be up. Default value is 180.
