@@ -78,6 +78,7 @@ variable type {
 }
 
 variable controller_name {
+  default     = ""
   type        = string
   description = "Name of controller that will be launched. If not set, default name will be used."
 }
