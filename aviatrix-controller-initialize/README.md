@@ -60,7 +60,7 @@ output "lambda_result" {
 
 - **name_prefix**
 
-  A prefix to be added to the Aviatrix controller instance name. Default value is "".
+  A prefix to be added to the resources created by this module. Default value is "".
 
 - **tags** 
 
@@ -80,7 +80,7 @@ output "lambda_result" {
     
 - **controller_launch_wait_time**
  
-  Time in second to wait for controller to be up. Default value is 180.
+  Time in second to wait for controller to be up. Default value is 210.
 
 ### Outputs
 
