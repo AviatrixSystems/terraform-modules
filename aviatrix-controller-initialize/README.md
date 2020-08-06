@@ -84,6 +84,6 @@ output "lambda_result" {
 
 ### Outputs
 
-- **lambda_result**
+- **result**
 
   The status of lambda execution.
