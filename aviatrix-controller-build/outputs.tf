@@ -1,11 +1,11 @@
 output private_ip {
-  value       = aws_instance.aviatrixcontroller.*.private_ip[0]
-  description = "List of private IPs for aviatrix conroller"
+  value       = length(aws_instance.aviatrixcontroller) > 0 ? aws_instance.aviatrixcontroller.*.private_ip[0] : ""
+  description = "Private IPs for first aviatrix conroller"
 }
 
 output public_ip {
-  value       = aws_eip.controller_eip.*.public_ip[0]
-  description = "List of public IPs for aviatrix conroller"
+  value       = length(aws_instance.aviatrixcontroller) > 0 ? aws_instance.aviatrixcontroller.*.public_ip[0] : ""
+  description = "Public IP for the first aviatrix conroller"
 }
 
 output vpc_id {
