@@ -111,3 +111,11 @@ module "aviatrixcontroller" {
 - **public_ip**
 
   The public IP address of the AWS EC2 instance created for the controller.
+
+- **private_ip_list**
+  
+  List of Private IP addresses of all the Aviatrix controllers launched on the same VPC.
+
+- **public_ip_list**
+  
+  List of Public IP addresses of all the Aviatrix controllers launched on the same VPC.
