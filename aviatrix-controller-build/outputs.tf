@@ -27,12 +27,12 @@ output name_prefix {
   value = var.name_prefix
 }
 
-output list_private_ip {
+output private_ip_list {
   value       = aws_instance.aviatrixcontroller.*.private_ip
-  description = "List of Private IPs for all of the aviatrix conroller launched"
+  description = "List of Private IP addresses of all the Aviatrix controllers launched on the same VPC"
 }
 
-output list_public_ip {
+output public_ip_list {
   value       = aws_eip.controller_eip.*.public_ip
-  description = "List of Public IPs for all of the aviatrix conroller launched"
+  description = "List of Public IP addresses of all the Aviatrix controllers launched on the same VPC"
 }
