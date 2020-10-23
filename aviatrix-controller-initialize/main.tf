@@ -81,16 +81,15 @@ resource aws_lambda_function lambda {
   depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixLambdaSecurityGroup]
 }
 
-resource null_resource delay {
-  provisioner local-exec {
-    command = "sleep 90"
-  }
+resource time_sleep wait_90_seconds {
+  create_duration = "90s"
+
   depends_on = [aws_lambda_function.lambda]
 }
 
 data aws_lambda_invocation example {
   function_name = aws_lambda_function.lambda.function_name
-  depends_on    = [null_resource.delay]
+  depends_on    = [time_sleep.wait_90_seconds]
   input         = <<JSON
 { "ResourceProperties":
 {
