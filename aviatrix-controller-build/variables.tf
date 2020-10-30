@@ -89,8 +89,8 @@ locals {
   name_prefix     = var.name_prefix != "" ? "${var.name_prefix}-" : ""
   images_byol     = jsondecode(data.http.avx_iam_id.body).BYOL
   images_platinum = jsondecode(data.http.avx_iam_id.body).MeteredPlatinum
-  images_custom = jsondecode(data.http.avx_iam_id.body).Custom
-  ami_id          = var.type == "Custom"? local.images_custom[data.aws_region.current.name] : (var.type == "BYOL" || var.type == "byol" ? local.images_byol[data.aws_region.current.name] : local.images_platinum[data.aws_region.current.name])
+  images_custom   = jsondecode(data.http.avx_iam_id.body).Custom
+  ami_id          = var.type == "Custom" ? local.images_custom[data.aws_region.current.name] : (var.type == "BYOL" || var.type == "byol" ? local.images_byol[data.aws_region.current.name] : local.images_platinum[data.aws_region.current.name])
   common_tags = merge(
     var.tags, {
       module    = "aviatrix-controller-build"
