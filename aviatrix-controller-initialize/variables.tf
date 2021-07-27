@@ -69,6 +69,11 @@ variable controller_launch_wait_time {
   default     = 210
 }
 
+variable wait_time_for_instance {
+  description = "Wait time for controller instance to come up"
+  default     = 500
+}
+
 locals {
   common_tags = merge(
     var.tags, {
