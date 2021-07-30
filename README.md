@@ -131,7 +131,7 @@ output "lambda_result" {
 > terraform apply -var-file=../aviatrix_controller.tfvars
 ```
 
--> **NOTE:** If the Lambda function times out, please try to increase `wait_time_for_instance`, which is 500s at default.
+-> **NOTE:** If the Lambda function times out, please try to increase `wait_time_for_instance`, which is 90s at default.
 
 ### Putting it all together
 
