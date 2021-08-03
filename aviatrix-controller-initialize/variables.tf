@@ -71,7 +71,7 @@ variable controller_launch_wait_time {
 
 variable wait_time_for_instance {
   description = "Wait time for controller instance to come up"
-  default     = 500
+  default     = 90
 }
 
 locals {
