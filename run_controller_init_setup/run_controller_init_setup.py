@@ -1472,15 +1472,18 @@ def run_initial_setup(
             indent=indent + "    "
         )
         return response
-    except Exception as e:
-        print("Fail to run initial_setup due to: " + str(e))
-        print("Sleep for 15s, then continue.")
-        time.sleep(15)
-        response = requests.models.Response()
-        response.status_code = 200
-        response_content = json.dumps({"return": True})
-        response._content = str.encode(response_content)
-        return response
+    except requests.exceptions.ConnectionError as err:
+        if "Remote end closed connection without response" in str(err):
+            print("Server closed the connection while executing initial setup API."
+                  " Ignoring response")
+            time.sleep(15)
+            response = requests.models.Response()
+            response.status_code = 200
+            response_content = json.dumps({'return': True, 'reason': 'Warning!! Server closed the connection'})
+            response._content = str.encode(response_content)
+            return response
+        else:
+            raise AviatrixException(message="Failed to execute initial setup: " + str(err))
 # END def run_initial_setup()
 
 
