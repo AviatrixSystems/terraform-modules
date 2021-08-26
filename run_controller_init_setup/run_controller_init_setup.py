@@ -83,7 +83,6 @@ import json
 import traceback
 import re
 import requests
-import signal
 
 
 requests.packages.urllib3.disable_warnings()
@@ -97,22 +96,6 @@ class AviatrixException(Exception):
     def __init__(self, message="Aviatrix Error Message: ..."):
         super(AviatrixException, self).__init__(message)
 # END class MyException
-
-
-class timeout:
-    def __init__(self, limit=1, message='Execution timeout'):
-        self.limit = limit
-        self.message = message
-
-    def __enter__(self):
-        signal.signal(signal.SIGALRM, self.handler)
-        signal.alarm(self.limit)
-
-    def __exit__(self, type, value, traceback):
-        signal.alarm(0)
-
-    def handler(self, signum, frame):
-        raise TimeoutError(self.message)
 
 
 def lambda_handler(event, context):
@@ -1481,16 +1464,9 @@ def run_initial_setup(
         print(indent + keyword_for_log + "Request Method Type : " + str(request_method))
         print(indent + keyword_for_log + "Request payload     : \n" + str(json.dumps(obj=data, indent=4)))
 
-        with timeout(limit=600):
-            response = _send_aviatrix_api(
-                api_endpoint_url=api_endpoint_url,
-                request_method=request_method,
-                payload=data,
-                keyword_for_log=keyword_for_log,
-                indent=indent + "    "
-            )
-            return response
-    except (requests.exceptions.ConnectionError, TimeoutError) as err:
+        response = requests.post(url=api_endpoint_url, data=data, verify=False, timeout=600)
+        return response
+    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
         if "Remote end closed connection without response" in str(err):
             print("Server closed the connection while executing initial setup API."
                   " Ignoring response")
