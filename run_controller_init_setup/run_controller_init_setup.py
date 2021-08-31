@@ -1464,10 +1464,10 @@ def run_initial_setup(
         print(indent + keyword_for_log + "Request Method Type : " + str(request_method))
         print(indent + keyword_for_log + "Request payload     : \n" + str(json.dumps(obj=data, indent=4)))
 
-        response = requests.post(url=api_endpoint_url, data=data, verify=False, timeout=600)
+        response = requests.post(url=api_endpoint_url, data=data, verify=False, timeout=720)
         return response
-    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
-        if "Remote end closed connection without response" in str(err) or "timed out" in str(err):
+    except requests.exceptions.ConnectionError as err:
+        if "Remote end closed connection without response" in str(err):
             print("Server closed the connection while executing initial setup API."
                   " Ignoring response")
             time.sleep(15)
