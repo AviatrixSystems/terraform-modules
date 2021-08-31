@@ -1467,7 +1467,7 @@ def run_initial_setup(
         response = requests.post(url=api_endpoint_url, data=data, verify=False, timeout=600)
         return response
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
-        if "Remote end closed connection without response" in str(err):
+        if "Remote end closed connection without response" in str(err) or "timed out" in str(err):
             print("Server closed the connection while executing initial setup API."
                   " Ignoring response")
             time.sleep(15)
