@@ -69,7 +69,7 @@ resource aws_lambda_function lambda {
   function_name = replace("AvxLambda_${var.public_ip}", ".", "-")
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "run_controller_init_setup.lambda_handler"
-  runtime       = "python3.7"
+  runtime       = "python3.8"
   description   = "MANAGED BY TERRAFORM"
   timeout       = 900
   vpc_config {
