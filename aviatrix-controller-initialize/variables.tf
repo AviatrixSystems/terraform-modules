@@ -1,6 +1,12 @@
 data aws_caller_identity current {}
 
-variable admin_email {
+data aws_region current {}
+
+locals {
+  is_aws_cn = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : "aws"
+}
+
+  variable admin_email {
   type        = string
   description = "Aviatrix admin email address"
 }
@@ -71,7 +77,7 @@ variable controller_launch_wait_time {
 
 variable wait_time_for_instance {
   description = "Wait time for controller instance to come up"
-  default     = 90
+  default     = 120
 }
 
 locals {

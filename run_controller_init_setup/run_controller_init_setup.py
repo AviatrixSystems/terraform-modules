@@ -84,9 +84,7 @@ import traceback
 import re
 import requests
 
-
 requests.packages.urllib3.disable_warnings()
-
 
 # Global Variables
 DEFAULT_WAIT_TIME_FOR_1ST_APACHE_WAKEUP = 600
@@ -95,6 +93,8 @@ DEFAULT_WAIT_TIME_FOR_1ST_APACHE_WAKEUP = 600
 class AviatrixException(Exception):
     def __init__(self, message="Aviatrix Error Message: ..."):
         super(AviatrixException, self).__init__(message)
+
+
 # END class MyException
 
 
@@ -103,7 +103,8 @@ def lambda_handler(event, context):
 
     ### Get the values from "event" for variables, ONLY if the keys are found in the "event" dictionary
     keyword_for_log = ""
-    if "KeywordForCloudWatchLogParam" in event["ResourceProperties"] and "DelimiterForCloudWatchLogParam" in event["ResourceProperties"]:
+    if "KeywordForCloudWatchLogParam" in event["ResourceProperties"] and "DelimiterForCloudWatchLogParam" in event[
+        "ResourceProperties"]:
         keyword_for_log = "{0}{1}".format(
             str(event["ResourceProperties"]["KeywordForCloudWatchLogParam"]),
             str(event["ResourceProperties"]["DelimiterForCloudWatchLogParam"])
@@ -165,7 +166,8 @@ def lambda_handler(event, context):
         # END if-else
     except Exception as e:  # pylint: disable=broad-except
         traceback_msg = traceback.format_exc()
-        lambda_failure_reason = "Oops! Aviatrix Lambda caught an exception! The traceback message is: \n" + str(traceback_msg)
+        lambda_failure_reason = "Oops! Aviatrix Lambda caught an exception! The traceback message is: \n" + str(
+            traceback_msg)
         print(keyword_for_log + lambda_failure_reason)
         if lambda_invoker_type == "terraform" or lambda_invoker_type == "tf":
             response_for_terraform = _build_response_for_terraform(
@@ -206,7 +208,6 @@ def lambda_handler(event, context):
             return response_for_terraform
         # END if-else
     # END try-except
-
 
     # At this point, Aviatrix/AWS Lambda function has finished the tasks without error
 
@@ -257,6 +258,8 @@ def lambda_handler(event, context):
         )
         return response_for_generic_lambda_invoker
     # END if-else
+
+
 # END def lambda_handler()
 
 
@@ -284,18 +287,22 @@ def get_lambda_invoker_type(event=dict()):
         )
 
     return "generic"
+
+
 # END def get_lambda_invoker_type()
 
 
 def _is_valid_lambda_invoker_type(lambda_invoker_type=""):
     lambda_invoker_type = lambda_invoker_type.lower()
     if lambda_invoker_type == "terraform" or \
-       lambda_invoker_type == "tf" or \
-       lambda_invoker_type == "cloudformation" or \
-       lambda_invoker_type == "cf":
+            lambda_invoker_type == "tf" or \
+            lambda_invoker_type == "cloudformation" or \
+            lambda_invoker_type == "cf":
         return True
     else:
         return False
+
+
 # END def is_valid_invoker_type()
 
 
@@ -304,7 +311,8 @@ def _lambda_handler(event, context):
 
     ### Get the values from "event" for variables, ONLY if the keys are found in the "event" dictionary
     keyword_for_log = ""
-    if "KeywordForCloudWatchLogParam" in event["ResourceProperties"] and "DelimiterForCloudWatchLogParam" in event["ResourceProperties"]:
+    if "KeywordForCloudWatchLogParam" in event["ResourceProperties"] and "DelimiterForCloudWatchLogParam" in event[
+        "ResourceProperties"]:
         keyword_for_log = "{0}{1}".format(
             str(event["ResourceProperties"]["KeywordForCloudWatchLogParam"]),
             str(event["ResourceProperties"]["DelimiterForCloudWatchLogParam"])
@@ -319,7 +327,8 @@ def _lambda_handler(event, context):
     try:
         wait_time_for_1st_apache_wakeup = event['ResourceProperties']['_SecondsToWaitForApacheToBeUpParam']
     except KeyError as e:
-        print(keyword_for_log + '''AWS-Lambda invoker didn't pass the parameter: "_SecondsToWaitForApacheToBeUpParam". ''')
+        print(
+            keyword_for_log + '''AWS-Lambda invoker didn't pass the parameter: "_SecondsToWaitForApacheToBeUpParam". ''')
         wait_time_for_1st_apache_wakeup = DEFAULT_WAIT_TIME_FOR_1ST_APACHE_WAKEUP
 
     aviatrix_api_version = event["ResourceProperties"]["AviatrixApiVersionParam"]
@@ -350,7 +359,6 @@ def _lambda_handler(event, context):
 
     print(keyword_for_log + 'ENDED: Display all parameters from lambda "event" object\n\n')
 
-
     ### Wait until REST API service of Aviatrix controller is up and running
     print(keyword_for_log + 'START: Wait until API server of controller is up and running')
     wait_time = get_apache_max_wait_time(wait_time=wait_time_for_1st_apache_wakeup, indent='    ')
@@ -365,7 +373,6 @@ def _lambda_handler(event, context):
     )
     print(keyword_for_log + 'ENDED: Wait until API server of controller is up and running\n\n')
 
-
     ### Login Aviatrix Controller as admin with private IP
     print(keyword_for_log + 'START: Invoke Aviatrix API to login Aviatrix Controller as admin with private IP')
     response = login(
@@ -378,7 +385,6 @@ def _lambda_handler(event, context):
     verify_aviatrix_api_response_login(response=response, keyword_for_log=keyword_for_log, indent="    ")
     CID = response.json()["CID"]
     print(keyword_for_log + 'ENDED: Invoke Aviatrix API to login Aviatrix Controller as admin with private IP\n\n')
-
 
     ### Check if the controller has already been initialized
     print(keyword_for_log + 'START: Check if the controller has already been initialized')
@@ -395,7 +401,6 @@ def _lambda_handler(event, context):
         )
     print(keyword_for_log + 'ENDED: Check if the controller has already been initialized\n\n')
 
-
     ''' MMM
     ### Get controller version
     print(keyword_for_log + 'START: Get controller version')
@@ -408,7 +413,6 @@ def _lambda_handler(event, context):
     print(keyword_for_log + 'ENDED: Get controller version\n\n')
     '''
     controller_version = "2.7"  # it's hard-coded for now because "list_version_info" doesn't work at the moment
-
 
     '''
     Description:
@@ -425,7 +429,6 @@ def _lambda_handler(event, context):
     )
     verify_aviatrix_api_set_admin_email(response=response, keyword_for_log=keyword_for_log, indent="    ")
     print(keyword_for_log + 'ENDED: Invoke Aviatrix API to set admin email\n\n')
-
 
     ### Set admin password
     print(keyword_for_log + 'START: Invoke Aviatrix API to set admin password')
@@ -480,14 +483,12 @@ def _lambda_handler(event, context):
     verify_aviatrix_api_run_initial_setup(response=response, keyword_for_log=keyword_for_log, indent="    ")
     print(keyword_for_log + 'ENDED: Invoke Aviatrix API to run initial setup\n\n')
 
-
     # wait_until_controller_initial_setup_finishes()  # PLACEHOLDER
     wait_time = 15
     print(keyword_for_log + 'START: Wait until controller finishes initial setup')
     print(keyword_for_log + '    Waiting for roughly ' + str(wait_time) + ' seconds...')
     time.sleep(wait_time)
     print(keyword_for_log + 'ENDED: Wait until controller finishes initial setup\n\n')
-
 
     ### Wait until apache2 of controller is up and running
     print(keyword_for_log + 'START: Wait until API server of controller is up and running')
@@ -502,7 +503,6 @@ def _lambda_handler(event, context):
     )
     print(keyword_for_log + 'ENDED: Wait until API server of controller is up and running\n\n')
 
-
     ### Re-login after initial-setup
     print(keyword_for_log + 'START: Re-login after initial-setup')
     response = login(
@@ -514,7 +514,6 @@ def _lambda_handler(event, context):
     verify_aviatrix_api_response_login(response=response, keyword_for_log=keyword_for_log, indent="    ")
     CID = response.json()["CID"]
     print(keyword_for_log + 'ENDED: Re-login after initial-setup\n\n')
-
 
     ''' START COMMENT: This section of code needs to be commented out after 4.1 is released
     # The difference between this section and the following section is "is_controller_type_byol()",
@@ -533,7 +532,6 @@ def _lambda_handler(event, context):
         py_dict = response.json()
         print(keyword_for_log + "Aviatrix API response --> " + str(py_dict))
         print(keyword_for_log + 'ENDED: Invoke Aviatrix API to set Aviatrix Customer ID\n\n')
-
 
     """ START COMMENT: This section of code is for the time when 4.1 is released
     # IF aviatrix_customer_id string has more than 3 characters
@@ -563,28 +561,33 @@ def _lambda_handler(event, context):
     '''
     ENDED COMMENT: This section of code is for the time when 4.1 is released """
 
-
     print(
         keyword_for_log +
         'START: Invoke Aviatrix API to create Access-Account which the cloud type is AWS IAM Role based'
     )
-    app_role_arn = "arn:aws:iam::{AWS_ACCOUNT_ID}:role/aviatrix-role-app"
+    controller_region = event["ResourceProperties"]["ControllerRegion"]
+    app_role_arn = "arn:" + controller_region + ":iam::{AWS_ACCOUNT_ID}:role/aviatrix-role-app"
     app_role_arn = app_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
-    ec2_role_arn = "arn:aws:iam::{AWS_ACCOUNT_ID}:role/aviatrix-role-ec2"
+    ec2_role_arn = "arn:" + controller_region + ":iam::{AWS_ACCOUNT_ID}:role/aviatrix-role-ec2"
     ec2_role_arn = ec2_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
+    if controller_region == "aws":
+        cloud_type = "1"
+    elif controller_region == "aws-cn":
+        cloud_type = "1024"
     response = create_access_account(
         api_endpoint_url=api_endpoint_url,
         CID=CID,
         account_name=new_access_account_name,
         # account_password=new_access_account_password,
         # account_email=new_access_account_email,
-        cloud_type="1",
+        cloud_type=cloud_type,
         aws_account_number=aws_account_id,
         is_iam_role_based="true",
         app_role_arn=app_role_arn,
         ec2_role_arn=ec2_role_arn,
         keyword_for_log=keyword_for_log
     )
+
     verify_aviatrix_api_create_access_account(
         response=response,
         admin_email=admin_email,
@@ -598,6 +601,8 @@ def _lambda_handler(event, context):
 
     # At this point, all lambda code statements are executed successfully with no errors.
     print(keyword_for_log + "Successfully completed lambda function with no errors!\n\n")
+
+
 # END def _lambda_handler()
 
 
@@ -612,6 +617,8 @@ def _is_integer(string_to_check='123'):
         return True
     except ValueError:
         return False
+
+
 # END def _is_integer()
 
 
@@ -626,27 +633,35 @@ def get_apache_max_wait_time(wait_time=600, indent=''):
         # END if: convert str to int
 
         if wait_time < 60:  # when "wait_time" is less than 60 seconds
-            print(indent + 'The max Apache wait time provided by AWS-Lambda caller is: ' + str(wait_time) + ' second(s), which might not be enough. Aviatrix auto-configures it to ' + str(min_wait_time) + ' seconds')
+            print(indent + 'The max Apache wait time provided by AWS-Lambda caller is: ' + str(
+                wait_time) + ' second(s), which might not be enough. Aviatrix auto-configures it to ' + str(
+                min_wait_time) + ' seconds')
             wait_time = min_wait_time
         elif 600 < wait_time:  # when "wait_time" is greater than 600 seconds
-            print(indent + 'The max Apache wait time provided by AWS-Lambda caller is: ' + str(wait_time) + ' second(s), which might be too long. Aviatrix auto-configures it to ' + str(max_wait_time) + ' seconds')
+            print(indent + 'The max Apache wait time provided by AWS-Lambda caller is: ' + str(
+                wait_time) + ' second(s), which might be too long. Aviatrix auto-configures it to ' + str(
+                max_wait_time) + ' seconds')
             wait_time = max_wait_time
         # ENF if: Take care of wait_time is either too short or too long
     else:
-        print(indent + 'The max Apache wait time provided by AWS-Lambda caller is: ' + str(wait_time) + ' which is not valid. Aviatrix auto-configures it to default: ' + str(DEFAULT_WAIT_TIME_FOR_1ST_APACHE_WAKEUP) + ' seconds')
+        print(indent + 'The max Apache wait time provided by AWS-Lambda caller is: ' + str(
+            wait_time) + ' which is not valid. Aviatrix auto-configures it to default: ' + str(
+            DEFAULT_WAIT_TIME_FOR_1ST_APACHE_WAKEUP) + ' seconds')
         wait_time = DEFAULT_WAIT_TIME_FOR_1ST_APACHE_WAKEUP
     # END outer if-else
 
     # print(indent + 'The finalized max Apache wait time is: ' + str(wait_time) + ' seconds')
     return wait_time
+
+
 # END def get_apache_max_wait_time()
 
 
 def print_lambda_event(
-    event,
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        event,
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     print(indent + keyword_for_log + "LambdaInvokerTypeParam                    --> " +
           event["ResourceProperties"]["LambdaInvokerTypeParam"])
     print(indent + keyword_for_log + "PrefixStringParam                    --> " +
@@ -654,21 +669,21 @@ def print_lambda_event(
     print(indent + keyword_for_log + "KeywordForCloudWatchLogParam         --> " +
           event["ResourceProperties"]["KeywordForCloudWatchLogParam"])
     print(indent + keyword_for_log + "DelimiterForCloudWatchLogParam       --> " +
-        event["ResourceProperties"]["DelimiterForCloudWatchLogParam"])
+          event["ResourceProperties"]["DelimiterForCloudWatchLogParam"])
     print(indent + keyword_for_log + "ControllerPublicIpParam              --> " +
-        event["ResourceProperties"]["ControllerPublicIpParam"])
+          event["ResourceProperties"]["ControllerPublicIpParam"])
     print(indent + keyword_for_log + "AviatrixApiVersionParam              --> " +
-        event["ResourceProperties"]["AviatrixApiVersionParam"])
+          event["ResourceProperties"]["AviatrixApiVersionParam"])
     print(indent + keyword_for_log + "AviatrixApiRouteParam                --> " +
-        event["ResourceProperties"]["AviatrixApiRouteParam"])
+          event["ResourceProperties"]["AviatrixApiRouteParam"])
     print(indent + keyword_for_log + "ControllerPrivateIpParam             --> " +
-        event["ResourceProperties"]["ControllerPrivateIpParam"])
+          event["ResourceProperties"]["ControllerPrivateIpParam"])
     print(indent + keyword_for_log + "ControllerAdminEmailParam            --> " +
-        event["ResourceProperties"]["ControllerAdminEmailParam"])
+          event["ResourceProperties"]["ControllerAdminEmailParam"])
     # print(indent + keyword_for_log + "ControllerAdminPasswordParam  -    -> " +
     #     event["ResourceProperties"]["ControllerAdminPasswordParam"])
     print(indent + keyword_for_log + "ControllerVersionParam               --> " +
-        event["ResourceProperties"]["ControllerVersionParam"])
+          event["ResourceProperties"]["ControllerVersionParam"])
 
     ### Get the value from "event" for variable, "aviatrix_customer_id" ONLY if the key is found in the "event" dictionary
     if "AviatrixCustomerLicenseIdParam" in event["ResourceProperties"]:
@@ -676,24 +691,26 @@ def print_lambda_event(
               event["ResourceProperties"]["AviatrixCustomerLicenseIdParam"])
 
     print(indent + keyword_for_log + "AWS_Account_ID                       --> " +
-        event["ResourceProperties"]["AWS_Account_ID"])
+          event["ResourceProperties"]["AWS_Account_ID"])
     print(indent + keyword_for_log + "ControllerAccessAccountNameParam     --> " +
-        event["ResourceProperties"]["ControllerAccessAccountNameParam"])
+          event["ResourceProperties"]["ControllerAccessAccountNameParam"])
     # print(indent + keyword_for_log + "ControllerAccessAccountPasswordParam --> " +
     #     event["ResourceProperties"]["ControllerAccessAccountPasswordParam"])
     # print(indent + keyword_for_log + "ControllerAccessAccountEmailParam    --> " +
     #     event["ResourceProperties"]["ControllerAccessAccountEmailParam"])
+
+
 # END def print_lambda_event()
 
 
 def _build_response_for_terraform(
-    event=None,  # AWS Lambda "event"
-    status=False,  # Valid values: True, False (bool)
-    # message="Succeesfully finished Initial Setup for Aviatrix Controller: 255.255.255.255",
-    message="Failed Initial Setup for Aviatrix Controller: 255.255.255.255 due to: xxx",
-    keyword_for_log="avx-lambda-function---",
-    indent=""
-        ):
+        event=None,  # AWS Lambda "event"
+        status=False,  # Valid values: True, False (bool)
+        # message="Succeesfully finished Initial Setup for Aviatrix Controller: 255.255.255.255",
+        message="Failed Initial Setup for Aviatrix Controller: 255.255.255.255 due to: xxx",
+        keyword_for_log="avx-lambda-function---",
+        indent=""
+):
     print(indent + keyword_for_log + "START: _build_response_for_terraform()")
     response_for_tf = {
         'status': status,  # (Required)
@@ -702,17 +719,19 @@ def _build_response_for_terraform(
     print(str(json.dumps(obj=response_for_tf, indent=4)))
     print(indent + keyword_for_log + "ENDED: _build_response_for_terraform()\n\n")
     return response_for_tf
+
+
 # END def _build_response_for_terraform()
 
 
 def _build_response_for_generic_lambda_invoker(
-    event=None,  # AWS Lambda "event"
-    status=False,  # Valid values: True, False (bool)
-    # message="Succeesfully finished Initial Setup for Aviatrix Controller: 255.255.255.255",
-    message="Failed Initial Setup for Aviatrix Controller: 255.255.255.255 due to: xxx",
-    keyword_for_log="avx-lambda-function---",
-    indent=""
-        ):
+        event=None,  # AWS Lambda "event"
+        status=False,  # Valid values: True, False (bool)
+        # message="Succeesfully finished Initial Setup for Aviatrix Controller: 255.255.255.255",
+        message="Failed Initial Setup for Aviatrix Controller: 255.255.255.255 due to: xxx",
+        keyword_for_log="avx-lambda-function---",
+        indent=""
+):
     print(indent + keyword_for_log + "START: _build_response_for_generic_lambda_invoker()")
     response_for_generic_lambda_invoker = {
         'status': status,  # (Required)
@@ -721,17 +740,19 @@ def _build_response_for_generic_lambda_invoker(
     print(str(json.dumps(obj=response_for_generic_lambda_invoker, indent=4)))
     print(indent + keyword_for_log + "ENDED: _build_response_for_generic_lambda_invoker()\n\n")
     return response_for_generic_lambda_invoker
+
+
 # END def _build_response_for_generic_lambda_invoker()
 
 
 def _build_response_for_cloudformation_stack(
-    event=dict(),
-    status="FAILED or SUCCESS",
-    reason="Failed because...",
-    data=dict(),
-    keyword_for_log="avx-lambda-function---",
-    indent=""
-        ):
+        event=dict(),
+        status="FAILED or SUCCESS",
+        reason="Failed because...",
+        data=dict(),
+        keyword_for_log="avx-lambda-function---",
+        indent=""
+):
     """
         Reference:
             https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/crpg-ref-responses.html
@@ -749,18 +770,20 @@ def _build_response_for_cloudformation_stack(
     print(str(json.dumps(obj=response_for_cf, indent=4)))
     print(indent + keyword_for_log + "ENDED: _build_response_for_cloudformation_stack()\n\n")
     return response_for_cf
+
+
 # END def _build_response_for_cloudformation_stack
 
 
 def wait_until_controller_api_server_is_ready(
-    ucc_public_ip="123.123.123.123",
-    api_version="v1",
-    api_route="api/",
-    total_wait_time=600,  # second(s)
-    interval_wait_time=10,  # second(s)
-    keyword_for_log="avx-lambda-function---",
-    indent=""
-        ):
+        ucc_public_ip="123.123.123.123",
+        api_version="v1",
+        api_route="api/",
+        total_wait_time=600,  # second(s)
+        interval_wait_time=10,  # second(s)
+        keyword_for_log="avx-lambda-function---",
+        indent=""
+):
     api_endpoint_url = "https://" + ucc_public_ip + "/" + api_version + "/" + api_route
 
     #### Invoke a login API with a username doesn't exist
@@ -790,7 +813,6 @@ def wait_until_controller_api_server_is_ready(
             is_apache_returned_200 = False
             is_api_service_ready = False
 
-
             ### Invoke a dummy REST API to Aviatrix controller
             response = requests.post(
                 url=api_endpoint_url,
@@ -813,13 +835,15 @@ def wait_until_controller_api_server_is_ready(
                 response_msg_indicates_backend_not_ready = "Valid action required"
                 if False is pydict['return'] and response_msg_indicates_backend_not_ready in actual_response_message:
                     is_api_service_ready = False
-                    print(indent + keyword_for_log + "Server backend is NOT ready yet (Server response message: " + actual_response_message + ")")
+                    print(
+                        indent + keyword_for_log + "Server backend is NOT ready yet (Server response message: " + actual_response_message + ")")
                 else:
                     is_api_service_ready = True
             # END outer if
 
             if is_apache_returned_200 and is_api_service_ready:
-                print(indent + keyword_for_log + "Server status code: " + str(response_status_code) + " AND API Server backend is ready!")
+                print(indent + keyword_for_log + "Server status code: " + str(
+                    response_status_code) + " AND API Server backend is ready!")
                 return True
         except Exception as e:
             print(indent + keyword_for_log + "Aviatrix Controller " + api_endpoint_url + " is still not available")
@@ -852,17 +876,19 @@ def wait_until_controller_api_server_is_ready(
     raise AviatrixException(
         message=err_msg,
     )
+
+
 # END wait_until_controller_api_server_is_ready()
 
 
 def _send_aviatrix_api(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    request_method="POST",
-    payload=dict(),
-    retry_count=5,
-    keyword_for_log="avx-lambda-function---",
-    indent=""
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        request_method="POST",
+        payload=dict(),
+        retry_count=5,
+        keyword_for_log="avx-lambda-function---",
+        indent=""
+):
     response = None
     responses = list()
     request_type = request_method.upper()
@@ -892,14 +918,15 @@ def _send_aviatrix_api(
             traceback_msg = traceback.format_exc()
             print(indent + keyword_for_log + "Oops! Aviatrix Lambda caught an exception! The traceback message is: ")
             print(traceback_msg)
-            lambda_failure_reason = "Oops! Aviatrix Lambda caught an exception! The traceback message is: \n" + str(traceback_msg)
+            lambda_failure_reason = "Oops! Aviatrix Lambda caught an exception! The traceback message is: \n" + str(
+                traceback_msg)
             print(keyword_for_log + lambda_failure_reason)
             responses.append(str(traceback_msg))  # For error message/debugging purposes
         # END try-except
 
         finally:
             if 200 == response_status_code:  # Successfully send HTTP request to controller Apache2 server
-                    return response
+                return response
             elif 404 == response_status_code:
                 lambda_failure_reason = "ERROR: Oops, 404 Not Found. Please check your URL or route path..."
                 print(indent + keyword_for_log + lambda_failure_reason)
@@ -915,7 +942,7 @@ def _send_aviatrix_api(
             wait_time -->    1, 2, 4, 8 (no 16 because when i == , there will be NO iteration)
             i         --> 0, 1, 2, 3, 4
             '''
-            if i+1 < retry_count:
+            if i + 1 < retry_count:
                 print(indent + keyword_for_log + "START: Wait until retry")
                 print(indent + keyword_for_log + "    i == " + str(i))
                 wait_time_before_retry = pow(2, i)
@@ -937,17 +964,19 @@ def _send_aviatrix_api(
     # END for
 
     return response  # IF the code flow ends up here, the response might have some issues
+
+
 # END def _send_aviatrix_api()
 
 
 def login(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    username="admin",
-    password="**********",
-    hide_password=True,
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        username="admin",
+        password="**********",
+        hide_password=True,
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     request_method = "POST"
     data = {
         "action": "login",
@@ -961,17 +990,14 @@ def login(
         payload_with_hidden_password = dict(data)
         payload_with_hidden_password["password"] = "************"
         print(
-        indent + keyword_for_log + "Request payload     : \n" +
-        str(json.dumps(obj=payload_with_hidden_password, indent=4))
+            indent + keyword_for_log + "Request payload     : \n" +
+            str(json.dumps(obj=payload_with_hidden_password, indent=4))
         )
     else:
         print(
-        indent + keyword_for_log + "Request payload     : \n" +
-        str(json.dumps(obj=data, indent=4))
-    )
-
-
-
+            indent + keyword_for_log + "Request payload     : \n" +
+            str(json.dumps(obj=data, indent=4))
+        )
 
     response = _send_aviatrix_api(
         api_endpoint_url=api_endpoint_url,
@@ -981,6 +1007,8 @@ def login(
         indent=indent + "    "
     )
     return response
+
+
 # END def set_admin_email()
 
 
@@ -990,7 +1018,7 @@ def verify_aviatrix_api_response_login(response=None, keyword_for_log="avx-lambd
 
     ### Verify if HTTP response code is 200
     response_code = response.status_code  # expect to be 200
-    if response_code is not 200:
+    if response_code != 200:
         err_msg = "Fail to login Aviatrix controller. " \
                   "Expected HTTP response code is 200, but the actual " \
                   "response code is: " + str(response_code)
@@ -1023,16 +1051,17 @@ def verify_aviatrix_api_response_login(response=None, keyword_for_log="avx-lambd
             message=err_msg,
         )
     # END if
+
+
 # END def verify_aviatrix_api_response_login()
 
 
 def has_controller_initialized(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
-
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     request_method = "GET"
     data = {
         "action": "initial_setup",
@@ -1059,15 +1088,17 @@ def has_controller_initialized(
     # END if
 
     return True  # Controller has ALREADY been initialized
+
+
 # END def has_controller_initialized()
 
 
 def is_controller_type_byol(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     request_method = "GET"
     payload = {
         "action": "get_controller_license_type",
@@ -1087,15 +1118,17 @@ def is_controller_type_byol(
         if controller_type == "BYOL":
             return True
     # END outer if
+
+
 # END def is_controller_type_byol()
 
 
 def get_controller_version(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     """    "list_version_info" API is supported by all controller versions since 2.7  """
     request_method = "GET"
     params = {
@@ -1139,22 +1172,23 @@ def get_controller_version(
     raise AviatrixException(
         message=avx_err_msg,
     )
+
+
 # END def get_controller_version()
 
 
 def _parse_list_version_info_API_to_get_controller_version(
-    response=None,
-    with_subversion=False,
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        response=None,
+        with_subversion=False,
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     """
     This function will extract the version in the digit part, like ...
     from
     "UserConnect-3.4.105"
     to
     "3.4.105"
-
     This API is supported in 2.7 or later release
     """
     pydict = response.json()
@@ -1177,16 +1211,17 @@ def _parse_list_version_info_API_to_get_controller_version(
         current_version_string = re_match_obj.group(0)
         return current_version_string
 
+
 # END _parse_list_version_info_API_to_get_controller_version
 
 
 def set_admin_email(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    admin_email="test@aviatrix.com",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        admin_email="test@aviatrix.com",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     """    "add_admin_email_addr" API is supported by all controller versions since 2.6    """
 
     request_method = "POST"
@@ -1207,6 +1242,8 @@ def set_admin_email(
         indent=indent + "    "
     )
     return response
+
+
 # END def set_admin_email()
 
 
@@ -1216,7 +1253,7 @@ def verify_aviatrix_api_set_admin_email(response=None, keyword_for_log="avx-lamb
 
     ### Verify if HTTP response code is 200
     response_code = response.status_code  # expect to be 200
-    if response_code is not 200:
+    if response_code != 200:
         err_msg = "Fail to set admin email for Aviatrix controller. " \
                   "Expected HTTP response code is 200, but the actual " \
                   "response code is: " + str(response_code)
@@ -1249,18 +1286,20 @@ def verify_aviatrix_api_set_admin_email(response=None, keyword_for_log="avx-lamb
             message=avx_err_msg,
         )
     # END if
+
+
 # END def verify_aviatrix_api_set_admin_email()
 
 
 def set_admin_password(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    # controller_version="4.0",  # MMM
-    CID="ABCD1234",
-    old_admin_password="**********",
-    new_admin_password="**********",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        # controller_version="4.0",  # MMM
+        CID="ABCD1234",
+        old_admin_password="**********",
+        new_admin_password="**********",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     """
         Dev Notes:
             * One of the reasons for this API to fail and seeing the following message:
@@ -1275,7 +1314,6 @@ def set_admin_password(
                 "old_password": old_admin_password,
                 "new_password": new_admin_password
                 }
-
             * The action name of this API has use "edit_account_user" if controller's base AMI has been changed.
               The current API, "change_password" is for classic base AMI
         """
@@ -1284,7 +1322,6 @@ def set_admin_password(
 
     """ MMM
     # controller_version = eval(controller_version)  
-
     
     # The account_name and username fields are hard-coded as "admin" because this function ONLY sets/changes the
     # password for "admin"
@@ -1376,6 +1413,8 @@ def set_admin_password(
     )
 
     return response
+
+
 # END def set_admin_password()
 
 
@@ -1385,7 +1424,7 @@ def verify_aviatrix_api_set_admin_password(response=None, keyword_for_log="avx-l
 
     ### Verify if HTTP response code is 200
     response_code = response.status_code  # expect to be 200
-    if response_code is not 200:
+    if response_code != 200:
         avx_err_msg = "Fail to set admin password on Aviatrix controller. " \
                       "Expected HTTP response code is 200, but the actual " \
                       "response code is: " + str(response_code)
@@ -1414,22 +1453,23 @@ def verify_aviatrix_api_set_admin_password(response=None, keyword_for_log="avx-l
                   str(py_dict) + \
                   " The string we expect to find is: " + \
                   expected_string
-
         raise AviatrixException(
             message=err_msg,
         )
     # END if
     COMMENT ENDED: not verifying because there are 2 versions of this API'''
+
+
 # END def verify_aviatrix_api_set_admin_password()
 
 
 def run_initial_setup(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    target_version="latest",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        target_version="latest",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     """    "initial_setup" API is supported by all controller versions since 2.6    """
     request_method = "POST"
 
@@ -1466,7 +1506,7 @@ def run_initial_setup(
 
         response = requests.post(url=api_endpoint_url, data=data, verify=False, timeout=720)
         return response
-    except requests.exceptions.ConnectionError as err:
+    except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as err:
         if "Remote end closed connection without response" in str(err):
             print("Server closed the connection while executing initial setup API."
                   " Ignoring response")
@@ -1476,8 +1516,18 @@ def run_initial_setup(
             response_content = json.dumps({'return': True, 'reason': 'Warning!! Server closed the connection'})
             response._content = str.encode(response_content)
             return response
+        elif "timed out" in str(err):
+            print("Server timed out. Ignore and continue.")
+            time.sleep(15)
+            response = requests.models.Response()
+            response.status_code = 200
+            response_content = json.dumps({'return': True, 'reason': 'Warning!! Server timed out'})
+            response._content = str.encode(response_content)
+            return response
         else:
             raise AviatrixException(message="Failed to execute initial setup: " + str(err))
+
+
 # END def run_initial_setup()
 
 
@@ -1487,7 +1537,7 @@ def verify_aviatrix_api_run_initial_setup(response=None, keyword_for_log="avx-la
 
     ### Verify if HTTP response code is 200
     response_code = response.status_code  # expect to be 200
-    if response_code is not 200:
+    if response_code != 200:
         avx_err_msg = "Fail to run-initial-setup on Aviatrix controller. " \
                       "Expected HTTP response code is 200, but the actual " \
                       "response code is: " + str(response_code)
@@ -1499,6 +1549,8 @@ def verify_aviatrix_api_run_initial_setup(response=None, keyword_for_log="avx-la
     ### Verify if API response returns True
     api_return_boolean = py_dict["return"]
     if api_return_boolean is not True:
+        if "Please log out and login again for the new changes to take effect" in py_dict["results"]:
+            return
         avx_err_msg = "Fail to run-initial-setup on Aviatrix controller. API response is: " + str(py_dict)
         raise AviatrixException(
             message=avx_err_msg,
@@ -1522,16 +1574,17 @@ def verify_aviatrix_api_run_initial_setup(response=None, keyword_for_log="avx-la
     # # END if
     pass  # The code section above has been commented out since the API response could be from check_init_setup_status
 
+
 # END def verify_aviatrix_api_run_initial_setup()
 
 
 def set_aviatrix_customer_id(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    customer_id="aviatrix-customer-id-abcdefghijk123456789",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        customer_id="aviatrix-customer-id-abcdefghijk123456789",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     """    "setup_customer_id" API is supported by all controller versions since 2.6    """
 
     request_method = "POST"
@@ -1552,16 +1605,19 @@ def set_aviatrix_customer_id(
         indent=indent + "    "
     )
     return response
+
+
 # END def set_aviatrix_customer_id()
 
 
-def verify_aviatrix_api_set_aviatrix_customer_id(response=None, keyword_for_log="avx-lambda-function---", indent="    "):
+def verify_aviatrix_api_set_aviatrix_customer_id(response=None, keyword_for_log="avx-lambda-function---",
+                                                 indent="    "):
     py_dict = response.json()
     print(indent + keyword_for_log + "Aviatrix API response --> " + str(py_dict))
 
     ### Verify if HTTP response code is 200
     response_code = response.status_code  # expect to be 200
-    if response_code is not 200:
+    if response_code != 200:
         avx_err_msg = "Fail to set aviatrix customer id on Aviatrix controller. " \
                       "Expected HTTP response code is 200, but the actual " \
                       "response code is: " + str(response_code)
@@ -1594,24 +1650,26 @@ def verify_aviatrix_api_set_aviatrix_customer_id(response=None, keyword_for_log=
             message=avx_err_msg,
         )
     # END if
+
+
 # END def verify_aviatrix_api_set_aviatrix_customer_id()
 
 
 def create_access_account(
-    api_endpoint_url="https://123.123.123.123/v1/api",
-    CID="ABCD1234",
-    controller_version="4.0",
-    account_name="my-aws-role-based",
-    account_password="**********",
-    account_email="test@aviatrix.com",
-    cloud_type="1",
-    aws_account_number="123456789012",
-    is_iam_role_based="true",
-    app_role_arn="arn:aws:iam::123456789012:role/aviatrix-role-app",
-    ec2_role_arn="arn:aws:iam::123456789012:role/aviatrix-role-ec2",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        api_endpoint_url="https://123.123.123.123/v1/api",
+        CID="ABCD1234",
+        controller_version="4.0",
+        account_name="my-aws-role-based",
+        account_password="**********",
+        account_email="test@aviatrix.com",
+        cloud_type="1",
+        aws_account_number="123456789012",
+        is_iam_role_based="true",
+        app_role_arn="arn:aws:iam::123456789012:role/aviatrix-role-app",
+        ec2_role_arn="arn:aws:iam::123456789012:role/aviatrix-role-ec2",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     controller_version = eval(controller_version)
     request_method = "POST"
 
@@ -1629,18 +1687,32 @@ def create_access_account(
             "aws_role_ec2": ec2_role_arn
         }
     else:  # The API, "edit_account_user" is supported in 2.7 or later release
-        data = {
-            "action": "setup_account_profile",
-            "CID": CID,
-            "account_name": account_name,
-            "account_password": account_password,
-            "account_email": account_email,
-            "cloud_type": cloud_type,
-            "aws_account_number": aws_account_number,
-            "aws_iam": is_iam_role_based,
-            "aws_role_arn": app_role_arn,
-            "aws_role_ec2": ec2_role_arn
-        }
+        if cloud_type == "1":
+            data = {
+                "action": "setup_account_profile",
+                "CID": CID,
+                "account_name": account_name,
+                "account_password": account_password,
+                "account_email": account_email,
+                "cloud_type": cloud_type,
+                "aws_account_number": aws_account_number,
+                "aws_iam": is_iam_role_based,
+                "aws_role_arn": app_role_arn,
+                "aws_role_ec2": ec2_role_arn
+            }
+        elif cloud_type == "1024":
+            data = {
+                "action": "setup_account_profile",
+                "CID": CID,
+                "account_name": account_name,
+                "account_password": account_password,
+                "account_email": account_email,
+                "cloud_type": cloud_type,
+                "aws_china_account_number": aws_account_number,
+                "aws_china_iam": is_iam_role_based,
+                "aws_china_role_arn": app_role_arn,
+                "aws_china_role_ec2": ec2_role_arn
+            }
     # END determine API depends on controller version
 
     payload_with_hidden_password = dict(data)
@@ -1661,21 +1733,23 @@ def create_access_account(
         indent=indent + "    "
     )
     return response
+
+
 # END def create_access_account()
 
 
 def verify_aviatrix_api_create_access_account(
-    response=None,
-    admin_email="test@aviatrix.com",
-    keyword_for_log="avx-lambda-function---",
-    indent="    "
-        ):
+        response=None,
+        admin_email="test@aviatrix.com",
+        keyword_for_log="avx-lambda-function---",
+        indent="    "
+):
     py_dict = response.json()
     print(indent + keyword_for_log + "Aviatrix API response --> " + str(py_dict))
 
     ### Verify if HTTP response code is 200
     response_code = response.status_code  # expect to be 200
-    if response_code is not 200:
+    if response_code != 200:
         avx_err_msg = "Fail to create access account on  Aviatrix controller. " \
                       "Expected HTTP response code is 200, but the actual " \
                       "response code is: " + str(response_code)
