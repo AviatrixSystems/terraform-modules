@@ -53,15 +53,13 @@ resource aws_iam_role_policy_attachment attach-policy {
 
 resource aws_iam_role_policy_attachment attach-policy-1 {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+  policy_arn = "arn:${local.is_aws_cn}:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
 resource aws_iam_role_policy_attachment attach-policy-2 {
   role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  policy_arn = "arn:${local.is_aws_cn}:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
-
-data aws_region current {}
 
 resource aws_lambda_function lambda {
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
@@ -107,7 +105,8 @@ data aws_lambda_invocation example {
   "ControllerVersionParam"             : "${var.controller_version}",
   "ControllerAccessAccountNameParam"   : "${var.access_account_name}",
   "AviatrixCustomerLicenseIdParam"     : "${var.customer_license_id}",
-  "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}"
+  "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}",
+  "ControllerRegion"                   : "${local.is_aws_cn}"
 }
 }
 JSON

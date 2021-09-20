@@ -10,7 +10,7 @@ resource aws_iam_role aviatrix-role-ec2 {
          "Effect": "Allow",
          "Principal": {
            "Service": [
-              "ec2.amazonaws.com"
+              "ec2.amazonaws.com${local.is_aws_cn_2}"
            ]
          },
          "Action": [
@@ -30,7 +30,7 @@ resource aws_iam_role aviatrix-role-app {
 }
 
 data "http" "iam_policy_assume_role" {
-  url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/iam_assume_role_policy.txt"
+  url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/${local.is_aws_cn_1}_iam_assume_role_policy.txt"
   request_headers = {
     "Accept" = "application/json"
   }
