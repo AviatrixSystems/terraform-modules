@@ -106,7 +106,9 @@ data aws_lambda_invocation example {
   "ControllerAccessAccountNameParam"   : "${var.access_account_name}",
   "AviatrixCustomerLicenseIdParam"     : "${var.customer_license_id}",
   "_SecondsToWaitForApacheToBeUpParam" : "${var.controller_launch_wait_time}",
-  "ControllerRegion"                   : "${local.is_aws_cn}"
+  "ControllerRegion"                   : "${local.is_aws_cn}",
+  "Ec2RoleName"                        : "${local.ec2_role_name}",
+  "AppRoleName"                        : "${local.app_role_name}"
 }
 }
 JSON

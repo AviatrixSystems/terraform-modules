@@ -565,15 +565,25 @@ def _lambda_handler(event, context):
         keyword_for_log +
         'START: Invoke Aviatrix API to create Access-Account which the cloud type is AWS IAM Role based'
     )
-    controller_region = event["ResourceProperties"]["ControllerRegion"]
-    app_role_arn = "arn:" + controller_region + ":iam::{AWS_ACCOUNT_ID}:role/aviatrix-role-app"
-    app_role_arn = app_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
-    ec2_role_arn = "arn:" + controller_region + ":iam::{AWS_ACCOUNT_ID}:role/aviatrix-role-ec2"
-    ec2_role_arn = ec2_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
-    if controller_region == "aws":
+    controller_region = event["ResourceProperties"].get("ControllerRegion")
+    ec2_role_name = event["ResourceProperties"].get("Ec2RoleName", "aviatrix-role-ec2")
+    app_role_name = event["ResourceProperties"].get("AppRoleName", "aviatrix-role-app")
+    if controller_region:
+        app_role_arn = "arn:" + controller_region + ":iam::{AWS_ACCOUNT_ID}:role/" + app_role_name
+        app_role_arn = app_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
+        ec2_role_arn = "arn:" + controller_region + ":iam::{AWS_ACCOUNT_ID}:role/" + ec2_role_name
+        ec2_role_arn = ec2_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
+        if controller_region == "aws":
+            cloud_type = "1"
+        elif controller_region == "aws-cn":
+            cloud_type = "1024"
+    else:
+        app_role_arn = "arn:aws:iam::{AWS_ACCOUNT_ID}:role/" + app_role_name
+        app_role_arn = app_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
+        ec2_role_arn = "arn:aws:iam::{AWS_ACCOUNT_ID}:role/" + ec2_role_name
+        ec2_role_arn = ec2_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
         cloud_type = "1"
-    elif controller_region == "aws-cn":
-        cloud_type = "1024"
+
     response = create_access_account(
         api_endpoint_url=api_endpoint_url,
         CID=CID,
