@@ -60,7 +60,7 @@ output "lambda_result" {
 
 - **name_prefix**
 
-  A prefix to be added to the resources created by this module. Default value is "".
+  A prefix to be added to the aviatrix lambda policy. Default value is "".
 
 - **tags** 
 
@@ -81,6 +81,14 @@ output "lambda_result" {
 - **controller_launch_wait_time**
  
   Time in second to wait for controller to be up. Default value is 210.
+
+- **ec2_role_name**
+
+  EC2 role name. Default value is "aviatrix-role-ec2".
+
+- **app_role_name**
+
+  APP role name. Default value is "aviatrix-role-app".
 
 ### Outputs
 

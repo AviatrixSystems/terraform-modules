@@ -1,5 +1,5 @@
 resource aws_iam_role aviatrix-role-ec2 {
-  name               = "${local.name_prefix}aviatrix-role-ec2"
+  name               = local.ec2_role_name
   description        = "Aviatrix EC2 - Created by Terraform+Aviatrix"
   path               = "/"
   assume_role_policy = <<EOF
@@ -23,24 +23,38 @@ EOF
 }
 
 resource aws_iam_role aviatrix-role-app {
-  name               = "${local.name_prefix}aviatrix-role-app"
+  name               = local.app_role_name
   description        = "Aviatrix APP - Created by Terraform+Aviatrix"
   path               = "/"
   assume_role_policy = var.external-controller-account-id == "" ? local.policy_primary : local.policy_cross
 }
 
-data "http" "iam_policy_assume_role" {
-  url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/${local.is_aws_cn_1}_iam_assume_role_policy.txt"
-  request_headers = {
-    "Accept" = "application/json"
-  }
-}
-
 resource aws_iam_policy aviatrix-assume-role-policy {
-  name        = "${local.name_prefix}aviatrix-assume-role-policy"
+  name        = "${local.ec2_role_name}-assume-role-policy"
   path        = "/"
   description = "Policy for creating aviatrix-assume-role-policy"
-  policy      = data.http.iam_policy_assume_role.body
+  policy      = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": "${aws_iam_role.aviatrix-role-app.arn}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "aws-marketplace:MeterUsage",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
 }
 
 data http iam_policy_ec2_role {
@@ -51,7 +65,7 @@ data http iam_policy_ec2_role {
 }
 
 resource aws_iam_policy aviatrix-app-policy {
-  name        = "${local.name_prefix}aviatrix-app-policy"
+  name        = "${local.app_role_name}-app-policy"
   path        = "/"
   description = "Policy for creating aviatrix-app-policy"
   policy      = data.http.iam_policy_ec2_role.body

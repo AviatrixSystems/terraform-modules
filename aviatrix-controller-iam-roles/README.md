@@ -38,9 +38,19 @@ module "iam_roles" {
   for the secondary account different from the account where controller was/will be launched. DO NOT use this parameter
   if this Terraform module is applied on the AWS account of your controller.
 
+~> **NOTE:** If customized **ec2_role_name** and **app_role_name** are used, **name_prefix** will be ignored.
+
 - **name_prefix**
 
-  A prefix to be added to the Aviatrix controller instance name. Default value is "".
+  A prefix to be added to the default role names. Default value is "".
+
+- **ec2_role_name**
+
+  EC2 role name. Default value is "aviatrix-role-ec2".
+
+- **app_role_name**
+
+  APP role name. Default value is "aviatrix-role-app".
 
 - **tags** 
 
