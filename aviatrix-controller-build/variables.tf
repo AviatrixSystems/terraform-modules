@@ -56,7 +56,6 @@ variable root_volume_type {
 variable incoming_ssl_cidr {
   type        = list(string)
   description = "Incoming cidr for security group used by controller"
-  default     = ["0.0.0.0/0"]
 }
 
 variable instance_type {

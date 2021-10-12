@@ -23,11 +23,12 @@ To create an Aviatrix Controller:
 
 ```
 module "aviatrixcontroller" {
-  source  = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.12"
-  vpc     = "<<< insert VPC here, ie. vpc-xxxxxx >>>"
-  subnet  = "<<< insert public subnet id, ie.: subnet-9x3237xx >>>"
-  keypair = "<<< insert keypair name ie.: keypairname >>>"
-  ec2role = "<<< insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: module.aviatrix-iam-roles.aviatrix-role-ec2-name >>>"
+  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.14"
+  vpc               = "<<< insert VPC here, ie. vpc-xxxxxx >>>"
+  subnet            = "<<< insert public subnet id, ie.: subnet-9x3237xx >>>"
+  keypair           = "<<< insert keypair name ie.: keypairname >>>"
+  ec2role           = "<<< insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: module.aviatrix-iam-roles.aviatrix-role-ec2-name >>>"
+  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>"]
 }
 ```
 
@@ -53,6 +54,12 @@ module "aviatrixcontroller" {
 
   The name of the aviatrix-ec2-role IAM role.
 
+> **NOTE:** **incoming_ssl_cidr** is a required variable. To use the module **aviatrix-controller-initialize**, please add the VPC CIDR in the list.
+
+- **incoming_ssl_cidr**
+
+  The CIDR to be allowed for HTTPS(port 443) access to the controller. Type is "list".
+
 - **tags** 
 
   Additional map of tags passed to mark resources create by module. Default value is {}.
@@ -68,10 +75,6 @@ module "aviatrixcontroller" {
 - **root_volume_type**
   
   The type of the hard disk for the controller instance, Default value is "gp2".
-
-- **incoming_ssl_cidr**
-  
-  The CIDR to be allowed for HTTPS(port 443) access to the controller. Type is "list", and default value is ["0.0.0.0/0"].
 
 - **instance_type**
 
