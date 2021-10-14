@@ -3,7 +3,7 @@
 ### Description
 These Terraform modules allow you to build Aviatrix Controllers and prepare accounts for connecting to an existing Aviatrix Controller.
 
-**NOTE:** It is ***highly*** recommended to have the following modules in a directory separate from the rest of your Terraform pipeline. These modules only need to be run once to build the Controller and dependent resources.
+>**NOTE:** It is ***highly*** recommended to have the following modules in a directory separate from the rest of your Terraform pipeline. These modules only need to be run once to build the Controller and dependent resources.
 
 ### Available Modules
 
@@ -38,7 +38,7 @@ provider "aws" {
 }
 
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.14"
 }
 
 ```
@@ -56,6 +56,8 @@ module "iam_roles" {
 
 **build.tf**
 
+> **NOTE:** **incoming_ssl_cidr** is a required variable. To use the module **aviatrix-controller-initialize**, please add the VPC CIDR in the list.
+
 ``` hcl
 
 provider "aws" {
@@ -63,12 +65,13 @@ provider "aws" {
 }
 
 module "aviatrixcontroller" {
-  source      = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.12"
-  vpc         = "<<< your VPC ID >>>"
-  subnet      = "<<< your public Subnet ID >>>"
-  keypair     = "<<< your EC2 key pair name >>>"
-  ec2role     = "aviatrix-role-ec2"
-  name_prefix = "<<< unique for specified controller >>>"
+  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.14"
+  vpc               = "<<< your VPC ID >>>"
+  subnet            = "<<< your public Subnet ID >>>"
+  keypair           = "<<< your EC2 key pair name >>>"
+  ec2role           = "aviatrix-role-ec2"
+  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>"]
+  name_prefix       = "<<< unique for specified controller >>>"
 }
 
 output "controller_private_ip" {
@@ -105,7 +108,7 @@ variable "controller_private_ip" {}
 variable "controller_public_ip" {}
 
 module "aviatrix_controller_init" {
-  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.12"
+  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.14"
   admin_email         = "<<< your administrator email address >>>"
   admin_password      = "<<< your new admin password >>>"
   private_ip          = var.controller_private_ip
@@ -131,7 +134,7 @@ output "lambda_result" {
 > terraform apply -var-file=../aviatrix_controller.tfvars
 ```
 
--> **NOTE:** If the Lambda function times out, please try to increase `wait_time_for_instance`, which is 90s at default.
+> **NOTE:** If the Lambda function times out, please try to increase `wait_time_for_instance`, which is 120s at default.
 
 ### Putting it all together
 
@@ -146,15 +149,16 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 module "aviatrix-iam-roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.14"
 }
 
 module "aviatrix-controller-build" {
-  source  = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.12"
-  vpc     = "<<< VPC ID >>>"
-  subnet  = "<<< Subnet ID >>>"
-  keypair = "<<< Keypair name >>>"
-  ec2role = module.aviatrix-iam-roles.aviatrix-role-ec2-name
+  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.14"
+  vpc               = "<<< VPC ID >>>"
+  subnet            = "<<< Subnet ID >>>"
+  keypair           = "<<< Keypair name >>>"
+  ec2role           = module.aviatrix-iam-roles.aviatrix-role-ec2-name
+  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>"]
 }
 
 provider "aviatrix" {
@@ -164,7 +168,7 @@ provider "aviatrix" {
 }
 
 module "aviatrix-controller-initialize" {
-  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.12"
+  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.14"
   admin_password      = "<<< new admin password >>>"
   admin_email         = "<<< admin email address >>>"
   private_ip          = module.aviatrix-controller-build.private_ip

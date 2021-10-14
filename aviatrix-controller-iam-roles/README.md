@@ -20,12 +20,12 @@ Please refer to the documentation below for more detail:
 To create roles necessary for Aviatrix access on your AWS account:
 ```
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.14"
 }
 
 # cross account 
 module "iam_roles" {
-  source                         = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.12"
+  source                         = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.14"
   external-controller-account-id = "<<< insert AWS account ID of the controller here >>>"
 }
 ```
@@ -38,7 +38,7 @@ module "iam_roles" {
   for the secondary account different from the account where controller was/will be launched. DO NOT use this parameter
   if this Terraform module is applied on the AWS account of your controller.
 
-~> **NOTE:** If customized **ec2_role_name** and **app_role_name** are used, **name_prefix** will be ignored.
+> **NOTE:** If customized **ec2_role_name** and **app_role_name** are used, **name_prefix** will be ignored.
 
 - **name_prefix**
 
