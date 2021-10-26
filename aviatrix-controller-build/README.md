@@ -28,7 +28,7 @@ module "aviatrixcontroller" {
   subnet            = "<<< insert public subnet id, ie.: subnet-9x3237xx >>>"
   keypair           = "<<< insert keypair name ie.: keypairname >>>"
   ec2role           = "<<< insert role for aviatrix-role-ec2>> OR if you are using the iam_role simply use this: module.aviatrix-iam-roles.aviatrix-role-ec2-name >>>"
-  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>"]
+  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>", ...]
 }
 ```
 

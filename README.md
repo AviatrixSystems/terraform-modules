@@ -70,7 +70,7 @@ module "aviatrixcontroller" {
   subnet            = "<<< your public Subnet ID >>>"
   keypair           = "<<< your EC2 key pair name >>>"
   ec2role           = "aviatrix-role-ec2"
-  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>"]
+  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>", ...]
   name_prefix       = "<<< unique for specified controller >>>"
 }
 
@@ -158,7 +158,7 @@ module "aviatrix-controller-build" {
   subnet            = "<<< Subnet ID >>>"
   keypair           = "<<< Keypair name >>>"
   ec2role           = module.aviatrix-iam-roles.aviatrix-role-ec2-name
-  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>"]
+  incoming_ssl_cidr = ["<<< VPC CIDR >>>", "<<< another CIDR allowed for HTTPS access >>>", ...]
 }
 
 provider "aviatrix" {
