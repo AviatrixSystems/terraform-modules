@@ -17,6 +17,11 @@ resource aws_network_interface eni-controller {
   tags = merge(local.common_tags, {
     Name = "${local.name_prefix}Aviatrix Controller interface : {count.index}"
   })
+  lifecycle {
+    ignore_changes = [
+      security_groups, #Ignore changes to security groups attached to ENI, as this interferes with the Access Security feature.
+    ]
+  }
 }
 
 resource aws_instance aviatrixcontroller {
