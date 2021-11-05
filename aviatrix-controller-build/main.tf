@@ -15,8 +15,11 @@ resource aws_network_interface eni-controller {
   subnet_id       = var.subnet
   security_groups = [aws_security_group.AviatrixSecurityGroup.id]
   tags = merge(local.common_tags, {
-    Name = "${local.name_prefix}Aviatrix Controller interface : {count.index}"
+    Name = "${local.name_prefix}Aviatrix Controller interface : ${count.index}"
   })
+  lifecycle {
+    ignore_changes = [tags, security_groups, subnet_id]
+  }
 }
 
 resource aws_instance aviatrixcontroller {
