@@ -73,7 +73,7 @@ variable name_prefix {
 variable type {
   default     = "MeteredPlatinum"
   type        = string
-  description = "Type of billing, can be 'MeteredPlatinum', 'BYOL' or 'Custom'"
+  description = "Type of billing, can be 'Metered', 'MeteredPlatinum', 'MeteredPlatinumCopilot', 'VPNMetered', BYOL' or 'Custom'."
 }
 
 variable controller_name {
@@ -85,12 +85,14 @@ variable controller_name {
 data aws_region current {}
 
 locals {
-  name_prefix     = var.name_prefix != "" ? "${var.name_prefix}-" : ""
-  images_byol     = jsondecode(data.http.avx_iam_id.body).BYOL
-  images_platinum = jsondecode(data.http.avx_iam_id.body).MeteredPlatinum
-  images_custom   = jsondecode(data.http.avx_iam_id.body).Custom
-  images_copilot  = jsondecode(data.http.avx_iam_id.body).MeteredPlatinumCopilot
-  ami_id          = var.type == "MeteredPlatinumCopilot"? local.images_copilot[data.aws_region.current.name] : ( var.type == "Custom" ? local.images_custom[data.aws_region.current.name] : (var.type == "BYOL" || var.type == "byol" ? local.images_byol[data.aws_region.current.name] : local.images_platinum[data.aws_region.current.name]))
+  name_prefix                   = var.name_prefix != "" ? "${var.name_prefix}-" : ""
+  images_byol                   = jsondecode(data.http.avx_iam_id.body).BYOL
+  images_metered                = jsondecode(data.http.avx_iam_id.body).Metered
+  images_meteredplatinum        = jsondecode(data.http.avx_iam_id.body).MeteredPlatinum
+  images_meteredplatinumcopilot = jsondecode(data.http.avx_iam_id.body).MeteredPlatinumCopilot
+  images_vpnmetered             = jsondecode(data.http.avx_iam_id.body).VPNMetered
+  images_custom                 = jsondecode(data.http.avx_iam_id.body).Custom
+  ami_id                        = var.type == "BYOL" || var.type == "byol" ? local.images_byol[data.aws_region.current.name] : (var.type == "Metered"? local.images_metered[data.aws_region.current.name] : (var.type == "MeteredPlatinum"? local.images_meteredplatinum[data.aws_region.current.name] : (var.type == "MeteredPlatinumCopilot"? local.images_meteredplatinumcopilot[data.aws_region.current.name] : (var.type == "VPNMetered"? local.images_vpnmetered[data.aws_region.current.name] : local.images_custom[data.aws_region.current.name]))))
   common_tags = merge(
     var.tags, {
       module    = "aviatrix-controller-build"

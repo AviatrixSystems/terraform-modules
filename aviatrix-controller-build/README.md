@@ -86,13 +86,12 @@ module "aviatrixcontroller" {
 
 - **type**
 
-  The license type for the Aviatrix controller. Default value is "MeteredPlatinum". Valid values are "MeteredPlatinum", "MeteredPlatinumCopilot", "Custom" and "BYOL".
+  The license type for the Aviatrix controller. Default value is "MeteredPlatinum". Valid values are "Metered", "MeteredPlatinum", "MeteredPlatinumCopilot", "VPNMetered", "BYOL" and "Custom".
   
 - **controller_name**
   
   Name of controller that will be launched. If not set, default name will be used.
-  
-  
+
 ### Outputs
 
 - **aws-account**
