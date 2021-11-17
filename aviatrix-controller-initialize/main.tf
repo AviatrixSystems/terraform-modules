@@ -19,7 +19,7 @@ EOF
 }
 
 resource aws_iam_policy lambda-policy {
-  name        = "${var.name_prefix}aviatrix-lambda-policy"
+  name        = "${local.name_prefix}aviatrix-lambda-policy"
   path        = "/"
   description = "Policy for creating aviatrix-lambda-policy"
   policy      = <<EOF
