@@ -89,10 +89,10 @@ variable app_role_name {
 }
 
 locals {
-  name_prefix      = var.name_prefix != "" ? "${var.name_prefix}-" : ""
-  ec2_role_name    = var.ec2_role_name != "aviatrix-role-ec2" ? var.ec2_role_name : "aviatrix-role-ec2"
-  app_role_name    = var.app_role_name != "aviatrix-role-app" ? var.app_role_name : "aviatrix-role-app"
-  is_aws_cn = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : "aws"
+  name_prefix   = var.name_prefix != "" ? "${var.name_prefix}-" : ""
+  ec2_role_name = var.ec2_role_name != "aviatrix-role-ec2" ? var.ec2_role_name : "aviatrix-role-ec2"
+  app_role_name = var.app_role_name != "aviatrix-role-app" ? var.app_role_name : "aviatrix-role-app"
+  arn_partition = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : (element(split("-", data.aws_region.current.name), 1) == "gov" ? "aws-us-gov" : "aws")
   common_tags = merge(
     var.tags, {
       module    = "aviatrix-controller-initialize"

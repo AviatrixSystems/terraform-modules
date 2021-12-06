@@ -10,7 +10,7 @@ resource aws_iam_role aviatrix-role-ec2 {
          "Effect": "Allow",
          "Principal": {
            "Service": [
-              "ec2.amazonaws.com${local.is_aws_cn_2}"
+              "ec2.amazonaws.com${local.is_aws_cn}"
            ]
          },
          "Action": [

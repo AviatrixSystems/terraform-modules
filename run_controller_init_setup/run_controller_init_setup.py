@@ -577,6 +577,8 @@ def _lambda_handler(event, context):
             cloud_type = "1"
         elif controller_region == "aws-cn":
             cloud_type = "1024"
+        elif controller_region == "aws-us-gov":
+            cloud_type = "256"
     else:
         app_role_arn = "arn:aws:iam::{AWS_ACCOUNT_ID}:role/" + app_role_name
         app_role_arn = app_role_arn.format(AWS_ACCOUNT_ID=aws_account_id)
@@ -1722,6 +1724,19 @@ def create_access_account(
                 "aws_china_iam": is_iam_role_based,
                 "aws_china_role_arn": app_role_arn,
                 "aws_china_role_ec2": ec2_role_arn
+            }
+        elif cloud_type == "256":
+            data = {
+                "action": "setup_account_profile",
+                "CID": CID,
+                "account_name": account_name,
+                "account_password": account_password,
+                "account_email": account_email,
+                "cloud_type": cloud_type,
+                "awsgov_account_number": aws_account_number,
+                "awsgov_iam": is_iam_role_based,
+                "awsgov_role_arn": app_role_arn,
+                "awsgov_role_ec2": ec2_role_arn
             }
     # END determine API depends on controller version
 
