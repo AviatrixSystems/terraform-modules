@@ -30,8 +30,8 @@ locals {
   name_prefix      = var.name_prefix != "" ? "${var.name_prefix}-" : ""
   ec2_role_name    = var.ec2_role_name != "" ? var.ec2_role_name : "${local.name_prefix}aviatrix-role-ec2"
   app_role_name    = var.app_role_name != "" ? var.app_role_name : "${local.name_prefix}aviatrix-role-app"
-  is_aws_cn_1      = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : "aws"
-  is_aws_cn_2      = element(split("-", data.aws_region.current.name), 0) == "cn" ? ".cn" : ""
+  arn_partition    = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : (element(split("-", data.aws_region.current.name), 1) == "gov" ? "aws-us-gov" : "aws")
+  is_aws_cn        = element(split("-", data.aws_region.current.name), 0) == "cn" ? ".cn" : ""
   other-account-id = data.aws_caller_identity.current.account_id
   policy_primary   = <<EOF
 {
@@ -41,7 +41,7 @@ locals {
         "Effect": "Allow",
         "Principal": {
           "AWS": [
-              "arn:${local.is_aws_cn_1}:iam::${local.other-account-id}:root"
+              "arn:${local.arn_partition}:iam::${local.other-account-id}:root"
             ]
         },
         "Action": [
@@ -59,8 +59,8 @@ EOF
         "Effect": "Allow",
         "Principal": {
           "AWS": [
-              "arn:${local.is_aws_cn_1}:iam::${var.external-controller-account-id}:root",
-              "arn:${local.is_aws_cn_1}:iam::${local.other-account-id}:root"
+              "arn:${local.arn_partition}:iam::${var.external-controller-account-id}:root",
+              "arn:${local.arn_partition}:iam::${local.other-account-id}:root"
             ]
         },
         "Action": [
