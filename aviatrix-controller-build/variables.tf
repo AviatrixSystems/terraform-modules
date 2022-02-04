@@ -71,7 +71,7 @@ variable name_prefix {
 }
 
 variable type {
-  default     = "MeteredPlatinum"
+  default     = "MeteredPlatinumCopilot"
   type        = string
   description = "Type of billing, can be 'Metered', 'MeteredPlatinum', 'MeteredPlatinumCopilot', 'VPNMetered', BYOL' or 'Custom'."
 }

@@ -86,7 +86,7 @@ module "aviatrixcontroller" {
 
 - **type**
 
-  The license type for the Aviatrix controller. Default value is "MeteredPlatinum". Valid values are "Metered", "MeteredPlatinum", "MeteredPlatinumCopilot", "VPNMetered", "BYOL" and "Custom".
+  The license type for the Aviatrix controller. Default value is "MeteredPlatinumCopilot". Valid values are "MeteredPlatinumCopilot", "BYOL" and "Custom". Deprecated values of  "Metered", "MeteredPlatinum" and  "VPNMetered" are only available if you have subscribed to the images before.  
   
 - **controller_name**
   
