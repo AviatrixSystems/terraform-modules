@@ -92,14 +92,21 @@ locals {
   images_meteredplatinumcopilot = jsondecode(data.http.avx_iam_id.body).MeteredPlatinumCopilot
   images_vpnmetered             = jsondecode(data.http.avx_iam_id.body).VPNMetered
   images_custom                 = jsondecode(data.http.avx_iam_id.body).Custom
-  ami_id                        = var.type == "BYOL" || var.type == "byol" ? local.images_byol[data.aws_region.current.name] : (var.type == "Metered"? local.images_metered[data.aws_region.current.name] : (var.type == "MeteredPlatinum"? local.images_meteredplatinum[data.aws_region.current.name] : (var.type == "MeteredPlatinumCopilot"? local.images_meteredplatinumcopilot[data.aws_region.current.name] : (var.type == "VPNMetered"? local.images_vpnmetered[data.aws_region.current.name] : local.images_custom[data.aws_region.current.name]))))
+  type                          = lower(var.type)
+  ami_id = lookup(local.ami_id_map, local.type, local.images_custom[data.aws_region.current.name])
+  ami_id_map = {
+    byol                   = local.images_byol[data.aws_region.current.name],
+    metered                = local.images_metered[data.aws_region.current.name],
+    meteredplatinum        = local.images_meteredplatinum[data.aws_region.current.name],
+    meteredplatinumcopilot = local.images_meteredplatinumcopilot[data.aws_region.current.name],
+    vpnmetered             = local.images_vpnmetered[data.aws_region.current.name],
+  }
   common_tags = merge(
     var.tags, {
       module    = "aviatrix-controller-build"
       Createdby = "Terraform+Aviatrix"
   })
 }
-
 
 data http avx_iam_id {
   url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/AMI_ID/ami_id.json"
