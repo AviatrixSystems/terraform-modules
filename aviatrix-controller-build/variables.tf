@@ -76,7 +76,7 @@ variable type {
   description = "Type of billing, can be 'Metered', 'MeteredPlatinum', 'MeteredPlatinumCopilot', 'VPNMetered', BYOL' or 'Custom'."
 
   validation {
-    condition     = contains(["metered", "meteredplatinum", "meteredplatinumcopilot", "vpnmeter", "byol", "custom"], lower(var.type))
+    condition     = contains(["metered", "meteredplatinum", "meteredplatinumcopilot", "vpnmetered", "byol", "custom"], lower(var.type))
     error_message = "Invalid billing type. Choose 'Metered', 'MeteredPlatinum', 'MeteredPlatinumCopilot', 'VPNMetered', BYOL' or 'Custom'."
   }  
 }
