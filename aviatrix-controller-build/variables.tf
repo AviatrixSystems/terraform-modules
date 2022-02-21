@@ -36,6 +36,11 @@ variable termination_protection {
   default     = true
 }
 
+variable incoming_ssl_cidr {
+  type        = list(string)
+  description = "Incoming cidr for security group used by controller"
+}
+
 #
 # Defaults
 #
@@ -51,11 +56,6 @@ variable root_volume_type {
   type        = string
   description = "Root volume type for controller"
   default     = "gp2"
-}
-
-variable incoming_ssl_cidr {
-  type        = list(string)
-  description = "Incoming cidr for security group used by controller"
 }
 
 variable instance_type {
