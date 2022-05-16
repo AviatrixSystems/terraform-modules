@@ -36,6 +36,11 @@ variable termination_protection {
   default     = true
 }
 
+variable incoming_ssl_cidr {
+  type        = list(string)
+  description = "Incoming cidr for security group used by controller"
+}
+
 #
 # Defaults
 #
@@ -51,11 +56,6 @@ variable root_volume_type {
   type        = string
   description = "Root volume type for controller"
   default     = "gp2"
-}
-
-variable incoming_ssl_cidr {
-  type        = list(string)
-  description = "Incoming cidr for security group used by controller"
 }
 
 variable instance_type {
@@ -74,6 +74,11 @@ variable type {
   default     = "MeteredPlatinumCopilot"
   type        = string
   description = "Type of billing, can be 'Metered', 'MeteredPlatinum', 'MeteredPlatinumCopilot', 'VPNMetered', BYOL' or 'Custom'."
+
+  validation {
+    condition     = contains(["metered", "meteredplatinum", "meteredplatinumcopilot", "vpnmetered", "byol", "custom"], lower(var.type))
+    error_message = "Invalid billing type. Choose 'Metered', 'MeteredPlatinum', 'MeteredPlatinumCopilot', 'VPNMetered', BYOL' or 'Custom'."
+  }  
 }
 
 variable controller_name {
@@ -92,14 +97,21 @@ locals {
   images_meteredplatinumcopilot = jsondecode(data.http.avx_iam_id.body).MeteredPlatinumCopilot
   images_vpnmetered             = jsondecode(data.http.avx_iam_id.body).VPNMetered
   images_custom                 = jsondecode(data.http.avx_iam_id.body).Custom
-  ami_id                        = var.type == "BYOL" || var.type == "byol" ? local.images_byol[data.aws_region.current.name] : (var.type == "Metered"? local.images_metered[data.aws_region.current.name] : (var.type == "MeteredPlatinum"? local.images_meteredplatinum[data.aws_region.current.name] : (var.type == "MeteredPlatinumCopilot"? local.images_meteredplatinumcopilot[data.aws_region.current.name] : (var.type == "VPNMetered"? local.images_vpnmetered[data.aws_region.current.name] : local.images_custom[data.aws_region.current.name]))))
+  ami_id                        = lookup(local.ami_id_map, lower(var.type), null)
+  ami_id_map                    = {
+    byol                   = local.images_byol[data.aws_region.current.name],
+    metered                = local.images_metered[data.aws_region.current.name],
+    meteredplatinum        = local.images_meteredplatinum[data.aws_region.current.name],
+    meteredplatinumcopilot = local.images_meteredplatinumcopilot[data.aws_region.current.name],
+    vpnmetered             = local.images_vpnmetered[data.aws_region.current.name],
+    custom                 = local.images_custom[data.aws_region.current.name],
+  }
   common_tags = merge(
     var.tags, {
       module    = "aviatrix-controller-build"
       Createdby = "Terraform+Aviatrix"
   })
 }
-
 
 data http avx_iam_id {
   url = "https://s3-us-west-2.amazonaws.com/aviatrix-download/AMI_ID/ami_id.json"
