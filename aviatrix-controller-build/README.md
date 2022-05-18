@@ -23,7 +23,7 @@ To create an Aviatrix Controller:
 
 ```
 module "aviatrixcontroller" {
-  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.14"
+  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=master"
   vpc               = "<<< insert VPC here, ie. vpc-xxxxxx >>>"
   subnet            = "<<< insert public subnet id, ie.: subnet-9x3237xx >>>"
   keypair           = "<<< insert keypair name ie.: keypairname >>>"

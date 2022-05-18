@@ -38,7 +38,7 @@ provider "aws" {
 }
 
 module "iam_roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.14"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=master"
 }
 
 ```
@@ -65,7 +65,7 @@ provider "aws" {
 }
 
 module "aviatrixcontroller" {
-  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.14"
+  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=master"
   vpc               = "<<< your VPC ID >>>"
   subnet            = "<<< your public Subnet ID >>>"
   keypair           = "<<< your EC2 key pair name >>>"
@@ -108,7 +108,7 @@ variable "controller_private_ip" {}
 variable "controller_public_ip" {}
 
 module "aviatrix_controller_init" {
-  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.14"
+  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=master"
   admin_email         = "<<< your administrator email address >>>"
   admin_password      = "<<< your new admin password >>>"
   private_ip          = var.controller_private_ip
@@ -149,11 +149,11 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 module "aviatrix-iam-roles" {
-  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=terraform_0.14"
+  source = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-iam-roles?ref=master"
 }
 
 module "aviatrix-controller-build" {
-  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=terraform_0.14"
+  source            = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-build?ref=master"
   vpc               = "<<< VPC ID >>>"
   subnet            = "<<< Subnet ID >>>"
   keypair           = "<<< Keypair name >>>"
@@ -168,7 +168,7 @@ provider "aviatrix" {
 }
 
 module "aviatrix-controller-initialize" {
-  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=terraform_0.14"
+  source              = "github.com/AviatrixSystems/terraform-modules.git//aviatrix-controller-initialize?ref=master"
   admin_password      = "<<< new admin password >>>"
   admin_email         = "<<< admin email address >>>"
   private_ip          = module.aviatrix-controller-build.private_ip

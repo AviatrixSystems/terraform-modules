@@ -70,6 +70,53 @@ EOF
     ]
 }
 EOF
+  assume_role_policy_primary = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": "${aws_iam_role.aviatrix-role-app.arn}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "aws-marketplace:MeterUsage",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+  assume_role_policy_cross = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": [
+                "arn:${local.arn_partition}:iam::${var.external-controller-account-id}:role/${local.app_role_name}",
+                "arn:${local.arn_partition}:iam::${local.other-account-id}:role/${local.app_role_name}"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "aws-marketplace:MeterUsage",
+                "s3:GetBucketLocation"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+EOF
 
   common_tags = merge(
     var.tags, {

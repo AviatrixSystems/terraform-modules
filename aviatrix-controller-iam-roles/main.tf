@@ -33,28 +33,7 @@ resource aws_iam_policy aviatrix-assume-role-policy {
   name        = "${local.ec2_role_name}-assume-role-policy"
   path        = "/"
   description = "Policy for creating aviatrix-assume-role-policy"
-  policy      = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Resource": "${aws_iam_role.aviatrix-role-app.arn}"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "aws-marketplace:MeterUsage",
-                "s3:GetBucketLocation"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-EOF
+  policy      = var.external-controller-account-id == "" ? local.assume_role_policy_primary : local.assume_role_policy_cross
 }
 
 data http iam_policy_ec2_role {
