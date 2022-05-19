@@ -31,7 +31,11 @@ module "iam_roles" {
 ```
 
 ### Variables
-  
+
+- **secondary-account-ids**
+
+  A list of secondary AWS account IDs. ONLY use this parameter if this Terraform module is applied on the AWS account of your controller. Example: ["11111111", "22222222"]
+
 - **external-controller-account-id** <Optional>
 
   The AWS account ID where the Aviatrix Controller was/will be launched. This is only required if you are creating roles
