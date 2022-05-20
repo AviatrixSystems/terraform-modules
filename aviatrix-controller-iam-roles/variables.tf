@@ -27,13 +27,19 @@ variable app_role_name {
 }
 
 locals {
-  name_prefix      = var.name_prefix != "" ? "${var.name_prefix}-" : ""
-  ec2_role_name    = var.ec2_role_name != "" ? var.ec2_role_name : "${local.name_prefix}aviatrix-role-ec2"
-  app_role_name    = var.app_role_name != "" ? var.app_role_name : "${local.name_prefix}aviatrix-role-app"
-  arn_partition    = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : (element(split("-", data.aws_region.current.name), 1) == "gov" ? "aws-us-gov" : "aws")
-  is_aws_cn        = element(split("-", data.aws_region.current.name), 0) == "cn" ? ".cn" : ""
-  other-account-id = data.aws_caller_identity.current.account_id
-  policy_primary   = <<EOF
+  name_prefix          = var.name_prefix != "" ? "${var.name_prefix}-" : ""
+  ec2_role_name        = var.ec2_role_name != "" ? var.ec2_role_name : "${local.name_prefix}aviatrix-role-ec2"
+  app_role_name        = var.app_role_name != "" ? var.app_role_name : "${local.name_prefix}aviatrix-role-app"
+  arn_partition        = element(split("-", data.aws_region.current.name), 0) == "cn" ? "aws-cn" : (element(split("-", data.aws_region.current.name), 1) == "gov" ? "aws-us-gov" : "aws")
+  is_aws_cn            = element(split("-", data.aws_region.current.name), 0) == "cn" ? ".cn" : ""
+  other-account-id     = data.aws_caller_identity.current.account_id
+  resource_account_ids = length(var.secondary-account-ids) == 0 ? [local.other-account-id] : concat(var.secondary-account-ids, [local.other-account-id])
+  resource_strings     = [
+    for id in local.resource_account_ids:
+      "arn:${local.arn_partition}:iam::${id}:role/${local.app_role_name}"
+  ]
+
+  policy_primary = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -51,7 +57,7 @@ locals {
     ]
 }
 EOF
-  policy_cross     = <<EOF
+  policy_cross = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -70,53 +76,6 @@ EOF
     ]
 }
 EOF
-  assume_role_policy_primary = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Resource": "${aws_iam_role.aviatrix-role-app.arn}"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "aws-marketplace:MeterUsage",
-                "s3:GetBucketLocation"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-EOF
-  assume_role_policy_cross = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "sts:AssumeRole"
-            ],
-            "Resource": [
-                "arn:${local.arn_partition}:iam::${var.external-controller-account-id}:role/${local.app_role_name}",
-                "arn:${local.arn_partition}:iam::${local.other-account-id}:role/${local.app_role_name}"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "aws-marketplace:MeterUsage",
-                "s3:GetBucketLocation"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-EOF
 
   common_tags = merge(
     var.tags, {
@@ -129,4 +88,9 @@ EOF
 variable external-controller-account-id {
   type    = string
   default = ""
+}
+
+variable secondary-account-ids {
+  type    = list(string)
+  default = []
 }
