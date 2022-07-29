@@ -76,11 +76,15 @@ output "lambda_result" {
   
 - **controller_version**
   
-  The version to which you want initialize the Aviatrix controller.
-    
+  The version to which you want to initialize the Aviatrix controller.
+
+- **wait_time_for_instance**
+
+  Wait time for controller instance to be up. This is the sleep time before running Lambda. Default value is 210.
+
 - **controller_launch_wait_time**
  
-  Time in second to wait for controller to be up. Default value is 210.
+  Wait time for controller server to be up. This is the wait time used at the beginning of Lambda. Default value is 210.
 
 - **ec2_role_name**
 

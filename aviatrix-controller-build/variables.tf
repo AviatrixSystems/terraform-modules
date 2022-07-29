@@ -49,7 +49,7 @@ variable incoming_ssl_cidr {
 variable root_volume_size {
   type        = number
   description = "Root volume disk size for controller"
-  default     = 32
+  default     = 64
 }
 
 variable root_volume_type {
@@ -91,12 +91,12 @@ data aws_region current {}
 
 locals {
   name_prefix                   = var.name_prefix != "" ? "${var.name_prefix}-" : ""
-  images_byol                   = jsondecode(data.http.avx_iam_id.body).BYOL
-  images_metered                = jsondecode(data.http.avx_iam_id.body).Metered
-  images_meteredplatinum        = jsondecode(data.http.avx_iam_id.body).MeteredPlatinum
-  images_meteredplatinumcopilot = jsondecode(data.http.avx_iam_id.body).MeteredPlatinumCopilot
-  images_vpnmetered             = jsondecode(data.http.avx_iam_id.body).VPNMetered
-  images_custom                 = jsondecode(data.http.avx_iam_id.body).Custom
+  images_byol                   = jsondecode(data.http.avx_iam_id.response_body).BYOL
+  images_metered                = jsondecode(data.http.avx_iam_id.response_body).Metered
+  images_meteredplatinum        = jsondecode(data.http.avx_iam_id.response_body).MeteredPlatinum
+  images_meteredplatinumcopilot = jsondecode(data.http.avx_iam_id.response_body).MeteredPlatinumCopilot
+  images_vpnmetered             = jsondecode(data.http.avx_iam_id.response_body).VPNMetered
+  images_custom                 = jsondecode(data.http.avx_iam_id.response_body).Custom
   ami_id                        = lookup(local.ami_id_map, lower(var.type), null)
   ami_id_map                    = {
     byol                   = local.images_byol[data.aws_region.current.name],
