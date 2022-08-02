@@ -1,49 +1,48 @@
 resource "aws_iam_role" "iam_for_lambda" {
   name = replace("iam_for_lambda_${var.public_ip}", ".", "-")
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
+  assume_role_policy = data.aws_iam_policy_document.iam_for_lambda.json
 }
-EOF
+
+data "aws_iam_policy_document" "iam_for_lambda" {
+  statement {
+    principals {
+      type = "Service"
+      identifiers = [
+        "lambda.amazonaws.com"
+      ]
+    }
+    actions = [
+      "sts:AssumeRole",
+    ]
+  }
 }
 
 resource "aws_iam_policy" "lambda-policy" {
   name        = "${local.name_prefix}aviatrix-lambda-policy"
   path        = "/"
   description = "Policy for creating aviatrix-lambda-policy"
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:DescribeInstances",
-        "ec2:CreateNetworkInterface",
-        "ec2:AttachNetworkInterface",
-        "ec2:DescribeNetworkInterfaces",
-        "ec2:DeleteNetworkInterface",
-        "ec2:DetachNetworkInterface",
-        "ec2:ModifyNetworkInterfaceAttribute",
-        "ec2:ResetNetworkInterfaceAttribute",
-        "autoscaling:CompleteLifecycleAction"
-      ],
-      "Resource": "*"
-    }
-  ]
+  policy      = data.aws_iam_policy_document.lambda-policy.json
 }
-EOF
+
+data "aws_iam_policy_document" "lambda-policy" {
+  statement {
+    actions = [
+      "ec2:DescribeInstances",
+      "ec2:CreateNetworkInterface",
+      "ec2:AttachNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface",
+      "ec2:DetachNetworkInterface",
+      "ec2:ModifyNetworkInterfaceAttribute",
+      "ec2:ResetNetworkInterfaceAttribute",
+      "autoscaling:CompleteLifecycleAction",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
 }
 
 resource "aws_iam_role_policy_attachment" "attach-policy" {
