@@ -1,26 +1,26 @@
-data aws_caller_identity current {}
+data "aws_caller_identity" "current" {}
 
-data aws_region current {}
+data "aws_region" "current" {}
 
-variable tags {
+variable "tags" {
   type        = map(string)
   description = "Map of common tags which should be used for module resources"
   default     = {}
 }
 
-variable name_prefix {
+variable "name_prefix" {
   type        = string
   description = "Additional name prefix for your environment resources"
   default     = ""
 }
 
-variable ec2_role_name {
+variable "ec2_role_name" {
   type        = string
   description = "EC2 role name"
   default     = ""
 }
 
-variable app_role_name {
+variable "app_role_name" {
   type        = string
   description = "APP role name"
   default     = ""
@@ -34,48 +34,21 @@ locals {
   is_aws_cn            = element(split("-", data.aws_region.current.name), 0) == "cn" ? ".cn" : ""
   other-account-id     = data.aws_caller_identity.current.account_id
   resource_account_ids = length(var.secondary-account-ids) == 0 ? [local.other-account-id] : concat(var.secondary-account-ids, [local.other-account-id])
-  resource_strings     = [
-    for id in local.resource_account_ids:
-      "arn:${local.arn_partition}:iam::${id}:role/${local.app_role_name}"
+  resource_strings = [
+    for id in local.resource_account_ids :
+    "arn:${local.arn_partition}:iam::${id}:role/${local.app_role_name}"
   ]
 
-  policy_primary = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-              "arn:${local.arn_partition}:iam::${local.other-account-id}:root"
-            ]
-        },
-        "Action": [
-          "sts:AssumeRole"
-        ]
-      }
+  identifiers = (var.external-controller-account-id == "" ?
+    [
+      "arn:${local.arn_partition}:iam::${local.other-account-id}:root",
     ]
-}
-EOF
-  policy_cross = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-              "arn:${local.arn_partition}:iam::${var.external-controller-account-id}:root",
-              "arn:${local.arn_partition}:iam::${local.other-account-id}:root"
-            ]
-        },
-        "Action": [
-          "sts:AssumeRole"
-        ]
-      }
+    :
+    [
+      "arn:${local.arn_partition}:iam::${var.external-controller-account-id}:root",
+      "arn:${local.arn_partition}:iam::${local.other-account-id}:root"
     ]
-}
-EOF
+  )
 
   common_tags = merge(
     var.tags, {
@@ -85,12 +58,12 @@ EOF
 }
 
 
-variable external-controller-account-id {
+variable "external-controller-account-id" {
   type    = string
   default = ""
 }
 
-variable secondary-account-ids {
+variable "secondary-account-ids" {
   type    = list(string)
   default = []
 }
