@@ -1,16 +1,16 @@
-resource aws_eip controller_eip {
+resource "aws_eip" "controller_eip" {
   count = var.num_controllers
   vpc   = true
   tags  = local.common_tags
 }
 
-resource aws_eip_association eip_assoc {
+resource "aws_eip_association" "eip_assoc" {
   count         = var.num_controllers
   instance_id   = aws_instance.aviatrixcontroller[count.index].id
   allocation_id = aws_eip.controller_eip[count.index].id
 }
 
-resource aws_network_interface eni-controller {
+resource "aws_network_interface" "eni-controller" {
   count           = var.num_controllers
   subnet_id       = var.subnet
   security_groups = [aws_security_group.AviatrixSecurityGroup.id]
@@ -22,7 +22,7 @@ resource aws_network_interface eni-controller {
   }
 }
 
-resource aws_instance aviatrixcontroller {
+resource "aws_instance" "aviatrixcontroller" {
   count                   = var.num_controllers
   ami                     = local.ami_id
   instance_type           = var.instance_type
