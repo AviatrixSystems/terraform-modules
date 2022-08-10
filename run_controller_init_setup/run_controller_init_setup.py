@@ -484,7 +484,7 @@ def _lambda_handler(event, context):
     print(keyword_for_log + 'ENDED: Invoke Aviatrix API to run initial setup\n\n')
 
     # wait_until_controller_initial_setup_finishes()  # PLACEHOLDER
-    wait_time = 15
+    wait_time = 20
     print(keyword_for_log + 'START: Wait until controller finishes initial setup')
     print(keyword_for_log + '    Waiting for roughly ' + str(wait_time) + ' seconds...')
     time.sleep(wait_time)
