@@ -1,67 +1,66 @@
-resource aws_iam_role iam_for_lambda {
+resource "aws_iam_role" "iam_for_lambda" {
   name = replace("iam_for_lambda_${var.public_ip}", ".", "-")
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "lambda.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
-  ]
-}
-EOF
+  assume_role_policy = data.aws_iam_policy_document.iam_for_lambda.json
 }
 
-resource aws_iam_policy lambda-policy {
+data "aws_iam_policy_document" "iam_for_lambda" {
+  statement {
+    principals {
+      type = "Service"
+      identifiers = [
+        "lambda.amazonaws.com"
+      ]
+    }
+    actions = [
+      "sts:AssumeRole",
+    ]
+  }
+}
+
+resource "aws_iam_policy" "lambda-policy" {
   name        = "${local.name_prefix}aviatrix-lambda-policy"
   path        = "/"
   description = "Policy for creating aviatrix-lambda-policy"
-  policy      = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "ec2:DescribeInstances",
-        "ec2:CreateNetworkInterface",
-        "ec2:AttachNetworkInterface",
-        "ec2:DescribeNetworkInterfaces",
-        "ec2:DeleteNetworkInterface",
-        "ec2:DetachNetworkInterface",
-        "ec2:ModifyNetworkInterfaceAttribute",
-        "ec2:ResetNetworkInterfaceAttribute",
-        "autoscaling:CompleteLifecycleAction"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
+  policy      = data.aws_iam_policy_document.lambda-policy.json
 }
 
-resource aws_iam_role_policy_attachment attach-policy {
+data "aws_iam_policy_document" "lambda-policy" {
+  statement {
+    actions = [
+      "ec2:DescribeInstances",
+      "ec2:CreateNetworkInterface",
+      "ec2:AttachNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface",
+      "ec2:DetachNetworkInterface",
+      "ec2:ModifyNetworkInterfaceAttribute",
+      "ec2:ResetNetworkInterfaceAttribute",
+      "autoscaling:CompleteLifecycleAction",
+    ]
+
+    resources = [
+      "*",
+    ]
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "attach-policy" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.lambda-policy.arn
 }
 
-resource aws_iam_role_policy_attachment attach-policy-1 {
+resource "aws_iam_role_policy_attachment" "attach-policy-1" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = "arn:${local.arn_partition}:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
 }
 
-resource aws_iam_role_policy_attachment attach-policy-2 {
+resource "aws_iam_role_policy_attachment" "attach-policy-2" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = "arn:${local.arn_partition}:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
 
-resource aws_lambda_function lambda {
+resource "aws_lambda_function" "lambda" {
   s3_bucket     = "aviatrix-lambda-${data.aws_region.current.name}"
   s3_key        = "run_controller_init_setup.zip"
   function_name = replace("AvxLambda_${var.public_ip}", ".", "-")
@@ -79,13 +78,13 @@ resource aws_lambda_function lambda {
   depends_on = [aws_iam_role_policy_attachment.attach-policy, aws_security_group.AviatrixLambdaSecurityGroup]
 }
 
-resource time_sleep wait_time_for_instance {
+resource "time_sleep" "wait_time_for_instance" {
   create_duration = "${var.wait_time_for_instance}s"
 
   depends_on = [aws_lambda_function.lambda]
 }
 
-data aws_lambda_invocation example {
+data "aws_lambda_invocation" "example" {
   function_name = aws_lambda_function.lambda.function_name
   depends_on    = [time_sleep.wait_time_for_instance]
   input         = <<JSON
