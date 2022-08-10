@@ -78,7 +78,7 @@ resource "aws_iam_policy" "aviatrix-app-policy" {
   name        = "${local.app_role_name}-app-policy"
   path        = "/"
   description = "Policy for creating aviatrix-app-policy"
-  policy      = data.http.iam_policy_ec2_role.body
+  policy      = data.http.iam_policy_ec2_role.response_body
 }
 
 resource "aws_iam_role_policy_attachment" "aviatrix-role-ec2-attach" {

@@ -66,14 +66,14 @@ variable "controller_version" {
   description = "The version in which you want launch Aviatrix controller"
 }
 
-variable "controller_launch_wait_time" {
-  description = "Controller launch wait time"
+variable "wait_time_for_instance" {
+  description = "Wait time for controller instance to be up. This is the sleep time before running Lambda."
   default     = 210
 }
 
-variable "wait_time_for_instance" {
-  description = "Wait time for controller instance to come up"
-  default     = 120
+variable "controller_launch_wait_time" {
+  description = "Wait time for controller server to be up. This is the wait time used at the beginning of Lambda."
+  default     = 210
 }
 
 variable "ec2_role_name" {
