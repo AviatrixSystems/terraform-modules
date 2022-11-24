@@ -38,6 +38,9 @@ resource "aws_instance" "aviatrixcontroller" {
   root_block_device {
     volume_size = var.root_volume_size
     volume_type = var.root_volume_type
+    encrypted   = var.root_volume_encrypted
+    kms_key_id  = var.root_volume_kms_key_id
+    delete_on_termination = true
   }
 
   tags = merge(local.common_tags, {
