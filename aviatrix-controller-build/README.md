@@ -70,11 +70,20 @@ module "aviatrixcontroller" {
   
 - **root_volume_size**
   
-  The size of the hard disk for the controller instance. If not stated, will use default value (currently: 32) as suggested by Aviatrix.
+  The size of the hard disk for the controller instance. If not stated, will use default value (currently: 64) as suggested by Aviatrix.
 
 - **root_volume_type**
   
   The type of the hard disk for the controller instance, Default value is "gp2".
+
+
+- **root_volume_encrypted**
+ 
+  Whether encryption is enabled for the hard disk for the controller instance, Default value is false
+
+- **root_volume_kms_key_id**
+ 
+  The KMS key ID/ARN for the key used to encrypt the disk if encryption is used for the controller disk. Optional even if root_volume_encrypted is true. Example: arn:aws:kms:us-west-2:012xxxx:key/xxxxx-xxxx-xxxx-xxxx-xxxxxxxxx
 
 - **instance_type**
 
