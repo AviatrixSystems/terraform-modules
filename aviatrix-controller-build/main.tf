@@ -1,7 +1,7 @@
 resource "aws_eip" "controller_eip" {
-  count = var.num_controllers
-  vpc   = true
-  tags  = local.common_tags
+  count  = var.num_controllers
+  domain = "vpc"
+  tags   = local.common_tags
 }
 
 resource "aws_eip_association" "eip_assoc" {
@@ -24,7 +24,7 @@ resource "aws_network_interface" "eni-controller" {
 
 resource "aws_instance" "aviatrixcontroller" {
   count                   = var.num_controllers
-  ami                     = local.ami_id
+  ami                     = "ami-083debf283d5fab1f"
   instance_type           = var.instance_type
   key_name                = var.keypair
   iam_instance_profile    = var.ec2role
@@ -36,15 +36,17 @@ resource "aws_instance" "aviatrixcontroller" {
   }
 
   root_block_device {
-    volume_size = var.root_volume_size
-    volume_type = var.root_volume_type
-    encrypted   = var.root_volume_encrypted
-    kms_key_id  = var.root_volume_kms_key_id
+    volume_size           = var.root_volume_size
+    volume_type           = var.root_volume_type
+    encrypted             = var.root_volume_encrypted
+    kms_key_id            = var.root_volume_kms_key_id
     delete_on_termination = true
   }
 
   tags = merge(local.common_tags, {
     Name = var.controller_name != "" ? count.index == 0 ? var.controller_name : "${var.controller_name}-${count.index}" : "${local.name_prefix}AviatrixController-${count.index}"
+  },{
+    AMI_ID = local.ami_id
   })
 
   lifecycle {

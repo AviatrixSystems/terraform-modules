@@ -100,6 +100,12 @@ variable "controller_name" {
   description = "Name of controller that will be launched. If not set, default name will be used."
 }
 
+variable "ami_id" {
+  default     = ""
+  type        = string
+  description = "Specific AMI ID to use."
+}
+
 data "aws_region" "current" {}
 
 locals {
@@ -110,7 +116,7 @@ locals {
   images_meteredplatinumcopilot = jsondecode(data.http.avx_iam_id.response_body).MeteredPlatinumCopilot
   images_vpnmetered             = jsondecode(data.http.avx_iam_id.response_body).VPNMetered
   images_custom                 = jsondecode(data.http.avx_iam_id.response_body).Custom
-  ami_id                        = lookup(local.ami_id_map, lower(var.type), null)
+  ami_id                        = var.ami_id == "" ? lookup(local.ami_id_map, lower(var.type), null) : var.ami_id
   ami_id_map = {
     byol                   = local.images_byol[data.aws_region.current.name],
     metered                = local.images_metered[data.aws_region.current.name],
