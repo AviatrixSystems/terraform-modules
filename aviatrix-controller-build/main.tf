@@ -24,7 +24,7 @@ resource "aws_network_interface" "eni-controller" {
 
 resource "aws_instance" "aviatrixcontroller" {
   count                   = var.num_controllers
-  ami                     = "ami-083debf283d5fab1f"
+  ami                     = local.ami_id
   instance_type           = var.instance_type
   key_name                = var.keypair
   iam_instance_profile    = var.ec2role
