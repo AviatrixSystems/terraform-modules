@@ -1,7 +1,7 @@
 resource "aws_eip" "controller_eip" {
-  count  = var.num_controllers
-  domain = "vpc"
-  tags   = local.common_tags
+  count = var.num_controllers
+  vpc   = true
+  tags  = local.common_tags
 }
 
 resource "aws_eip_association" "eip_assoc" {
